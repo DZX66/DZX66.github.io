@@ -5,7 +5,7 @@ while True:
     res=input("感谢（输入quit结束，按回车确定）：")
     if res=="quit":
         break
-    elif res=="":
+    elif res=="" or res==None:
         print("不能为空")
     else:
         thanks.append(res)
@@ -21,8 +21,4 @@ for i in thanks:
 result="".join(result)
 print(result)
 print()
-with open("thank_result.txt","w",encoding="utf-8") as f:
-    f.write(result)
-    f.close()
-print("结果保存在thank_result.txt中。")
 input("")

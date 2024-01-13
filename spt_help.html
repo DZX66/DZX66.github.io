@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>schoolpctool帮助</title>
+    </head>
+    <body>
+        <h1>schoolpctool帮助</h1>
+        <p>最后一次更新时间：2024年1月13日</p>
+        <h2>为什么窗口被关闭了？</h2>
+        <p>因为<b>窗口标题</b>触发了某些规则，所以被关闭了。</p>
+        <ul><li>如果提示：xxxx已关闭。则说明窗口触发了某些<b>特殊规则</b>，可以在<a href="D:/schoolpctool_log.txt">D:/schoolpctool_log.txt</a>查看详细信息，你会看到类似于“^xxx$”的东西，这是<a href="https://baike.baidu.com/item/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>，想查阅所有的特殊规则，可在<a href="D:/schoolpctool_log.txt">D:/schoolpctool_log.txt</a>配置的broken_apps查看。</li><li>如果提示：xxxx触发关键词xxx。则说明窗口触发了某些<b>关键词</b>，可以在<a href="D:/schoolpctool_log.txt">D:/schoolpctool_log.txt</a>查看详细信息，想查阅所有的关键词，可在<a href="D:/schoolpctool_log.txt">D:/schoolpctool_log.txt</a>配置的key_words查看。</li><li>如果提示：xxxx已关闭并删除。则说明窗口触发了某些<b>严重的特殊规则</b>（通常是安装包），并删除了启动此窗口的程序，可以在<a href="D:/schoolpctool_log.txt">D:/schoolpctool_log.txt</a>查看详细信息，你会看到类似于“^xxx$”的东西，这是<a href="https://baike.baidu.com/item/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F">正则表达式</a>，想查阅所有的特殊规则，可在<a href="D:/schoolpctool_log.txt">D:/schoolpctool_log.txt</a>配置的broken_exes查看。</li></ul>
+        <h2>我该如何检查窗口标题？</h2>
+        <P>一般的，窗口标题可在窗口左上角查看。对于edge浏览器，当前浏览的标签页标题会写入窗口标题。如果在“设置-个性化-任务栏”中关闭“合并任务栏按钮并隐藏标签”，窗口标题还会显示在任务栏。</P>
+        <h2>电脑被自动关机了？</h2>
+        <p>因为开机时时间处于不正常的范围，可以在右下角看到通知。</p>
+        <h2>schoolpctool是什么？</h2>
+        <p>是一个学校电脑的管理软件，用python编写，项目地址：<a href="https://github.com/DZX66/schoolpctool">https://github.com/DZX66/schoolpctool</a></p>
+    </body>
+</html>

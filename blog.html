@@ -5,16 +5,44 @@
         <link rel="stylesheet" type="text/css" href="style.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8">
+        <script type="text/javascript">
+            function countdown() {
+                var now = new Date(); // 获取当前日期和时间
+                var targetDate = new Date(2024,1,19,15,30,0,0); // 设置目标日期
+                
+                var timeDiff = targetDate.getTime() - now.getTime(); // 计算与目标日期之间的时间差（单位：毫秒）
+                
+                if (timeDiff > 0) {
+                    var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24)); // 计算天数部分
+                    var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); // 计算小时部分
+                    var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60)); // 计算分钟部分
+                    var seconds = Math.floor((timeDiff % (1000 * 60)) / 1000); // 计算秒数部分
+                    
+                    document.getElementById("countdown").innerHTML = "距离开学还有" + days + "天 " + hours + "小时 " + minutes + "分钟 " + seconds + "秒";
+                } else {
+                    document.getElementById("countdown").innerHTML = "你是怎么看到这个的？";
+                }
+            }
+            
+            setInterval(countdown, 1000); // 每隔1秒调用一次countdown函数更新显示内容
+        </script>
     </head>
     <body>
         <h1>一些bb</h1>
-        <p>最后一次更新时间：2024年2月9日</p>
-        <marquee behavior="scroll" direction="left" scrollamount="30"><font color="red" size="15px" >除夕快乐</font> </marquee>
+        <p>最后一次更新时间：2024年2月16日</p>
+        <h1 id="countdown"></h1>
+        <marquee behavior="scroll" direction="left" scrollamount="30"><font color="red" size="15px" >新年快乐</font> </marquee>
         <img src="assets/newyear/fu.png" class="fu" width="100px" height="100px">
         <img src="assets/newyear/fu.png" class="fu" width="100px" height="100px">
         <img src="assets/newyear/fu.png" class="fu" width="100px" height="100px">
         <img src="assets/newyear/deng.png" class="right" width="100px" height="130px">
         <ul style="list-style-type: none;">
+            <li>
+                <details>
+                    <summary>blue archive</summary>
+                    <p>先挖个坑</p>
+                </details>
+            </li>
             <li>
                 <details>
                     <summary>2024年2月9日除夕，望周知。</summary>

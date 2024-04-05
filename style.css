@@ -106,3 +106,15 @@ animation: move 5s linear infinite;
                  transform: rotate(360deg);
              }
             }
+
+/* ul */
+.head{
+font-size: 26px;
+margin-top: 12px;
+}
+.foot{
+color: #ffb5b5;
+font-size: 12px;
+}
+a{
+text-decoration: none;}

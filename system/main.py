@@ -14,7 +14,7 @@ def add_to_16(message:str):
     while len(message) % 16 != 0:
         message = str(message)
         message += '\0'
-        # message = str(message)
+    message = str(message)
     return message.encode('utf-8')  # 返回bytes
 
 
@@ -54,6 +54,8 @@ def decrypt_oralce(message,key_pri):
     # 解密 aes
     message_de64_deaes = aes.decrypt(message_de64)
     message_de64_deaes_de = message_de64_deaes.decode('utf-8')
+    message_de64_deaes_de = bytes(message_de64_deaes_de,'utf-8').decode('unicode_escape').encode('latin1').decode()
+    message_de64_deaes_de = message_de64_deaes_de.replace("\x00","")[2:-1]
     return message_de64_deaes_de
 
 
@@ -78,24 +80,111 @@ def update_index():
 
 def edit_page():
     '''操作页面'''
-
+    with open("index.json","r",encoding="utf-8") as f:
+        data:dict[str,dict[Literal["title","tags","is_locked","create_time","last_edit_time"],Union[str,bool,list[str]]]] = json.load(f)
+    
+    m = 0
+    ordered_data:dict[int,dict[Literal["title","tags","is_locked","create_time","last_edit_time"],Union[str,bool,list[str]]]] = {}
+    for i in data:
+        m += 1
+        ordered_data[m] = data[i]
+    while True:
+        print("="*5)
+        for i in ordered_data:
+            print(str(i) + "\t" + ordered_data[i]["title"] + "\t" + ordered_data[i]["last_edit_time"])
+        print("="*5)
+        cmd = ""
+        while True:
+            cmd = input("选择一项（按0撤回）：")
+            try:
+                cmd = int(cmd)
+                if cmd == 0:
+                    return -1
+                elif cmd < 0 or cmd > m:
+                    raise ValueError
+                else:
+                    break
+            except ValueError:
+                print("输入不符合要求")
+        title = ordered_data[cmd]["title"]
+        is_locked = ordered_data[cmd]["is_locked"]
+        tags = ordered_data[cmd]["tags"]
+        print()
+        print("标题：" + title)
+        print("是否上锁：" + ("是" if is_locked else "否"))
+        print("创建时间：" + ordered_data[cmd]["create_time"])
+        print("最后一次修改时间：" + ordered_data[cmd]["last_edit_time"])
+        o = ""
+        for i in tags:
+            o += i+" "
+        print("标签：" + o)
+        while True:
+            print()
+            print("当前位置：页面管理 -> "+title)
+            print("="*10)
+            print("0.返回上一级")
+            print("1.修改标题")
+            print("2.上锁/解锁")
+            print("3.修改标签")
+            print("4.修改内容")
+            print("="*10)
+            cmd = input("输入指令：")
+            print()
+            if cmd == "0":
+                break
+            elif cmd == "4":
+                with open(os.path.join("pages",title,"content.html"),"r",encoding="utf-8") as f:
+                    org_content = f.read()
+                with open(os.path.join("pages",title,"attribute.json"),"r",encoding="utf-8") as f:
+                    attributes:dict[Literal["title","tags","is_locked","create_time","last_edit_time"],Union[str,bool,list[str]]] = json.load(f)
+                if attributes["is_locked"]:
+                    while True:
+                        password = input("请输入密码：")
+                        try:
+                            content = decrypt_oralce(org_content,password)
+                            if content[:6] != "locked":
+                                raise ValueError
+                        except Exception:
+                            print("密码错误")
+                        else:
+                            content = content[6:]
+                            break
+                else:
+                    content = org_content
+                f = open("temp.html","w",encoding="utf-8")
+                f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>{title}</h1><p>最后一次更新时间：{date}</p>\n<!-- 请在以下写入代码 -->\n{content}\n<!-- 请在以上写入代码 -->\n<script>refresh();</script>'.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),content=content))
+                f.close()
+                os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
+                print("请修改后保存")
+                os.system("pause")
+                f = open("temp.html","r",encoding="utf-8")
+                res = f.readlines()[2:-2]
+                f.close()
+                os.remove("temp.html")
+                r = ""
+                for i in res:
+                    r += i
+                r = r[:-1]
+                if attributes["is_locked"]:
+                    r = encrypt_oracle("locked"+r,password)
+                with open(os.path.join("pages",title,"content.html"),"w",encoding="utf-8") as f:
+                    f.write(r)
+                datar = json.dumps({"title":title,"tags":attributes["tags"],"is_locked":attributes["is_locked"],"create_time":attributes["create_time"],"last_edit_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False)
+                with open(os.path.join("pages",title,"attribute.json"),"w",encoding="utf-8") as f:
+                    f.write(datar)
 def new_page():
     '''新建页面'''
     title = ""
-    is_exit = False
     while title == "":
         title = input("标题（按0撤回）：")
         if title == "0":
-            is_exit = True
-            break
+            return -1
         dir = os.path.join("pages",title)
         if title == "":
             print("不能为空！")
         if os.path.exists(dir):
             print("该页面已存在！")
             title = ""
-    if is_exit:
-        return -1
     tags = []
     while True:
         tag = input("标签（按0结束）：")
@@ -120,13 +209,13 @@ def new_page():
             locked = False
             break
     f = open("temp.html","w",encoding="utf-8")
-    f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>{title}</h1><p>最后一次更新时间：{date}</p>\n<!-- 请在以下写入代码 -->\n\n'.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+    f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>{title}</h1><p>最后一次更新时间：{date}</p>\n<!-- 请在以下写入代码 -->\n\n<!-- 请在以上写入代码 -->\n<script>refresh();</script>'.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
     f.close()
     os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
     print("请修改后保存")
     os.system("pause")
     f = open("temp.html","r",encoding="utf-8")
-    res = f.readlines()[2:]
+    res = f.readlines()[2:-2]
     f.close()
     os.remove("temp.html")
     r = ""
@@ -162,12 +251,12 @@ def apply():
         with open(os.path.join("../pages/",data[i]["title"]+".html"),"w",encoding="utf-8") as f:
             if data[i]["is_locked"]:
                 with open(os.path.join("pages",data[i]["title"],"content.html"),"r",encoding="utf-8") as f1:
-                    f.write(r'<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><script src="../system/crypto-js.min.js"></script></head><body><h1>{title}</h1><a href="../blogs.html">返回</a><p>最后一次更新时间：{date}</p><p>创建时间：{create}</p><div id="tip"><p>这个文档被加密了，需要密码...</p><br/><span>密码：</span><input id="2"><button onclick="sure();">确定</button></div><div id="1"></div><script>function sure(){{var akey=document.getElementById("2").value;while(akey.length%16!=0){{akey+="\0"}};var key=CryptoJS.enc.Utf8.parse(akey);const mode=CryptoJS.mode.ECB;const padding=CryptoJS.pad.Pkcs7;var decryptedText=CryptoJS.AES.decrypt("{base64}",key,{{mode,padding}});var a=decodeURIComponent(CryptoJS.enc.Utf8.stringify(decryptedText).replace(/\\x/g,"%"));document.getElementById("1").innerHTML=a;if(document.getElementById("1").innerHTML.slice(2,8)=="locked"){{document.getElementById("tip").innerHTML="";}}document.getElementById("1").innerHTML=document.getElementById("1").innerHTML.replace(/\\n/g,"").slice(8,-1);}}</script></body></html>'.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"],base64=f1.read()))
+                    f.write(r'<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><script src="../system/crypto-js.min.js"></script><script src="../template.js"></script></head><body><h1>{title}</h1><a href="../blogs.html">返回</a><p>最后一次更新时间：{date}</p><p>创建时间：{create}</p><div id="tip"><p>这个文档被加密了，需要密码...</p><br/><span>密码：</span><input id="2"><button onclick="sure();">确定</button></div><div id="1"></div><script>function sure(){{var akey=document.getElementById("2").value;while(akey.length%16!=0){{akey+="\0"}};var key=CryptoJS.enc.Utf8.parse(akey);const mode=CryptoJS.mode.ECB;const padding=CryptoJS.pad.Pkcs7;var decryptedText=CryptoJS.AES.decrypt("{base64}",key,{{mode,padding}});var a=decodeURIComponent(CryptoJS.enc.Utf8.stringify(decryptedText).replace(/\\x/g,"%"));document.getElementById("1").innerHTML=a;if(document.getElementById("1").innerHTML.slice(2,8)=="locked"){{document.getElementById("tip").innerHTML="";}}document.getElementById("1").innerHTML=document.getElementById("1").innerHTML.replace(/\\n/g,"").slice(8,-1);refresh();}}</script></body></html>'.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"],base64=f1.read()))
             else:
-                f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>{title}</h1><a href="../blogs.html">返回</a><p>最后一次更新时间：{date}</p><p>创建时间：{create}</p>\n'.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"]))
+                f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>{title}</h1><a href="../blogs.html">返回</a><p>最后一次更新时间：{date}</p><p>创建时间：{create}</p>\n'.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"]))
                 with open(os.path.join("pages",data[i]["title"],"content.html"),"r",encoding="utf-8") as f1:
                     f.write(f1.read())
-                f.write("</body></html>")
+                f.write('</body><script>refresh();</script></html>')
     # 创建索引
     with open("../blogs.html","w",encoding="utf-8") as f:
         f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>一些bb</title><link rel="stylesheet" type="text/css" href="style.css"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>一些bb</h1><p>最后一次更新时间：{date}</p><ul style="list-style-type: none;">'.format(date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))

@@ -1,3 +1,0 @@
-schoolpctool
-beta0.34
-https://gitee.com/dzx_3_0/schoolpctool/releases/download/beta0.34/beta0.34.zip

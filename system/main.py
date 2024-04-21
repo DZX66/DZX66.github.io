@@ -385,10 +385,13 @@ def apply():
 if __name__=="__main__":
     if is_admin():
         try:
-            os.chdir(os.path.dirname(os.path.abspath(__file__)))
+            print(__file__)
+            if "Temp" not in __file__:
+                os.chdir(os.path.dirname(os.path.abspath(__file__)))
             while True:
                 print()
                 cmd = None
+                print("工作目录：",os.getcwd())
                 print("="*10)
                 print("这是网站后台")
                 print("1.页面管理")

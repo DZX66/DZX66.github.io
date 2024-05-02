@@ -1,10 +1,12 @@
 /* 背景 */
 body{
     background-color: #fcfdf8;
-margin-left: 2%;
 }
-
-
+/* 分割线 */
+hr{
+    margin-left: 4px;
+    margin-right: 4px;
+}
 /* 未访问的链接 */
 a:link {
 color: #9cb480;
@@ -132,4 +134,147 @@ text-decoration: none;}
     -moz-box-shadow: #666 0 2px 3px;
     border-radius: 10px;
     box-shadow: #666 0 2px 3px;
+}
+
+/* 普通页面 */
+
+.title{
+background-color: rgb(191, 232, 232);
+border-radius: 5px;
+padding-top: 0;
+padding-bottom: 5px;
+margin-bottom: 1%;
+}
+
+#left{
+width: 12%;margin-top: 20px;top:5px;
+@media screen and (max-width: 960px) {
+    display: none;
+}}
+
+#article{
+width: 75%;
+@media screen and (max-width: 960px) {
+    width: 99%;
+}}
+
+main{width: 84%;
+@media screen and (max-width: 960px) {
+    width: 99%;
+}}
+
+aside{
+width: 20%;
+margin-left: 1%;
+position: sticky;
+top:5px;
+@media screen and (max-width: 960px) {
+    width: 100%;
+    position: relative;
+    margin-left: 0;
+}}
+
+.card{
+background-color: rgb(255, 255, 255);
+border: 1px solid rgb(133, 114, 114);
+border-radius: 5px;
+float: left;
+}
+
+.catalog-active a{
+color: #82d622;
+}
+
+/* 来自萌娘百科 */
+h2, h3, h4, h5, h6{
+margin: 1rem 0;
+padding: .2rem .2rem .2rem 1rem;
+color: rgb(44, 62, 80);
+font-weight: 700;
+position: relative;
+}
+
+h2:before, h3:before, h4:before, h5:before, h6:before{
+    width: .25em;
+    height: 70%;
+    background-color: rgb(37, 180, 73);
+    content: "";
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    border-radius: 1em;
+}
+
+*, :before, :after {
+    --un-rotate: 0;
+    --un-rotate-x: 0;
+    --un-rotate-y: 0;
+    --un-rotate-z: 0;
+    --un-scale-x: 1;
+    --un-scale-y: 1;
+    --un-scale-z: 1;
+    --un-skew-x: 0;
+    --un-skew-y: 0;
+    --un-translate-x: 0;
+    --un-translate-y: 0;
+    --un-translate-z: 0;
+    --un-pan-x: ;
+    --un-pan-y: ;
+    --un-pinch-zoom: ;
+    --un-scroll-snap-strictness: proximity;
+    --un-ordinal: ;
+    --un-slashed-zero: ;
+    --un-numeric-figure: ;
+    --un-numeric-spacing: ;
+    --un-numeric-fraction: ;
+    --un-border-spacing-x: 0;
+    --un-border-spacing-y: 0;
+    --un-ring-offset-shadow: 0 0 rgb(0 0 0 / 0);
+    --un-ring-shadow: 0 0 rgb(0 0 0 / 0);
+    --un-shadow-inset: ;
+    --un-shadow: 0 0 rgb(0 0 0 / 0);
+    --un-ring-inset: ;
+    --un-ring-offset-width: 0px;
+    --un-ring-offset-color: #fff;
+    --un-ring-width: 0px;
+    --un-ring-color: rgb(147 197 253 / .5);
+    --un-blur: ;
+    --un-brightness: ;
+    --un-contrast: ;
+    --un-drop-shadow: ;
+    --un-grayscale: ;
+    --un-hue-rotate: ;
+    --un-invert: ;
+    --un-saturate: ;
+    --un-sepia: ;
+    --un-backdrop-blur: ;
+    --un-backdrop-brightness: ;
+    --un-backdrop-contrast: ;
+    --un-backdrop-grayscale: ;
+    --un-backdrop-hue-rotate: ;
+    --un-backdrop-invert: ;
+    --un-backdrop-opacity: ;
+    --un-backdrop-saturate: ;
+    --un-backdrop-sepia: ;
+}
+
+h1{
+font-size: 2.25rem;
+}
+
+/* 居中图 */
+.container{
+text-align: center;
+margin: 20px 0;
+}
+figcaption {
+    color: #999;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    margin-top: 10px;
+    display: inline-block;
+    width: 90%;
 }

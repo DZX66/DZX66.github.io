@@ -6,6 +6,7 @@ import datetime
 import json
 import base64
 import shutil
+import subprocess
 from Crypto.Cipher import AES
 from typing import Literal,Union
 
@@ -87,10 +88,10 @@ def edit_page():
     while True:
         update_index(False)
         with open("index.json","r",encoding="utf-8") as f:
-            data:dict[str,dict[Literal["title","tags","is_locked","create_time","last_edit_time"],Union[str,bool,list[str]]]] = json.load(f)
+            data:dict[str,dict[Literal["title","tags","is_locked","create_time","last_edit_time","tip"],Union[str,bool,list[str]]]] = json.load(f)
         
         m = 0
-        ordered_data:dict[int,dict[Literal["title","tags","is_locked","create_time","last_edit_time"],Union[str,bool,list[str]]]] = {}
+        ordered_data:dict[int,dict[Literal["title","tags","is_locked","create_time","last_edit_time","tip"],Union[str,bool,list[str]]]] = {}
         for i in data:
             m += 1
             ordered_data[m] = data[i]
@@ -114,6 +115,8 @@ def edit_page():
         title = ordered_data[cmd]["title"]
         dir = os.path.join("pages",title)
         is_locked = ordered_data[cmd]["is_locked"]
+        if is_locked:
+            tip = ordered_data[cmd]["tip"]
         tags = ordered_data[cmd]["tags"]
         create_time = ordered_data[cmd]["create_time"]
         latest_edit_time = ordered_data[cmd]["last_edit_time"]
@@ -124,6 +127,8 @@ def edit_page():
             print("目标路径：" + dir)
             print("标题：" + title)
             print("是否上锁：" + ("是" if is_locked else "否"))
+            if is_locked:
+                print("密码提示:" + tip)
             print("创建时间：" + create_time)
             print("最后一次修改时间：" + latest_edit_time)
             o = ""
@@ -138,6 +143,8 @@ def edit_page():
             print("4.修改内容")
             print("5.查看内容")
             print("6.删除页面")
+            if is_locked:
+                print("7.修改密码提示")
             print("="*10)
             cmd = input("输入指令：")
             print()
@@ -227,7 +234,7 @@ def edit_page():
                 else:
                     content = org_content
                 f = open("temp.html","w",encoding="utf-8")
-                f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>{title}</h1><p>最后一次更新时间：{date}</p><p>创建时间：{create}</p><hr>\n<!-- 请在以下写入代码 -->\n{content}\n<!-- 请在以上写入代码 -->\n<script>refresh();</script>'.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),content=content,create=attributes["create_time"]))
+                f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left" class="card"><img src="https://cdnjson.com/images/2024/04/30/icon89fa04bb001fc658.png" style="max-width: 100%;"><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><main style="float: left;"><div class="title"><h1 style="margin-bottom: 0;">{title}</h1></div><div id="article" class="card"><div style="margin-left: 3px;margin-right: 3px;" class="article">\n<!-- 请在以下写入代码 -->\n{content}\n<!-- 请在以上写入代码 -->\n</div></div><aside class="card" style="height: 500px;"><span>最后一次编辑时间：{date}</span><br><span>创建时间：{create}</span><br><span>标签：{tags}</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/{title}/content.html" target="_blank">源文件</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/{title}/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><script>refresh();generateCatalog(".article", ".dir");</script></html>'.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),content=content,create=attributes["create_time"],tags = o))
                 f.close()
                 os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
                 print("请修改后保存")
@@ -267,7 +274,7 @@ def edit_page():
                 else:
                     content = org_content
                 f = open("temp.html","w",encoding="utf-8")
-                f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>{title}</h1><p>最后一次更新时间：{date}</p><p>创建时间：{create}</p><hr>\n<!-- 请在以下写入代码 -->\n{content}\n<!-- 请在以上写入代码 -->\n<script>refresh();</script>'.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),content=content,create=attributes["create_time"]))
+                f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left" class="card"><img src="https://cdnjson.com/images/2024/04/30/icon89fa04bb001fc658.png" style="max-width: 100%;"><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><main style="float: left;"><div class="title"><h1 style="margin-bottom: 0;">{title}</h1></div><div id="article" class="card"><div style="margin-left: 3px;margin-right: 3px;" class="article">\n<!-- 请在以下写入代码 -->\n{content}\n<!-- 请在以上写入代码 -->\n</div></div><aside class="card" style="height: 500px;"><span>最后一次编辑时间：{date}</span><br><span>创建时间：{create}</span><br><span>标签：{tags}</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/{title}/content.html" target="_blank">源文件</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/{title}/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><script>refresh();generateCatalog(".article", ".dir");</script></html>'.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),content=content,create=attributes["create_time"],tags=o))
                 f.close()
                 os.system('start temp.html')
                 os.system("pause")
@@ -316,12 +323,16 @@ def new_page():
                 password = input("密码：")
                 if password == "":
                     print("不能为空！")
+            tip = input("密码提示：")
             break
         elif locked == "n":
             locked = False
             break
+    o = ""
+    for i in tags:
+        o += i+" "
     f = open("temp.html","w",encoding="utf-8")
-    f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title}</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>{title}</h1><p>最后一次更新时间：{date}</p><p>创建时间：{date}</p><hr>\n<!-- 请在以下写入代码 -->\n\n<!-- 请在以上写入代码 -->\n<script>refresh();</script>'.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+    f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left" class="card"><img src="https://cdnjson.com/images/2024/04/30/icon89fa04bb001fc658.png" style="max-width: 100%;"><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><main style="float: left;"><div class="title"><h1 style="margin-bottom: 0;">{title}</h1></div><div id="article" class="card"><div style="margin-left: 3px;margin-right: 3px;" class="article">\n<!-- 请在以下写入代码 -->\n\n<!-- 请在以上写入代码 -->\n</div></div><aside class="card" style="height: 500px;"><span>最后一次编辑时间：{date}</span><br><span>创建时间：{date}</span><br><span>标签：{tags}</span><hr><div class="dir"></div></aside></main></body><script>refresh();generateCatalog(".article", ".dir");</script></html>'.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),tags=o))
     f.close()
     os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
     print("请修改后保存")
@@ -338,7 +349,7 @@ def new_page():
         r = encrypt_oracle("locked"+r,password)
     with open(os.path.join(dir,"content.html"),"w",encoding="utf-8") as f:
         f.write(r)
-    datar = json.dumps({"title":title,"tags":tags,"is_locked":locked,"create_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"last_edit_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False)
+    datar = json.dumps({"title":title,"tags":tags,"is_locked":locked,"create_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"last_edit_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"tip":tip}, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False)
     with open(os.path.join(dir,"attribute.json"),"w",encoding="utf-8") as f:
         f.write(datar)
 
@@ -360,17 +371,20 @@ def apply():
     print("创建文件...")
     # 创建文件
     with open("index.json","r",encoding="utf-8") as f:
-        data:dict[str,dict[Literal["title","tags","is_locked","create_time","last_edit_time"],Union[str,bool,list[str]]]] = json.load(f)
+        data:dict[str,dict[Literal["title","tags","is_locked","create_time","last_edit_time","tip"],Union[str,bool,list[str]]]] = json.load(f)
     for i in data:
         with open(os.path.join("../pages/",data[i]["title"]+".html"),"w",encoding="utf-8") as f:
+            tag = ""
+            for o in data[i]["tags"]:
+                tag+=o+" "
             if data[i]["is_locked"]:
                 with open(os.path.join("pages",data[i]["title"],"content.html"),"r",encoding="utf-8") as f1:
-                    f.write(r'<!DOCTYPE html><html lang="zh-CN"><head><title>{title} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"><script src="../system/crypto-js.min.js"></script><script src="../template.js"></script></head><body><h1>{title}</h1><a href="../blogs.html">返回</a><p>最后一次更新时间：{date}</p><p>创建时间：{create}</p><hr><div id="tip"><p>这个文档被加密了，需要密码...</p><br/><span>密码：</span><input type="password" name="password" id="2"><button onclick="sure();">确定</button></div><div id="1"></div><script>document.getElementById("2").addEventListener("keydown",function(event){{if(event.key === "Enter"){{sure();event.preventDefault();}}}});function sure(){{var akey=document.getElementById("2").value;while(akey.length%16!=0){{akey+="\0"}};var key=CryptoJS.enc.Utf8.parse(akey);const mode=CryptoJS.mode.ECB;const padding=CryptoJS.pad.Pkcs7;var decryptedText=CryptoJS.AES.decrypt("{base64}",key,{{mode,padding}});var a=decodeURIComponent(CryptoJS.enc.Utf8.stringify(decryptedText).replace(/\\x/g,"%"));document.getElementById("1").innerHTML=a;if(document.getElementById("1").innerHTML.slice(2,8)=="locked"){{document.getElementById("tip").innerHTML="";}}document.getElementById("1").innerHTML=document.getElementById("1").innerHTML.replace(/\\n/g,"").slice(8,-1);refresh();}}</script></body></html>'.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"],base64=f1.read()))
+                    f.write(r'<!DOCTYPE html><html lang="zh-CN"><head><title>{title} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../system/crypto-js.min.js"></script><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left" class="card"><img src="https://cdnjson.com/images/2024/04/30/icon89fa04bb001fc658.png" style="max-width: 100%;"><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><main style="float: left;"><div class="title"><h1 style="margin-bottom: 0;">{title}</h1></div><div id="article" class="card"><div style="margin-left: 3px;margin-right: 3px;" class="article"><div id="tip"><p>这个文档被加密了，需要密码...</p><p>密码提示:{tip}</p><br/><span>密码：</span><input type="password" name="password" id="2"><button onclick="sure();">确定</button></div><div id="1"></div></div></div><aside class="card" style="height: 500px;"><span>最后一次编辑时间：{date}</span><br><span>创建时间：{create}</span><br><span>标签：{tags}</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/{title}/content.html" target="_blank">源文件</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/{title}/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><script>document.getElementById("2").addEventListener("keydown",function(event){{if(event.key === "Enter"){{sure();event.preventDefault();}}}});function sure(){{try{{var akey=document.getElementById("2").value;while(akey.length%16!=0){{akey+="\0"}};var key=CryptoJS.enc.Utf8.parse(akey);const mode=CryptoJS.mode.ECB;const padding=CryptoJS.pad.Pkcs7;var decryptedText=CryptoJS.AES.decrypt("{base64}",key,{{mode,padding}});var a=decodeURIComponent(CryptoJS.enc.Utf8.stringify(decryptedText).replace(/\\x/g,"%"));document.getElementById("1").innerHTML=a;if(document.getElementById("1").innerHTML.slice(2,8)=="locked"){{document.getElementById("tip").innerHTML="";document.getElementById("1").innerHTML=document.getElementById("1").innerHTML.replace(/\\n/g,"").slice(8,-1);refresh();generateCatalog(".article", ".dir");}}else{{const currentTime = new Date();const hours = currentTime.getHours();const minutes = currentTime.getMinutes();const seconds = currentTime.getSeconds();document.getElementById("1").innerHTML="["+hours+":"+minutes+":"+seconds+"]密码错误！";}}}}catch(error){{const currentTime = new Date();const hours = currentTime.getHours();const minutes = currentTime.getMinutes();const seconds = currentTime.getSeconds();document.getElementById("1").innerHTML="["+hours+":"+minutes+":"+seconds+"]密码错误！";}}}}</script></html>'.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"],base64=f1.read(),tags=tag,tip=data[i]["tip"]))
             else:
-                f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><h1>{title}</h1><a href="../blogs.html">返回</a><p>最后一次更新时间：{date}</p><p>创建时间：{create}</p><hr>\n'.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"]))
+                f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>{title} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css"><script src="../template.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left" class="card"><img src="https://cdnjson.com/images/2024/04/30/icon89fa04bb001fc658.png" style="max-width: 100%;"><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><main style="float: left;"><div class="title"><h1 style="margin-bottom: 0;">{title}</h1></div><div id="article" class="card"><div style="margin-left: 3px;margin-right: 3px;" class="article">'.format(title=data[i]["title"]))
                 with open(os.path.join("pages",data[i]["title"],"content.html"),"r",encoding="utf-8") as f1:
                     f.write(f1.read())
-                f.write('</body><script>refresh();</script></html>')
+                f.write('</div></div><aside class="card" style="height: 500px;"><span>最后一次编辑时间：{date}</span><br><span>创建时间：{create}</span><br><span>标签：{tags}</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/{title}/content.html" target="_blank">源文件</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/{title}/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><script>refresh();generateCatalog(".article", ".dir");</script></html>'.format(date=data[i]["last_edit_time"],create=data[i]["create_time"],tags=tag,title=data[i]["title"]))
     # 创建索引
     print("创建索引...")
     with open("../blogs.html","w",encoding="utf-8") as f:
@@ -385,9 +399,23 @@ def apply():
 if __name__=="__main__":
     if is_admin():
         try:
+            # 修正工作目录
             print(__file__)
             if "Temp" not in __file__:
                 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+            # 检查工作环境
+            r = subprocess.Popen("git config user.name", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, creationflags=0x08000000)
+            res = str(str(r.communicate()[0],"gbk").encode("utf-8"),"utf-8").replace("\n","")
+            if res == "":
+                print("git用户名未配置！请cmd运行git config user.name [username]！")
+            else:
+                print("你好，{0}！".format(res))
+            r = subprocess.Popen("git config user.email", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, creationflags=0x08000000)
+            res = str(str(r.communicate()[0],"gbk").encode("utf-8"),"utf-8").replace("\n","")
+            if res == "":
+                print("git邮箱未配置！请cmd运行git config user.email [email]！")
+            else:
+                print("邮箱：{0}".format(res))
             while True:
                 print()
                 cmd = None
@@ -421,6 +449,8 @@ if __name__=="__main__":
                             new_page()
                 elif cmd == "2":
                     apply()
+                elif cmd.startswith("git"):
+                    print("这里不是cmd！请按win+r输入cmd回车！")
         except Exception as e:
             traceback.print_exc()
             input()

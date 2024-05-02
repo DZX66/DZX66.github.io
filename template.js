@@ -1,12 +1,121 @@
 function refresh(){
-// 信息框模板
-// <infobox img_src="" side_color="">content</infobox>
-//根据标签名字获取标签
-//特殊信息框：“现实人物”“先一起喊（接受shout参数）”
+
+// 二级模板处理
+// 特殊信息框（继承自infobox）：“现实人物”“先一起喊（接受shout参数）”“多图警告”“官方文档”
+
 var pObjs = document.getElementsByTagName("infobox");
-//var pObjs=document.getElementById("dv1").getElementsByTagName("p");
-//循环遍历这个数组
+
 for (var i = 0; i < pObjs.length; i++) {
-    if(pObjs[i].innerHTML == "现实人物"){pObjs[i].innerHTML = "<table class=\"common-box\" style=\"margin: 10px 10%; width:80%; background: #FBFBFB; border-left: 10px solid orange;\"><tbody><tr><td style=\"padding: 2px 0 2px 0.5em\"><img src=\"https://img.moegirl.org.cn/common/thumb/b/bc/Commons-emblem-issue.svg/75px-Commons-emblem-issue.svg.png\" width=\"50\" height=\"49\"></td><td style=\"padding: 0.25em 0.5em\"><b>这是一个有关现存于世人物的条目。</b>编辑者不应对此条目所涉及的人物做出道德谴责，所有观点仅供参考，如觉得不妥，请联系编辑者修改或删除。</td></tr></tbody></table>"}else if(pObjs[i].innerHTML == "先一起喊"){pObjs[i].innerHTML = "<table class=\"common-box\" style=\"margin: 10px 10%; width:80%; background: #FBFBFB; border-left: 10px solid pink;\"><tbody><tr><td style=\"padding: 2px 0 2px 0.5em\"><img src=\"https://img.moegirl.org.cn/common/thumb/6/6f/Emo_%E3%82%8F%E3%81%84%E3%81%AE%E3%82%8F%E3%81%84%E3%81%AE.png/75px-Emo_%E3%82%8F%E3%81%84%E3%81%AE%E3%82%8F%E3%81%84%E3%81%AE.png\" width=\"37\" height=\"49\"></td><td style=\"padding: 0.25em 0.5em\">进条目啥都别说，先一起喊：<b><big><big><big>{text}</big></big></big></b></td></tr></tbody></table>".replace("{text}",pObjs[i].getAttribute("shout"))}else if(pObjs[i].innerHTML == "多图警告"){pObjs[i].innerHTML = "<table class=\"common-box\" style=\"margin: 10px 10%; width:80%; background: #FBFBFB; border-left: 10px solid blue;\"><tbody><tr><td style=\"padding: 2px 0 2px 0.5em\"><img src=\"https://img.moegirl.org.cn/common/thumb/2/26/Nuvola_apps_important_blue.svg/75px-Nuvola_apps_important_blue.svg.png\" width=\"50\" height=\"44\"></td><td style=\"padding: 0.25em 0.5em\">这个条目包含了较多的图片，这可能会导致访问速度变慢，阅读体验变差，请耐心等待！<span class=\"heimu\">服务器是GitHub的，你可以去挂梯子</span></td></tr></tbody></table>".replace("{text}",pObjs[i].getAttribute("shout"))}else if(pObjs[i].innerHTML == "官方文档"){pObjs[i].innerHTML = "<table class=\"common-box\" style=\"margin: 10px 10%; width:80%; background: #FBFBFB; border-left: 10px solid green;\"><tbody><tr><td style=\"padding: 2px 0 2px 0.5em\"><img src=\"https://img.moegirl.org.cn/common/thumb/3/3f/Commons-emblem-success.svg/113px-Commons-emblem-success.svg.png\" width=\"50\" height=\"50\"></td><td style=\"padding: 0.25em 0.5em\">这个文档是<b>柳下回声</b>的<b>官方文档</b>，这意味着它与本网站的运作有所关联，一般情况下，本页面不宜频繁更改。</td></tr></tbody></table>"}else{
-    pObjs[i].innerHTML = "<table class=\"common-box\" style=\"margin: 10px 10%; width:80%; background: #FBFBFB; border-left: 10px solid {color};\"><tbody><tr><td style=\"padding: 2px 0 2px 0.5em\"><img src=\"{img_src}\" width=\"50\" height=\"49\"></td><td style=\"padding: 0.25em 0.5em\">{text}</td></tr></tbody></table>".replace("{img_src}",pObjs[i].getAttribute("img_src")).replace("{color}",pObjs[i].getAttribute("side_color")).replace("{text}",pObjs[i].innerHTML);}
-}}
+    if(pObjs[i].innerHTML == "现实人物"){
+        pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/b/bc/Commons-emblem-issue.svg/75px-Commons-emblem-issue.svg.png");
+        pObjs[i].setAttribute("side_color","orange");
+        pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","49");
+        pObjs[i].innerHTML="<b>这是一个有关现存于世人物的条目。</b>编辑者不应对此条目所涉及的人物做出道德谴责，所有观点仅供参考，如觉得不妥，请联系编辑者修改或删除。";}
+    else if(pObjs[i].innerHTML == "先一起喊"){
+        pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/6/6f/Emo_%E3%82%8F%E3%81%84%E3%81%AE%E3%82%8F%E3%81%84%E3%81%AE.png/75px-Emo_%E3%82%8F%E3%81%84%E3%81%AE%E3%82%8F%E3%81%84%E3%81%AE.png");
+        pObjs[i].setAttribute("side_color","pink");
+        pObjs[i].setAttribute("width","37");pObjs[i].setAttribute("height","49");
+        pObjs[i].innerHTML="进条目啥都别说，先一起喊：<b><big><big><big>{text}</big></big></big></b>".replace("{text}",pObjs[i].getAttribute("shout"));}
+    else if(pObjs[i].innerHTML == "多图警告"){
+        pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/2/26/Nuvola_apps_important_blue.svg/75px-Nuvola_apps_important_blue.svg.png");
+        pObjs[i].setAttribute("side_color","blue");
+        pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","44");
+        pObjs[i].innerHTML="这个条目包含了较多的图片，这可能会导致访问速度变慢，阅读体验变差，请耐心等待！<span class=\"heimu\">服务器是GitHub的</span>";}
+    else if(pObjs[i].innerHTML == "官方文档"){
+        pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/3/3f/Commons-emblem-success.svg/113px-Commons-emblem-success.svg.png");
+        pObjs[i].setAttribute("side_color","green");
+        pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","50");
+        pObjs[i].innerHTML="这个文档是<b>柳下回声</b>的<b>官方文档</b>，这意味着它与本网站的运作有所关联，一般情况下，本页面不宜频繁更改。";}
+}
+
+// 一级模板处理
+
+// 信息框模板
+// <infobox img_src="" side_color="" height="50" width="50">content</infobox>
+var pObjs = document.getElementsByTagName("infobox");
+for (var i = 0; i < pObjs.length; i++) {
+var content = "<table class=\"common-box\" style=\"margin: 10px 10%; width:80%; background: #FBFBFB; border-left: 10px solid {color};\"><tbody><tr><td style=\"padding: 2px 0 2px 0.5em\"><img src=\"{img_src}\" width=\"{width}\" height=\"{height}\"></td><td style=\"padding: 0.25em 0.5em\">{text}</td></tr></tbody></table>".replace("{img_src}",pObjs[i].getAttribute("img_src")).replace("{color}",pObjs[i].getAttribute("side_color")).replace("{text}",pObjs[i].innerHTML);
+if (pObjs[i].getAttribute("width") != null) {content = content.replace("{width}",pObjs[i].getAttribute("width"))}
+else{content = content.replace("{width}","50")}
+if (pObjs[i].getAttribute("height") != null) {content = content.replace("{height}",pObjs[i].getAttribute("height"))}
+else{content = content.replace("{height}","50")}
+pObjs[i].innerHTML = content;
+}
+
+// 居中图片模板
+// <img_center img_src="" title="" width="" height="">description</img_center>
+var pObjs = document.getElementsByTagName("img_center");
+for (var i = 0; i < pObjs.length; i++) {
+var content = "<figure class=\"container\"><img src=\"{src}\" title=\"{title}\" width=\"{width}\" height=\"{height}\"><figcaption>{description}</figcaption></figure>".replace("{src}",pObjs[i].getAttribute("img_src")).replace("{title}",pObjs[i].getAttribute("title")).replace("{description}",pObjs[i].innerHTML);
+if (pObjs[i].getAttribute("width") != null) {content = content.replace("{width}",pObjs[i].getAttribute("width"))}
+else{content = content.replace("{width}","")}
+if (pObjs[i].getAttribute("height") != null) {content = content.replace("{height}",pObjs[i].getAttribute("height"))}
+else{content = content.replace("{height}","")}
+pObjs[i].innerHTML = content;
+}
+}
+function generateCatalog(articleSelector, dirSelector) {
+    //自动生成目录
+
+  // 获取文章元素和目录容器元素
+  const article = document.querySelector(articleSelector);
+  const catalogs = document.querySelector(dirSelector);
+
+  // 在文章元素内获取所有标题元素
+  const articleHeadings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // 遍历文章标题，生成目录
+  articleHeadings.forEach(function(heading, index) {
+      // 获取标题级别
+      const headingLevel = heading.tagName.toLowerCase().replace('h', '');
+      // 获取标题文本
+      const headingName = heading.innerText.trim();
+      let anchorName = heading.id;
+
+      // 如果标题没有ID，则创建数字ID
+      if (!anchorName) {
+          anchorName = 'section-' + (index + 1);
+          heading.id = anchorName; // 将数字ID赋值给标题的ID属性
+      }
+
+      // 设置不同级别标题的左边距
+      let paddingLeft = 5 + (headingLevel - 1) * 5; // 5px起始值，每级标题增加5px内边距
+      // 创建目录条目
+      const catalogItem = document.createElement('div');
+      catalogItem.classList.add('catalog', `catalog-${headingLevel}`);
+      catalogItem.setAttribute('name', anchorName);
+      catalogItem.innerHTML = `<a href="#${anchorName}" style="padding-left: ${paddingLeft}px;">${headingName}</a>`;
+      catalogs.appendChild(catalogItem);
+  });
+
+  // 监听滚动事件，自动更新目录高亮
+  window.addEventListener('scroll', function() {
+      const currentScroll = window.scrollY;
+      let currentHeading = null;
+
+      // 找到当前正在阅读的章节标题
+      for (let i = articleHeadings.length - 1; i >= 0; i--) {
+          const heading = articleHeadings[i];
+          const headingOffset = heading.offsetTop;
+          if (headingOffset <= currentScroll + 60) {
+              currentHeading = heading;
+              break;
+          }
+      }
+
+      // 更新目录高亮
+      const anchorName = currentHeading ? currentHeading.id : '';
+      const activeCatalog = document.querySelector(`.catalog[name="${anchorName}"]`);
+      if (activeCatalog) {
+          // 移除所有已激活的目录条目的激活状态
+          document.querySelectorAll('.catalog-active').forEach(function(item) {
+              item.classList.remove('catalog-active');
+          });
+          // 将当前活动的目录条目添加激活状态
+          activeCatalog.classList.add('catalog-active');
+
+          // 滚动目录，使当前章节可见
+          catalogs.scrollTop = activeCatalog.offsetTop - catalogs.offsetTop;
+      }
+  });
+}

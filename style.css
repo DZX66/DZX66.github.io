@@ -158,7 +158,9 @@ width: 75%;
     width: 100%;
 }}
 
-main{width: 84%;
+main{
+width: 84%;
+float: left;
 @media (max-width: 800px) {
     width: 100%;
 }}
@@ -168,6 +170,7 @@ width: 20%;
 margin-left: 1%;
 position: sticky;
 top:5px;
+height: 500px;
 @media (max-width: 800px) {
     width: 100%;
     position: relative;

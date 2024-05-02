@@ -234,7 +234,7 @@ def edit_page():
                 else:
                     content = org_content
                 f = open("temp.html","w",encoding="utf-8")
-                f.write(html.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),create=create_time,tags=o,content=content))
+                f.write(html.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),create=create_time,tags=o,content="\n<!-- 请在以下输入代码 -->\n"+content+"\n<!-- 请在以上输入代码 -->\n"))
                 f.close()
                 os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
                 print("请修改后保存")
@@ -335,7 +335,7 @@ def new_page():
     for i in tags:
         o += i+" "
     f = open("temp.html","w",encoding="utf-8")
-    f.write(html.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),create=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),tags=o,content=""))
+    f.write(html.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),create=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),tags=o,content="\n<!-- 请在以下输入代码 -->\n\n\n<!-- 请在以上输入代码 -->\n"))
     f.close()
     os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
     print("请修改后保存")
@@ -352,7 +352,7 @@ def new_page():
         r = encrypt_oracle("locked"+r,password)
     with open(os.path.join(dir,"content.html"),"w",encoding="utf-8") as f:
         f.write(r)
-    datar = json.dumps({"title":title,"tags":tags,"is_locked":locked,"create_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"last_edit_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"tip":tip}, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False)
+    datar = json.dumps({"title":title,"tags":tags,"is_locked":locked,"create_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"last_edit_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"tip":tip if locked else ""}, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False)
     with open(os.path.join(dir,"attribute.json"),"w",encoding="utf-8") as f:
         f.write(datar)
 

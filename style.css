@@ -148,19 +148,19 @@ margin-bottom: 1%;
 
 #left{
 width: 12%;margin-top: 20px;top:5px;
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 1100px) {
     display: none;
 }}
 
 #article{
 width: 75%;
-@media screen and (max-width: 960px) {
-    width: 99%;
+@media screen and (max-width: 1100px) {
+    width: 100%;
 }}
 
 main{width: 84%;
-@media screen and (max-width: 960px) {
-    width: 99%;
+@media screen and (max-width: 1100px) {
+    width: 100%;
 }}
 
 aside{
@@ -168,7 +168,7 @@ width: 20%;
 margin-left: 1%;
 position: sticky;
 top:5px;
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 1100px) {
     width: 100%;
     position: relative;
     margin-left: 0;

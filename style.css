@@ -149,7 +149,8 @@ margin-bottom: 1%;
 #left{
 width: 12%;margin-top: 20px;top:5px;
 @media (max-width: 800px) {
-    display: none;
+    margin-top: 0;
+    width: 300px;
 }}
 
 #article{

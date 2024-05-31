@@ -1,4 +1,18 @@
-<p id="1"></p>
+<ul>
+<li>document.documentElement.clientWidth: <span id="1"></span></li>
+<li>document.URL: <span id="2"></span></li>
+<li><div id="3"></div></li>
+</ul>
 <script>
 document.getElementById("1").innerHTML = document.documentElement.clientWidth;
+document.getElementById("2").innerHTML = document.URL;
+let text = "<p>Browser CodeName: " + navigator.appCodeName + "</p>" +
+"<p>Browser Name: " + navigator.appName + "</p>" +
+"<p>Browser Version: " + navigator.appVersion + "</p>" +
+"<p>Cookies Enabled: " + navigator.cookieEnabled + "</p>" +
+"<p>Browser Language: " + navigator.language + "</p>" +
+"<p>Browser Online: " + navigator.onLine + "</p>" +
+"<p>Platform: " + navigator.platform + "</p>" +
+"<p>User-agent header: " + navigator.userAgent + "</p>";
+document.getElementById("3").innerHTML = text;
 </script>

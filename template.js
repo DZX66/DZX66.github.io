@@ -26,6 +26,16 @@ for (var i = 0; i < pObjs.length; i++) {
         pObjs[i].setAttribute("side_color","green");
         pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","50");
         pObjs[i].innerHTML="这个文档是<b>柳下回声</b>的<b>官方文档</b>，这意味着它与本网站的运作有所关联，一般情况下，本页面不宜频繁更改。";}
+    else if(pObjs[i].innerHTML == "转载"){
+        pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/2/26/Nuvola_apps_important_blue.svg/75px-Nuvola_apps_important_blue.svg.png");
+        pObjs[i].setAttribute("side_color","blue");
+        pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","44");
+        pObjs[i].innerHTML="此内容的著作权不属于柳下回声，编辑者仅以介绍为目的进行引用。<br/>另请编辑者注意：最好与原作者取得同意后再转载。";}
+    else if(pObjs[i].innerHTML == "冒犯他人"){
+        pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/b/b1/Gnome-emblem-important.svg/75px-Gnome-emblem-important.svg.png");
+        pObjs[i].setAttribute("side_color","red");
+        pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","50");
+        pObjs[i].innerHTML="<b class=\"stress\">此页面包含冒犯他人的内容。</b><br/>柳下回声仅以介绍为目的而提及。随意提及可能会导致他人的<b>厌恶</b>。<br/>同时也请编辑者注意，不要使用<b>极度不中立</b>的言论向读者喊话。";}
 }
 
 // 一级模板处理

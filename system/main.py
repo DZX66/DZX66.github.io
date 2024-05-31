@@ -252,7 +252,10 @@ def edit_page():
                     r = encrypt_oracle("locked"+r,password)
                 with open(os.path.join("pages",title,"content.html"),"w",encoding="utf-8") as f:
                     f.write(r)
-                datar = json.dumps({"title":title,"tags":attributes["tags"],"is_locked":attributes["is_locked"],"create_time":attributes["create_time"],"last_edit_time":now}, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False)
+                if is_locked:
+                    datar = json.dumps({"title":title,"tags":attributes["tags"],"is_locked":attributes["is_locked"],"create_time":attributes["create_time"],"last_edit_time":now,"tip":tip}, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False)
+                else:
+                    datar = json.dumps({"title":title,"tags":attributes["tags"],"is_locked":attributes["is_locked"],"create_time":attributes["create_time"],"last_edit_time":now}, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False)
                 with open(os.path.join("pages",title,"attribute.json"),"w",encoding="utf-8") as f:
                     f.write(datar)
                 latest_edit_time = now

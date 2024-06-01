@@ -3,7 +3,7 @@ body{
     background-color: #fcfdf8;
 }
 /* 根字体 */
-p{
+html{
 color: rgb(44, 62, 80);
 }
 /* 上标 */
@@ -303,4 +303,23 @@ figcaption {
 display: block;
 height: calc((100vh - 80px - 6rem)/2);
 overflow: auto;
+}
+
+.circle-text {
+    border: 1.5px solid red;
+    color: red;
+    font-size: 16px;
+    border-radius: 100%;
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    line-height: 28px;
+    background-color: #FFF;
+    text-align: center;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box; 
+    font-family: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif; 
 }

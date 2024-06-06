@@ -63,9 +63,24 @@ if (pObjs[i].getAttribute("height") != null) {content = content.replace("{height
 else{content = content.replace("{height}","")}
 pObjs[i].innerHTML = content;
 }
+
+// 注释及外部链接模板
+// <refer>内容</refer>
+document.getElementById("article").innerHTML = document.getElementById("article").innerHTML + "<h2 id=\"references-title\">注释及外部链接</h2><ol id=\"references\"></ol>";
+var ol = document.getElementById("references");
+var pObjs = document.getElementsByTagName("refer");
+if(pObjs.length == 0){
+document.getElementById("references-title").outerHTML = "";
+document.getElementById("references").outerHTML = "";
+}
+for (var i = 0; i < pObjs.length; i++) {
+var content = "<li id=\"ref-{id}\"><a href=\"#cite-{id}\">↑</a>&nbsp;&nbsp;{content}</li>".replace(/{id}/g,i+1).replace("{content}",pObjs[i].innerHTML);
+pObjs[i].innerHTML = "<sup id=\"cite-{id}\"><a href=\"#ref-{id}\">[{id}]</a></sup>".replace(/{id}/g,i+1);
+ol.innerHTML = ol.innerHTML + content;
+}
 }
 function generateCatalog(articleSelector, dirSelector) {
-    //自动生成目录
+  //自动生成目录
 
   // 获取文章元素和目录容器元素
   const article = document.querySelector(articleSelector);

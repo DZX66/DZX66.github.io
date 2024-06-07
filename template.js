@@ -88,7 +88,7 @@ ol.innerHTML = ol.innerHTML + content;
  */
 function createButtonHandler(fixedValue) {
     // 内部函数是一个闭包，可以访问fixedValue参数
-    return function(event) {
+    return function() {
             const targetRect = fixedValue.getBoundingClientRect();
             const floatingBox = fixedValue.appendChild(document.createElement("div"));
             floatingBox.className = "referbox";
@@ -115,7 +115,7 @@ pObjs[i].addEventListener('mouseenter',createButtonHandler(pObjs[i]));
  if(document.documentElement.clientWidth <= 736){
 var pObjs = document.getElementsByTagName("refer");
 for (var i = 0; i < pObjs.length; i++) {
-        pObjs[i].children[0].children[0].removeAttribute("href")
+        pObjs[i].children[0].children[0].setAttribute("href","javascript:void(0);")
 }}
 }
 function generateCatalog(articleSelector, dirSelector) {

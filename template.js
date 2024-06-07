@@ -74,10 +74,45 @@ document.getElementById("references-title").outerHTML = "";
 document.getElementById("references").outerHTML = "";
 }
 for (var i = 0; i < pObjs.length; i++) {
-var content = "<li id=\"ref-{id}\"><a href=\"#cite-{id}\">↑</a>&nbsp;&nbsp;{content}</li>".replace(/{id}/g,i+1).replace("{content}",pObjs[i].innerHTML);
+var content = "<li><a href=\"#cite-{id}\">↑</a>&nbsp;<span id=\"ref-{id}\">{content}</span></li>".replace(/{id}/g,i+1).replace("{content}",pObjs[i].innerHTML);
 pObjs[i].innerHTML = "<sup id=\"cite-{id}\"><a href=\"#ref-{id}\">[{id}]</a></sup>".replace(/{id}/g,i+1);
 ol.innerHTML = ol.innerHTML + content;
 }
+
+// 鼠标悬浮的提示框
+
+// 外部函数返回一个闭包
+/**
+ * @param {Element} fixedValue - 固定参数.
+ * @returns {function}
+ */
+function createButtonHandler(fixedValue) {
+    // 内部函数是一个闭包，可以访问fixedValue参数
+    return function(event) {
+            const targetRect = fixedValue.getBoundingClientRect();
+            const floatingBox = fixedValue.appendChild(document.createElement("div"));
+            floatingBox.className = "referbox";
+            floatingBox.style.display = 'block';
+            const tail = floatingBox.appendChild(document.createElement("div"));
+            tail.className = "tooltipTail"
+            const content = floatingBox.appendChild(document.createElement("div"));
+            content.className = "tooltipContent"
+            content.innerHTML = document.getElementById(fixedValue.children[0].id.replace("cite","ref")).innerHTML
+            floatingBox.style.top = targetRect.top - floatingBox.offsetHeight + 'px';
+            floatingBox.style.left = targetRect.left - 11 + 'px';
+            fixedValue.addEventListener('mouseleave', function handle() {
+            floatingBox.outerHTML = "";
+            fixedValue.removeEventListener("mouseleave",handle)
+    });
+}}
+
+var pObjs = document.getElementsByTagName("refer");
+for (var i = 0; i < pObjs.length; i++) {
+
+pObjs[i].addEventListener('mouseenter',createButtonHandler(pObjs[i]));
+}
+
+
 }
 function generateCatalog(articleSelector, dirSelector) {
   //自动生成目录

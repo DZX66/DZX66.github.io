@@ -331,3 +331,60 @@ overflow: auto;
     -moz-box-sizing: border-box; 
     font-family: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif; 
 }
+
+@keyframes rt-fade-in-down{
+0%{
+opacity: 0;
+transform: translate(0, -20px);
+}
+100% {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+}
+.referbox {
+  position: fixed;
+z-index: 100;
+    max-width: 350px;
+    background: #fff;
+    color: #222;
+    font-size: 13px;
+    line-height: 1.5em;
+    border: 1px solid #c8ccd1;
+    border-radius: 3px;
+    box-shadow: 0 15px 45px -10px rgb(0 0 0 / 30%);
+    overflow-wrap: break-word;
+    animation: rt-fade-in-down 0.2s ease forwards;
+}
+.tooltipTail{
+    transform: rotate(-45deg);
+    transform-origin: 100% 100%;
+    bottom: 0;
+    left: 15px;
+}
+.tooltipTail {
+    background: linear-gradient(to top right, #c8ccd1 50%, rgb(0 0 0 / 0%) 50%);
+}
+
+.tooltipTail, .tooltipTail::after {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+}
+
+.referbox, .tooltipContent {
+    margin-bottom: -8px;
+    padding-bottom: 16px;
+}
+
+
+.tooltipContent {
+    padding: 8px 11px;
+    position: relative;
+    line-height: 1.6;
+    box-sizing: content-box;
+}
+
+refer{
+padding-top: 7px;
+}

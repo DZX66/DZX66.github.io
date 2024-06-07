@@ -6,9 +6,4 @@
         document.getElementById("aside").style.width = '100%';
         document.getElementById("aside").style.position = 'relative';
         document.getElementById("aside").style.marginLeft = '0';
-        // refer链接不跳转
-        var pObjs = document.getElementsByTagName("refer");
-        for (var i = 0; i < pObjs.length; i++) {
-                pObjs[i].children[0].children[0].removeAttribute("href")
-        }
 }

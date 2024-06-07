@@ -111,7 +111,12 @@ for (var i = 0; i < pObjs.length; i++) {
 pObjs[i].addEventListener('mouseenter',createButtonHandler(pObjs[i]));
 }
 
-
+// refer链接不跳转
+ if(document.documentElement.clientWidth <= 736){
+var pObjs = document.getElementsByTagName("refer");
+for (var i = 0; i < pObjs.length; i++) {
+        pObjs[i].children[0].children[0].removeAttribute("href")
+}}
 }
 function generateCatalog(articleSelector, dirSelector) {
   //自动生成目录

@@ -98,7 +98,7 @@ function createButtonHandler(fixedValue) {
             const content = floatingBox.appendChild(document.createElement("div"));
             content.className = "tooltipContent"
             content.innerHTML = document.getElementById(fixedValue.children[0].id.replace("cite","ref")).innerHTML
-            floatingBox.style.top = targetRect.top - floatingBox.offsetHeight + 'px';
+            floatingBox.style.top = fixedValue.offsetTop - floatingBox.offsetHeight + 'px';
             floatingBox.style.left = targetRect.left - 11 + 'px';
             fixedValue.addEventListener('mouseleave', function handle() {
             floatingBox.outerHTML = "";
@@ -108,7 +108,6 @@ function createButtonHandler(fixedValue) {
 
 var pObjs = document.getElementsByTagName("refer");
 for (var i = 0; i < pObjs.length; i++) {
-
 pObjs[i].addEventListener('mouseenter',createButtonHandler(pObjs[i]));
 }
 

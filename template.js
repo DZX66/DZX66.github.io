@@ -98,8 +98,14 @@ function createButtonHandler(fixedValue) {
             const content = floatingBox.appendChild(document.createElement("div"));
             content.className = "tooltipContent"
             content.innerHTML = document.getElementById(fixedValue.children[0].id.replace("cite","ref")).innerHTML
+            var restWidth = document.documentElement.clientWidth - targetRect.left;
+            if(restWidth < 350 && document.documentElement.clientWidth > 350){
+                floatingBox.style.left = targetRect.left - 11 - (350 - restWidth) + 'px';
+                tail.style.left = 15 + (350 - restWidth) + 'px';
+            }else{
+                floatingBox.style.left = targetRect.left - 11 + 'px';
+            }
             floatingBox.style.top = fixedValue.offsetTop - floatingBox.offsetHeight + 'px';
-            floatingBox.style.left = targetRect.left - 11 + 'px';
             fixedValue.addEventListener('mouseleave', function handle() {
             floatingBox.outerHTML = "";
             fixedValue.removeEventListener("mouseleave",handle)
@@ -111,7 +117,7 @@ for (var i = 0; i < pObjs.length; i++) {
 pObjs[i].addEventListener('mouseenter',createButtonHandler(pObjs[i]));
 }
 
-// refer链接不跳转
+// 手机端refer链接不跳转
  if(document.documentElement.clientWidth <= 736){
 var pObjs = document.getElementsByTagName("refer");
 for (var i = 0; i < pObjs.length; i++) {

@@ -99,9 +99,10 @@ function createButtonHandler(fixedValue) {
             content.className = "tooltipContent"
             content.innerHTML = document.getElementById(fixedValue.children[0].id.replace("cite","ref")).innerHTML
             var restWidth = document.documentElement.clientWidth - targetRect.left;
-            if(restWidth < 350 && document.documentElement.clientWidth > 350){
-                floatingBox.style.left = targetRect.left - 11 - (350 - restWidth) + 'px';
-                tail.style.left = 15 + (350 - restWidth) + 'px';
+            if(restWidth < floatingBox.offsetWidth && document.documentElement.clientWidth > 350){
+                var boxWidth = floatingBox.offsetWidth;
+                floatingBox.style.left = targetRect.left - 11 - (boxWidth - restWidth) + 'px';
+                tail.style.left = 15 + (boxWidth - restWidth) + 'px';
             }else{
                 floatingBox.style.left = targetRect.left - 11 + 'px';
             }

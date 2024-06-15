@@ -188,11 +188,15 @@ width: 20%;
 margin-left: 1%;
 position: sticky;
 top:5px;
-height: 500px;
 @media (max-width: 800px) {
-    width: 100%;
-    position: relative;
+    width: 98%;
+    position: fixed;
     margin-left: 0;
+    top:auto;
+    bottom: 0;
+    z-index: 15;
+    height: 70%;
+    display: none;
 }}
 
 .card{
@@ -387,4 +391,177 @@ z-index: 100;
 
 refer{
 padding-top: 7px;
+}
+
+/* 手机端目录悬浮窗 */
+.content-botton{
+position: fixed;
+    right: 0;
+    bottom: 30%;
+    z-index: 10;
+    background-color: #fff;
+    border: 0;
+    border-radius: 99em 0 0 99em;
+    box-shadow: 0 0 .5rem #0000004d;
+    padding: 1rem 2rem 1rem 1rem;
+    font-size: 1.5rem;
+    color: rgb(37, 180, 73);
+    transition: all .48s ease;
+    margin-right: -10rem;
+@media (max-width: 800px) {
+    margin-right: -1.5rem;
+}
+}
+
+.icon{
+    width: 1em;
+    height: 1em;
+    display: inline-flex;
+    vertical-align: middle;
+}
+
+.icon svg {
+    width: 100%;
+    height: 100%;
+    stroke-width: 2;
+}
+
+#float-toc-trigger:hover{
+    margin-right: -0.01rem !important;
+}
+
+.backdrop{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #0006;
+    z-index: 10;
+    display: none;
+}
+
+
+
+.__button-1c6bqbn-eflsmd {
+    --n-bezier: cubic-bezier(.4, 0, .2, 1);
+    --n-bezier-ease-out: cubic-bezier(0, 0, .2, 1);
+    --n-ripple-duration: .6s;
+    --n-opacity-disabled: 0.5;
+    --n-wave-opacity: 0.6;
+    font-weight: 400;
+    --n-color: rgba(46, 51, 56, .05);
+    --n-color-hover: rgba(46, 51, 56, .09);
+    --n-color-pressed: rgba(46, 51, 56, .13);
+    --n-color-focus: rgba(46, 51, 56, .09);
+    --n-color-disabled: rgba(46, 51, 56, .05);
+    --n-ripple-color: #0000;
+    --n-text-color: rgb(51, 54, 57);
+    --n-text-color-hover: rgb(51, 54, 57);
+    --n-text-color-pressed: rgb(51, 54, 57);
+    --n-text-color-focus: rgb(51, 54, 57);
+    --n-text-color-disabled: rgb(51, 54, 57);
+    --n-border: 1px solid rgb(224, 224, 230);
+    --n-border-hover: 1px solid #36ad6a;
+    --n-border-pressed: 1px solid #0c7a43;
+    --n-border-focus: 1px solid #36ad6a;
+    --n-border-disabled: 1px solid rgb(224, 224, 230);
+    --n-width: 28px;
+    --n-height: 28px;
+    --n-font-size: 14px;
+    --n-padding: initial;
+    --n-icon-size: 18px;
+    --n-icon-margin: 6px;
+    --n-border-radius: 28px;
+}
+
+.n-button {
+    margin: 0;
+    font-weight: var(--n-font-weight);
+    line-height: 1;
+    font-family: inherit;
+    padding: var(--n-padding);
+    height: var(--n-height);
+    font-size: var(--n-font-size);
+    border-radius: var(--n-border-radius);
+    color: var(--n-text-color);
+    background-color: var(--n-color);
+    width: var(--n-width);
+    white-space: nowrap;
+    outline: none;
+    position: relative;
+    z-index: auto;
+    border: none;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-user-select: none;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color .3s var(--n-bezier), background-color .3s var(--n-bezier), opacity .3s var(--n-bezier), border-color .3s var(--n-bezier);
+}
+
+.n-button .n-button__icon {
+    margin: var(--n-icon-margin);
+    margin-left: 0;
+    height: var(--n-icon-size);
+    width: var(--n-icon-size);
+    max-width: var(--n-icon-size);
+    font-size: var(--n-icon-size);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.n-button .n-button__icon .n-icon-slot {
+    height: var(--n-icon-size);
+    width: var(--n-icon-size);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.n-button .n-base-wave {
+    pointer-events: none;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    animation-iteration-count: 1;
+    animation-duration: var(--n-ripple-duration);
+    animation-timing-function: var(--n-bezier-ease-out), var(--n-bezier-ease-out);
+}
+
+.n-base-wave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: inherit;
+}
+
+.n-button:not(.n-button--disabled):hover {
+    background-color: var(--n-color-hover);
+    color: var(--n-text-color-hover);
+}
+
+.sidenav-header-close{
+right: 5px;
+position: relative;
+top: 5px;
+float: right;
+display: none;
+@media (max-width: 800px) {
+    display: block;
+}
+    
+
 }

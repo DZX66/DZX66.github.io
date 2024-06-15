@@ -155,7 +155,7 @@ function generateCatalog(articleSelector, dirSelector) {
       const catalogItem = document.createElement('div');
       catalogItem.classList.add('catalog', `catalog-${headingLevel}`);
       catalogItem.setAttribute('name', anchorName);
-      catalogItem.innerHTML = `<a href="#${anchorName}" style="padding-left: ${paddingLeft}px;">${headingName}</a>`;
+      catalogItem.innerHTML = `<a href="#${anchorName}" style="padding-left: ${paddingLeft}px;" class="content-link">${headingName}</a>`;
       catalogs.appendChild(catalogItem);
   });
 

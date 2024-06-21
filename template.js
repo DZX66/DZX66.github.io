@@ -40,6 +40,12 @@ for (var i = 0; i < pObjs.length; i++) {
 
 // 一级模板处理
 
+// 所有pre加上line-numbers类
+var pObjs = document.getElementsByTagName("pre");
+for (var i = 0; i < pObjs.length; i++) {
+pObjs[i].className = pObjs[i].className + " line-numbers"
+}
+
 // 信息框模板
 // <infobox img_src="" side_color="" height="50" width="50">content</infobox>
 var pObjs = document.getElementsByTagName("infobox");

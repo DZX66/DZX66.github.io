@@ -34,6 +34,7 @@ try{
         document.getElementById("1").innerHTML=document.getElementById("1").innerHTML.replace(/\\n/g,"").slice(8,-1);
         document.getElementById("1").innerHTML=document.getElementById("1").innerHTML.replace(/\\'/g,"'");
         refresh();
+        apply_prism();
         generateCatalog(".article", ".dir");
         // 自动保存密码
         document.cookie="password={password}; expires=Thu, 18 Dec 2043 12:00:00 GMT".replace("{password}",skey);

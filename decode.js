@@ -2,10 +2,26 @@ document.getElementById("2").addEventListener(
 "keydown",function(event){
 if(event.key === "Enter"){
 sure();event.preventDefault();}});
+if(getCookie("password")){
+document.getElementById("2").value = getCookie("password");
+sure();
+}
+function getCookie(cname)
+{
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i<ca.length; i++) 
+  {
+    var c = ca[i].trim();
+    if (c.indexOf(name)==0) return c.substring(name.length,c.length);
+  }
+  return "";
+}
 
 function sure(){
 try{
-    var akey=document.getElementById("2").value;
+    var skey=document.getElementById("2").value;
+    var akey=skey;
     while(akey.length%16!=0){akey+="\0"};
     var key=CryptoJS.enc.Utf8.parse(akey);
     const mode=CryptoJS.mode.ECB;
@@ -19,6 +35,8 @@ try{
         document.getElementById("1").innerHTML=document.getElementById("1").innerHTML.replace(/\\'/g,"'");
         refresh();
         generateCatalog(".article", ".dir");
+        // 自动保存密码
+        document.cookie="password={password}; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/".replace("{password}",skey);
     }else{
         const currentTime = new Date();
         const hours = currentTime.getHours();

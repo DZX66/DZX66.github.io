@@ -160,7 +160,7 @@ margin-bottom: 1%;
 }
 
 #left{
-width: 12%;margin-top: 20px;top:5px;
+width: 12%;margin-top: 20px;top:5px;float: left;
 @media (max-width: 800px) {
     margin-top: 0;
     width: 300px;
@@ -204,6 +204,7 @@ background-color: rgb(255, 255, 255);
 border: 1px solid rgb(133, 114, 114);
 border-radius: 5px;
 float: left;
+margin-top: 5px;
 }
 
 .catalog-active a{

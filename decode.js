@@ -36,7 +36,7 @@ try{
         refresh();
         generateCatalog(".article", ".dir");
         // 自动保存密码
-        document.cookie="password={password}; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/".replace("{password}",skey);
+        document.cookie="password={password}; expires=Thu, 18 Dec 2043 12:00:00 GMT".replace("{password}",skey);
     }else{
         const currentTime = new Date();
         const hours = currentTime.getHours();

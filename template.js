@@ -1,4 +1,4 @@
-function refresh(){
+function apply_template(){
 
 // 二级模板处理
 // 特殊信息框（继承自infobox）：“现实人物”“先一起喊（接受shout参数）”“多图警告”“官方文档”

@@ -172,7 +172,7 @@ def edit_page():
                     f.write(datar)
                 os.remove(os.path.join(dir,"content.html"))
                 os.remove(os.path.join(dir,"attribute.json"))
-                os.remove(dir)
+                os.rmdir(dir)
                 title = ntitle
                 dir = ndir
             elif cmd == "2":

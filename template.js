@@ -133,7 +133,8 @@ for (var i = 0; i < pObjs.length; i++) {
 }
 function generateCatalog(articleSelector, dirSelector) {
   //自动生成目录
-
+  // 对于未解密的文档，不执行函数
+  if(document.getElementById("inputer")){return false;}
   // 获取文章元素和目录容器元素
   const article = document.querySelector(articleSelector);
   const catalogs = document.querySelector(dirSelector);
@@ -164,7 +165,8 @@ function generateCatalog(articleSelector, dirSelector) {
       catalogItem.innerHTML = `<a href="#${anchorName}" style="padding-left: ${paddingLeft}px;" class="content-link">${headingName}</a>`;
       catalogs.appendChild(catalogItem);
   });
-
+  // 说明已生成了目录
+  document.getElementById("main").setAttribute("catalog_written","true");
   // 监听滚动事件，自动更新目录高亮
   window.addEventListener('scroll', function() {
       const currentScroll = window.scrollY;

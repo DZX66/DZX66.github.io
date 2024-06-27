@@ -9,6 +9,7 @@ import shutil
 import subprocess
 from Crypto.Cipher import AES
 from typing import Literal,Union
+from dateutil import parser
 
 # str不是16的倍数那就补足为16的倍数
 def add_to_16(message:str):
@@ -361,7 +362,7 @@ def new_page():
 
 def apply():
     '''部署网站'''
-    global html
+    global html,page,index_html
     update_index(False)
     # 删除原有文件
     print("删除原有文件...")
@@ -393,13 +394,50 @@ def apply():
     # 创建索引
     print("创建索引...")
     with open("../blogs.html","w",encoding="utf-8") as f:
-        f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>柳下回声</title><link rel="stylesheet" type="text/css" href="style.css?version=1"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>柳下回声</h1><p>最后一次更新时间：{date}</p><hr><ul style="list-style-type: none;">'.format(date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>所有页面 - 柳下回声</title><link rel="stylesheet" type="text/css" href="style.css?version=1"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>所有页面</h1><p>最后一次更新时间：{date}</p><hr><ul style="list-style-type: none;">'.format(date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         for i in data:
             tag = ""
             for o in data[i]["tags"]:
                 tag+=o+" "
-            f.write("<li><div class='head'><a href='pages/{title}.html'>{title}</a></div><div class='foot'> {locked} 更新时间：{date} 标签：{tags}</div></li>".format(title=data[i]["title"],locked="已加密" if data[i]["is_locked"] else "公开",date=data[i]["last_edit_time"],tags=tag))
+            f.write(page.format(title=data[i]["title"],locked="已加密" if data[i]["is_locked"] else "公开",date=data[i]["last_edit_time"],tags=tag))
         f.write("</ul></body></html>")
+    # 创建主页
+    print("创建主页...")
+    # 最新页面
+    latest = ""
+    edit_times_dict = {}
+    for i in data:
+        edit_times_dict[parser.parse(data[i]["last_edit_time"]).timestamp()] = i # 以时间戳为键
+    edit_times_list = []
+    for i in edit_times_dict:
+        edit_times_list.append(i)
+    edit_times_list.sort(reverse=True)
+    edit_times_list = edit_times_list[:5]
+    for i in edit_times_list:
+        tag = ""
+        for o in data[edit_times_dict[i]]["tags"]:
+            tag+=o+" "
+        latest += page.format(title=data[edit_times_dict[i]]["title"],locked="已加密" if data[edit_times_dict[i]]["is_locked"] else "公开",date=data[edit_times_dict[i]]["last_edit_time"],tags=tag)
+    # 官方文档
+    offical = ""
+    for i in data:
+        if "官方文档" in data[i]["tags"]:
+            tag = ""
+            for o in data[i]["tags"]:
+                tag+=o+" "
+            offical += page.format(title=data[i]["title"],locked="已加密" if data[i]["is_locked"] else "公开",date=data[i]["last_edit_time"],tags=tag)
+    # 小工具
+    tools = ""
+    for i in data:
+        if "小工具" in data[i]["tags"]:
+            tag = ""
+            for o in data[i]["tags"]:
+                tag+=o+" "
+            tools += page.format(title=data[i]["title"],locked="已加密" if data[i]["is_locked"] else "公开",date=data[i]["last_edit_time"],tags=tag)
+    # 写入文件
+    pre_index_html = index_html.format(latest=latest,offical=offical,tools=tools)
+    with open("../index.html","w",encoding="utf-8") as f:
+        f.write(pre_index_html)
     print("完成")
 if __name__=="__main__":
     if is_admin():
@@ -422,8 +460,16 @@ if __name__=="__main__":
             else:
                 print("邮箱：{0}".format(res))
             
+            ver_style="7"
+            ver_template="10"
+            ver_self_adaption="6"
+            ver_decode="4"
             # 基础页面
-            html = '<!DOCTYPE html><html lang="zh-CN"><head><title>{{title}} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css?version={ver_style}"><link rel="stylesheet" href="../prism.css"/><script src="../template.js?version={ver_template}"></script><script src="../prism.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left"><div class="card"><img src="https://cdnjson.com/images/2024/04/30/icon89fa04bb001fc658.png" style="max-width: 100%;"><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><div class="card">距离2027年高考只剩：<span id="countdown"></span></div></div><main id="main"><div class="title"><h1 style="margin-bottom: 0;">{{title}}</h1></div><div id="article-block" class="card"><div class="article" id="article">{{content}}</div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：{{date}}</span><br><span>创建时间：{{create}}</span><br><span>标签：{{tags}}</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/{{title}}/content.html" target="_blank">源文件</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/{{title}}/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><script>apply_template();generateCatalog(".article", ".dir");apply_prism();</script><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../decode.js?version={ver_decode}"></script><script src="../self-adaption.js?version={ver_self_adaption}"></script><script src="../countdown.js"></script></html>'.format(ver_style="6",ver_template="9",ver_self_adaption="5",ver_decode="4")
+            html = '<!DOCTYPE html><html lang="zh-CN"><head><title>{{title}} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css?version={ver_style}"><link rel="stylesheet" href="../prism.css"/><script src="../template.js?version={ver_template}"></script><script src="../prism.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left"><div class="card"><a href="../index.html"><img src="https://cdnjson.com/images/2024/04/30/icon89fa04bb001fc658.png" style="max-width: 100%;" title="主页"></a><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><div class="card">距离2027年高考只剩：<span id="countdown"></span></div></div><main id="main"><div class="title"><h1 style="margin-bottom: 0;">{{title}}</h1></div><div id="article-block" class="card"><div class="article" id="article">{{content}}</div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：{{date}}</span><br><span>创建时间：{{create}}</span><br><span>标签：{{tags}}</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/{{title}}/content.html" target="_blank">源文件</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/{{title}}/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><script>apply_template();generateCatalog(".article", ".dir");apply_prism();</script><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../decode.js?version={ver_decode}"></script><script src="../self-adaption.js?version={ver_self_adaption}"></script><script src="../countdown.js"></script></html>'.format(ver_style=ver_style,ver_template=ver_template,ver_self_adaption=ver_self_adaption,ver_decode=ver_decode)
+            # 主页
+            index_html = '<!DOCTYPE html><html lang="zh-CN"><head><title>柳下回声</title><link rel="stylesheet" type="text/css" href="style.css?version={ver_style}"><link rel="stylesheet" href="prism.css"/><script src="template.js?version={ver_template}"></script><script src="prism.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"><style>.card{{{{width: 100%;}}}}</style></head><body><div class="card" style="text-align: center;"><img src="https://cdnjson.com/images/2024/04/30/icon89fa04bb001fc658.png" style="max-width: 100%;" title="主页"></div><div class="card">距离2027年高考只剩：<span id="countdown"></span></div><div class="card"><img src="https://i0.hdslb.com/bfs/new_dyn/5f38ca4098f7d3f27198d632caea1f1172204242.jpg" title="头图" width="40%" class="left" id="head_img"/><div style="display: flow-root;" id="head_text"><h2>欢迎来到柳下回声！</h2><p>本网站<b>柳下回声</b>是一个以wiki为运作模式的个人博客小网站，用于记录某些事件或观点，或者提供某些服务。本网站用纯html+css+js制作以及python辅助管理，页面样式参考了多个网站。本网站托管于<a href="https://github.com/DZX66/DZX66.github.io" target="_blank">GitHub Pages</a>，图片多来源于各种图床。</p><p>图源：<a href="https://baike.baidu.com/item/%E9%A5%BF%E6%AE%8D%EF%BC%9A%E6%98%8E%E6%9C%AB%E5%8D%83%E9%87%8C%E8%A1%8C/63539762" target="_blank">饿殍：明末千里行</a></p></div></div><div class="card"><h2>最新页面</h2><a href="blogs.html">所有页面</a><ul style="list-style-type: none;">{{latest}}</ul></div><div class="card"><h2>官方文档</h2><ul style="list-style-type: none;">{{offical}}</ul></div><div class="card"><h2>小工具</h2><ul style="list-style-type: none;">{{tools}}</ul></div></body><script src="countdown.js"></script><script>if(document.documentElement.clientWidth <= 736){{{{document.getElementById("head_img").style.width = "98%";document.getElementById("head_text").style.display = "inline-block";}}}}</script></html>'.format(ver_style=ver_style,ver_template=ver_template)
+            # 一个条目
+            page = "<li><div class='head'><a href='pages/{title}.html'>{title}</a></div><div class='foot'> {locked} 更新时间：{date} 标签：{tags}</div></li>"
             while True:
                 print()
                 cmd = None

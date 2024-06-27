@@ -106,6 +106,12 @@ details{
 
 .right{
     float:right;
+    margin: 5px;
+}
+
+.left{
+    float: left;
+    margin: 5px;
 }
 
 /* new year */

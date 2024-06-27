@@ -1,4 +1,4 @@
-# DZX66.github.io
-something small一些小玩意
+# 柳下回声
+本网站柳下回声是一个以wiki为运作模式的个人博客小网站，用于记录某些事件或观点，或者提供某些服务。本网站用纯html+css+js制作以及python辅助管理，页面样式参考了多个网站。本网站托管于GitHub Pages，图片多来源于各种图床。
 
-各种神奇小玩意，因为分享需要挂在GitHub。我在 **https://dzx66.github.io/index.html** 等你。
+我在 **https://dzx66.github.io/** 等你。

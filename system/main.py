@@ -394,7 +394,7 @@ def apply():
     # 创建索引
     print("创建索引...")
     with open("../blogs.html","w",encoding="utf-8") as f:
-        f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>所有页面 - 柳下回声</title><link rel="stylesheet" type="text/css" href="style.css?version=1"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>所有页面</h1><p>最后一次更新时间：{date}</p><hr><ul style="list-style-type: none;">'.format(date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
+        f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>所有页面 - 柳下回声</title><link rel="stylesheet" type="text/css" href="style.css?version=1"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>所有页面</h1><p><a href="index.html">主页面</a></p><p>最后一次更新时间：{date}</p><hr><ul style="list-style-type: none;">'.format(date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         for i in data:
             tag = ""
             for o in data[i]["tags"]:
@@ -461,7 +461,7 @@ if __name__=="__main__":
                 print("邮箱：{0}".format(res))
             
             ver_style="7"
-            ver_template="10"
+            ver_template="11"
             ver_self_adaption="6"
             ver_decode="4"
             # 基础页面

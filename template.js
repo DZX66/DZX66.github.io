@@ -40,6 +40,28 @@ for (var i = 0; i < pObjs.length; i++) {
 
 // 一级模板处理
 
+// 外部链接跳转
+
+// 百度搜索
+var pObjs = document.getElementsByTagName("baidu");
+for (var i = 0; i < pObjs.length; i++) {
+pObjs[i].innerHTML = '<a href="https://www.baidu.com/s?wd=' + pObjs[i].innerHTML + '" target="_blank">' + pObjs[i].innerHTML + '</a>'
+}
+
+// 萌娘百科
+var pObjs = document.getElementsByTagName("moegirl");
+for (var i = 0; i < pObjs.length; i++) {
+pObjs[i].innerHTML = '<a href="https://zh.moegirl.org.cn/' + pObjs[i].innerHTML + '" target="_blank">' + pObjs[i].innerHTML + '</a>'
+}
+
+// B站(接受bv号，cv号)
+var pObjs = document.getElementsByTagName("bilibili");
+for (var i = 0; i < pObjs.length; i++) {
+var title = pObjs[i].innerHTML;
+if(pObjs[i].hasAttribute("title")){title = pObjs[i].getAttribute("title") + "(" + pObjs[i].innerHTML + ")";}
+pObjs[i].innerHTML = '<a href="https://www.bilibili.com/video/' + pObjs[i].innerHTML + '" target="_blank">' + title + '</a>'
+}
+
 // 所有pre加上line-numbers类
 var pObjs = document.getElementsByTagName("pre");
 for (var i = 0; i < pObjs.length; i++) {
@@ -62,7 +84,9 @@ pObjs[i].innerHTML = content;
 // <img_center img_src="" title="" width="" height="">description</img_center>
 var pObjs = document.getElementsByTagName("img_center");
 for (var i = 0; i < pObjs.length; i++) {
-var content = "<figure class=\"container\"><img src=\"{src}\" title=\"{title}\" width=\"{width}\" height=\"{height}\"><figcaption>{description}</figcaption></figure>".replace("{src}",pObjs[i].getAttribute("img_src")).replace("{title}",pObjs[i].getAttribute("title")).replace("{description}",pObjs[i].innerHTML);
+if (pObjs[i].getAttribute("title") != null) {var title = pObjs[i].getAttribute("title")}
+else{var title = pObjs[i].innerHTML;}
+var content = "<figure class=\"container\"><img src=\"{src}\" title=\"{title}\" width=\"{width}\" height=\"{height}\"><figcaption>{description}</figcaption></figure>".replace("{src}",pObjs[i].getAttribute("img_src")).replace("{title}",title).replace("{description}",pObjs[i].innerHTML);
 if (pObjs[i].getAttribute("width") != null) {content = content.replace("{width}",pObjs[i].getAttribute("width"))}
 else{content = content.replace("{width}","")}
 if (pObjs[i].getAttribute("height") != null) {content = content.replace("{height}",pObjs[i].getAttribute("height"))}

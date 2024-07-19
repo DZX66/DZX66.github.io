@@ -1,7 +1,8 @@
 if(document.documentElement.clientWidth <= 736){
         document.getElementById("article-block").style.width = '100%';
         document.getElementById("left").style.marginTop = '0';
-        document.getElementById("left").style.width = '300px';
+        document.getElementById("left").style.width = '100%';
+        document.getElementById("left").style.textAlign = 'center';
         document.getElementById("main").style.width = '100%';
         document.getElementById("aside").style.width = '98%';
         document.getElementById("aside").style.position = 'fixed';

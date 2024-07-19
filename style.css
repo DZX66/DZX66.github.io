@@ -165,12 +165,16 @@ padding-bottom: 5px;
 margin-bottom: 1%;
 }
 
+#headimg{max-height: 80px;}
 #left{
 width: 12%;margin-top: 20px;top:5px;float: left;
 @media (max-width: 800px) {
     margin-top: 0;
-    width: 300px;
+    width: 100%;
+    text-align: center;
 }}
+
+#left > div{width: 100%;}
 
 #article-block{
 width: 75%;

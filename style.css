@@ -198,6 +198,7 @@ width: 20%;
 margin-left: 1%;
 position: sticky;
 top:5px;
+overflow: auto;
 @media (max-width: 800px) {
     width: 98%;
     position: fixed;
@@ -575,4 +576,9 @@ display: none;
 }
     
 
+}
+
+/* prism自动换行 */
+.line-numbers{
+white-space: pre-wrap !important;
 }

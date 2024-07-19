@@ -9,6 +9,8 @@ if(document.getElementById("password")){
   document.getElementById("password").value = getCookie(tip_base64);
   submit_password();
   }
+}else{
+apply_template();generateCatalog(".article", ".dir");apply_prism();
 }
 function getCookie(cname)
 {
@@ -36,8 +38,11 @@ try{
     if(document.getElementById("content").innerHTML.slice(2,8)=="locked"){
         const tip_base64 = btoa(encodeURIComponent(document.getElementById("tip").innerText));
         document.getElementById("inputer").outerHTML="";
-        document.getElementById("content").innerHTML=document.getElementById("content").innerHTML.replace(/\\n/g,"").slice(8,-1);
+        document.getElementById("content").innerHTML=document.getElementById("content").innerHTML.replace(/\\n/g,"\n").slice(8,-1);
         document.getElementById("content").innerHTML=document.getElementById("content").innerHTML.replace(/\\'/g,"'");
+        document.getElementById("source").innerHTML = document.getElementById("content").innerHTML;
+        document.getElementById("source_display").style.display = "block";
+        document.getElementById("content").innerHTML=document.getElementById("content").innerHTML.replace(/\n/g,"");
         apply_template();
         apply_prism();
         generateCatalog(".article", ".dir");

@@ -28,18 +28,14 @@ document.getElementById("title_page").innerHTML = "查看源代码："+target;
 // 获取文件内容
 const xhr = new XMLHttpRequest();
 xhr.open('GET', '../system/pages/'+target+'/content.html');
-console.log(xhr)
 var access = false;
 xhr.onreadystatechange = function() {
-console.log("first:"+xhr.readyState == 4 && xhr.status == 200)
   if (xhr.readyState == 4 && xhr.status == 200) {
-    console.log("行25执行成功")
     access = true;
     var content = xhr.responseText;
 // 读取属性json
     const xhr2 = new XMLHttpRequest();
 xhr2.open('GET', '../system/pages/'+target+'/attribute.json');
-console.log(xhr2)
 xhr2.onreadystatechange = function() {
   if (xhr2.readyState === 4 && xhr2.status === 200) {
     var attribute = JSON.parse(xhr2.responseText);
@@ -57,6 +53,8 @@ try{
     var decryptedText=CryptoJS.AES.decrypt(content,key,{mode,padding});
     var a=decodeURIComponent(CryptoJS.enc.Utf8.stringify(decryptedText).replace(/\\x/g,"%"));
     if(a.slice(2,8)=="locked"){
+      a =a.replace(/\\n/g,"\n").slice(8,-1);
+      a=a.replace(/\\'/g,"'");
       content_element.innerHTML = a;
 // 显示
 document.getElementById("1").innerHTML = "";

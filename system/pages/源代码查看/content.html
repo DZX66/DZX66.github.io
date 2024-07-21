@@ -15,6 +15,7 @@ document.getElementById("title_page").innerHTML = "查看源代码："+target;
 // 获取文件内容
 const xhr = new XMLHttpRequest();
 xhr.open('GET', '../system/pages/'+target+'/content.html');
+console.log(xhr)
 var access = false;
 xhr.onreadystatechange = function() {
   if (xhr.readyState === 4 && xhr.status === 200) {
@@ -26,7 +27,9 @@ xhr.onreadystatechange = function() {
 xhr.send();
 // 读取属性json
 if(access){
+const xhr = new XMLHttpRequest();
 xhr.open('GET', '../system/pages/'+target+'/attribute.json');
+console.log(xhr)
 xhr.onreadystatechange = function() {
   if (xhr.readyState === 4 && xhr.status === 200) {
     var attribute = JSON.parse(xhr.responseText);

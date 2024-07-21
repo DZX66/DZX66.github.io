@@ -40,8 +40,6 @@ try{
         document.getElementById("inputer").outerHTML="";
         document.getElementById("content").innerHTML=document.getElementById("content").innerHTML.replace(/\\n/g,"\n").slice(8,-1);
         document.getElementById("content").innerHTML=document.getElementById("content").innerHTML.replace(/\\'/g,"'");
-        document.getElementById("source").innerHTML = document.getElementById("content").innerHTML;
-        document.getElementById("source_display").style.display = "block";
         document.getElementById("content").innerHTML=document.getElementById("content").innerHTML.replace(/\n/g,"");
         apply_template();
         apply_prism();

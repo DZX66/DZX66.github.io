@@ -18,14 +18,18 @@ xhr.open('GET', '../system/pages/'+target+'/content.html');
 console.log(xhr)
 var access = false;
 xhr.onreadystatechange = function() {
-  if (xhr.readyState === 4 && xhr.status === 200) {
+console.log("first:"+xhr.readyState == 4 && xhr.status == 200)
+  if (xhr.readyState == 4 && xhr.status == 200) {
+    console.log("行25执行成功")
     access = true;
     var content = xhr.responseText;
-  }else if(xhr.status === 404){content_element.innerHTML = "请求的文件不存在。";}else
+  }else if(xhr.status == 404){content_element.innerHTML = "请求的文件不存在。";}else
     {content_element.innerHTML = "网络错误：请求失败。状态码："+xhr.status}
+console.log("行30执行成功，content："+content);
 };
 xhr.send();
 // 读取属性json
+console.log("access:"+access);
 if(access){
 const xhr = new XMLHttpRequest();
 xhr.open('GET', '../system/pages/'+target+'/attribute.json');

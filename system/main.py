@@ -239,18 +239,23 @@ def edit_page():
                 f.close()
                 os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
                 print("请修改后保存")
-                os.system("pause")
-                now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                f = open("temp.html","r",encoding="utf-8")
-                res = f.readlines()[2:-2]
-                f.close()
+                while True:
+                    os.system("pause")
+                    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    f = open("temp.html","r",encoding="utf-8")
+                    res = f.readlines()[2:-2]
+                    f.close()
+                    r = ""
+                    for i in res:
+                        r += i
+                    r = r[:-1]
+                    if is_locked:
+                        try:
+                            r = encrypt_oracle("locked"+r,password)
+                            break
+                        except ValueError:
+                            print("加密失败，{e}。请尝试修改长度！")
                 os.remove("temp.html")
-                r = ""
-                for i in res:
-                    r += i
-                r = r[:-1]
-                if is_locked:
-                    r = encrypt_oracle("locked"+r,password)
                 with open(os.path.join("pages",title,"content.html"),"w",encoding="utf-8") as f:
                     f.write(r)
                 if is_locked:

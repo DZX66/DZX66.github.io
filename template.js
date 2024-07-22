@@ -30,12 +30,17 @@ for (var i = 0; i < pObjs.length; i++) {
         pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/2/26/Nuvola_apps_important_blue.svg/75px-Nuvola_apps_important_blue.svg.png");
         pObjs[i].setAttribute("side_color","blue");
         pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","44");
-        pObjs[i].innerHTML="此内容的著作权不属于柳下回声，编辑者仅以介绍为目的进行引用。<br/>另请编辑者注意：最好与原作者取得同意后再转载。";}
+        pObjs[i].innerHTML="<b>此内容的著作权不属于柳下回声</b>，编辑者仅以介绍为目的进行引用。<br/>另请编辑者注意：最好与原作者取得同意后再转载。";}
     else if(pObjs[i].innerHTML == "冒犯他人"){
         pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/b/b1/Gnome-emblem-important.svg/75px-Gnome-emblem-important.svg.png");
         pObjs[i].setAttribute("side_color","red");
         pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","50");
         pObjs[i].innerHTML="<b class=\"stress\">此页面包含冒犯他人的内容。</b><br/>柳下回声仅以介绍为目的而提及。随意提及可能会导致他人的<b>厌恶</b>。<br/>同时也请编辑者注意，不要使用<b>极度不中立</b>的言论向读者喊话。";}
+    else if(pObjs[i].innerHTML == "页内查找"){
+        pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/5/5c/Ambox_glass_green.svg/38px-Ambox_glass_green.svg.png");
+        pObjs[i].setAttribute("side_color","green");
+        pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","50");
+        pObjs[i].innerHTML="<b>本页面内容较多，您可以使用浏览器的页内查找功能 <span style=\"color:green;\">Ctrl + F</span> (Windows/Linux) / <span style=\"color:green;\">⌘ + F</span> (MacOS) / <span style=\"color:green;\">右上角三个点 -> 查找页面内容/在网页上查找</span> (手机端) 查找所需要的信息。</b><br/>如果未能获取理想的搜索结果，可以尝试提取搜索项中的关键文本。";}
 }
 
 // 一级模板处理
@@ -53,7 +58,7 @@ pObjs[i].innerHTML = '<a href="https://www.baidu.com/s?wd=' + pObjs[i].innerHTML
 // <moegirl>页面名称（url中的）</moegirl>
 var pObjs = document.getElementsByTagName("moegirl");
 for (var i = 0; i < pObjs.length; i++) {
-pObjs[i].innerHTML = '<a href="https://zh.moegirl.org.cn/' + pObjs[i].innerHTML + '" target="_blank">' + pObjs[i].innerHTML + '</a>'
+pObjs[i].innerHTML = '<a href="https://zh.moegirl.org.cn/' + pObjs[i].innerHTML + '" target="_blank">' + pObjs[i].innerHTML + ' - 萌娘百科</a>'
 }
 
 // B站(接受bv号)

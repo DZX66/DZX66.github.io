@@ -11,7 +11,20 @@ from Crypto.Cipher import AES
 from typing import Literal,Union
 from dateutil import parser
 
+def log(message:str):
+    '''向缓存中写入信息'''
+    with open(PATH_LOG,"a+",encoding="utf-8") as f:
+        f.write(message+"\n")
 
+def confirm(message:str):
+    '''询问yes/no'''
+    while True:
+        res = input(message+"(y/n)：")
+        if res == "y":
+            return True
+        elif res == "n":
+            return False
+        
 def add_to_16(message:str):
     '''str不是16的倍数那就补足为16的倍数'''
     while len(message) % 16 != 0:
@@ -201,6 +214,7 @@ def edit_page():
             if cmd == "0":
                 break
             elif cmd == "1":
+                # 修改标题
                 ntitle = ""
                 while ntitle == "":
                     ntitle = input("新标题：")
@@ -226,13 +240,16 @@ def edit_page():
                 # 更新索引
                 edit_index(title,mode=1)
                 edit_index(ntitle,latest_edit_time,create_time,is_locked,tags,(-1 if not is_locked else tip),2)
+                log("页面[[{0}]]重命名为[[{1}]]".format(title,ntitle))
                 # 更新title和dir变量
                 title = ntitle
                 dir = ndir
             elif cmd == "2":
+                # 上锁/解锁
                 with open(os.path.join(dir,"content.html"),"r",encoding="utf-8") as f:
                     org_content = f.read()
                 if is_locked:
+                    #解锁
                     while True:
                         password = input("请输入密码：")
                         try:
@@ -256,7 +273,9 @@ def edit_page():
                     is_locked = False
                     # 更新索引
                     edit_index(title,is_locked=False)
+                    log("解锁了页面[[{0}]]".format(title))
                 else:
+                    #上锁
                     password = ""
                     while password in ("","0"):
                         password = input("设置密码：")
@@ -283,7 +302,9 @@ def edit_page():
                     is_locked = True
                     # 更新索引
                     edit_index(title,is_locked=True,tip=tip)
+                    log("上锁了页面[[{0}]]".format(title))
             elif cmd == "4":
+                # 修改内容
                 with open(os.path.join("pages",title,"content.html"),"r",encoding="utf-8") as f:
                     org_content = f.read()
                 with open(os.path.join("pages",title,"attribute.json"),"r",encoding="utf-8") as f:
@@ -314,14 +335,13 @@ def edit_page():
                     print("请修改后保存")
                     while True:
                         os.system("pause")
-                        now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                         f = open("temp.html","r",encoding="utf-8")
                         res = f.readlines()[2:-2]
                         f.close()
                         r = ""
                         for i in res:
                             r += i
-                        r = r[:-1]
+                        r = r[:-1] # 去除末尾\n
                         if is_locked:
                             try:
                                 r = encrypt_oracle("locked"+r,password)
@@ -331,6 +351,7 @@ def edit_page():
                         else:
                             break
                     os.remove("temp.html")
+                    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     with open(os.path.join("pages",title,"content.html"),"w",encoding="utf-8") as f:
                         f.write(r)
                     if is_locked:
@@ -342,7 +363,14 @@ def edit_page():
                     latest_edit_time = now
                     # 更新索引
                     edit_index(title,latest_edit_time)
+                    message = "修改了页面[[{0}]]".format(title)
+                    with open(PATH_LOG,"r",encoding="utf-8") as f:
+                        res = f.readlines()
+                    if not (message+"\n" in res or "创建页面[[{0}]]\n".format(title) in res):
+                        # 创建记录会覆盖修改记录，多个修改记录会合并
+                        log(message)
             elif cmd == "5":
+                # 查看内容
                 with open(os.path.join("pages",title,"content.html"),"r",encoding="utf-8") as f:
                     org_content = f.read()
                 with open(os.path.join("pages",title,"attribute.json"),"r",encoding="utf-8") as f:
@@ -368,15 +396,9 @@ def edit_page():
                 os.system("pause")
                 os.remove("temp.html")
             elif cmd == "6":
-                while True:
-                    confirm = input("确定要删除吗，此操作不可逆（本地）！(y/n)：")
-                    if confirm == "y":
-                        confirm = True
-                        break
-                    elif confirm == "n":
-                        confirm = False
-                        break
-                if confirm:
+                # 删除页面
+                is_confirm = confirm("确定要删除吗，此操作不可逆（本地）！")
+                if is_confirm:
                     try:
                         shutil.rmtree(dir)
                     except Exception:
@@ -386,6 +408,7 @@ def edit_page():
                     edit_index(title,mode=1)
                     break
             elif cmd == "7" and is_locked:
+                # 修改密码提示
                 tip = input("密码提示：")
                 if tip == "":
                     tip = "【无密码提示的页面：{0}】".format(title)
@@ -396,20 +419,23 @@ def edit_page():
                     f.write(json.dumps({"title":title,"tags":tags,"is_locked":is_locked,"create_time":create_time,"last_edit_time":latest_edit_time,"tip":tip}, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False))
                 # 更新索引
                 edit_index(title,tip=tip)
+                log("修改了[[{0}]]的密码提示".format(title))
 def new_page():
     '''新建页面'''
     global html
+    # 获取title
     title = ""
     while title == "":
         title = input("标题（按0撤回）：")
         if title == "0":
             return -1
-        dir = os.path.join("pages",title)
         if title == "":
             print("不能为空！")
         if os.path.exists(dir):
             print("该页面已存在！")
             title = ""
+    dir = os.path.join("pages",title)  # 获取dir
+    # 获取tags
     tags = []
     while True:
         tag = input("标签（按0结束）：")
@@ -420,46 +446,53 @@ def new_page():
                 print("不能为空")
             else:
                 tags.append(tag)
-    while True:
-        locked = input("是否上锁(y/n)：")
-        if locked == "y":
-            locked = True
-            password = ""
-            while password in ("","0"):
-                password = input("密码：")
-                if password == "":
-                    print("不能为空！")
-                if password == "0":
-                    print("非法的密码：\"0\"被用于取消操作。")
-            tip = input("密码提示：")
-            if tip == "":
-                tip = "【无密码提示的页面：{0}】".format(title)
-                print("空的密码提示将被替换为：【无密码提示的页面：{0}】".format(title))
-                print("因为密码提示是“自动输入密码”功能的依据。")
-                os.system("pause")
-            break
-        elif locked == "n":
-            locked = False
-            break
+    # 获取是否上锁
+    locked = confirm("是否上锁")
+    if locked:
+        password = ""
+        while password in ("","0"):
+            password = input("密码：")
+            if password == "":
+                print("不能为空！")
+            if password == "0":
+                print("非法的密码：\"0\"被用于取消操作。")
+        tip = input("密码提示：")
+        if tip == "":
+            tip = "【无密码提示的页面：{0}】".format(title)
+            print("空的密码提示将被替换为：【无密码提示的页面：{0}】".format(title))
+            print("因为密码提示是“自动输入密码”功能的依据。")
+            os.system("pause")
+    # tags合为一个字符串
     o = ""
     for i in tags:
         o += i+" "
+    # 打开临时页面，获取代码
     f = open("temp.html","w",encoding="utf-8")
     f.write(html.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),create=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),tags=o,content="\n<!-- 请在以下输入代码 -->\n\n\n<!-- 请在以上输入代码 -->\n"))
     f.close()
     os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
     print("请修改后保存")
-    os.system("pause")
-    f = open("temp.html","r",encoding="utf-8")
-    res = f.readlines()[2:-2]
-    f.close()
+    while True:
+        os.system("pause")
+        f = open("temp.html","r",encoding="utf-8")
+        res = f.readlines()[2:-2]
+        f.close()
+        r = ""
+        for i in res:
+            r += i
+        r = r[:-1] # 去除末尾\n
+        if locked:
+            try:
+                r = encrypt_oracle("locked"+r,password)
+            except Exception as e:
+                print("加密失败：{e}，请修改长度后重试")
+            else:
+                break
+        else:
+            break
     os.remove("temp.html")
-    r = ""
-    for i in res:
-        r += i
+    # 写入数据
     os.mkdir(dir)
-    if locked:
-        r = encrypt_oracle("locked"+r,password)
     with open(os.path.join(dir,"content.html"),"w",encoding="utf-8") as f:
         f.write(r)
     if locked:
@@ -471,6 +504,7 @@ def new_page():
         f.write(datar)
     # 写入缓存
     edit_index(title,attributes["last_edit_time"],attributes["create_time"],locked,tags,(-1 if not locked else tip),2)
+    log("创建页面[[{0}]]".format(title))
 def apply():
     '''部署网站'''
     global html,page,index_html
@@ -549,6 +583,45 @@ def apply():
     with open("../index.html","w",encoding="utf-8") as f:
         f.write(pre_index_html)
     print("完成")
+    # 修改信息汇总
+    with open(PATH_LOG,"r",encoding="utf-8") as f:
+        logs = f.readlines()
+    print("="*5)
+    for i in logs:
+        print("- "+i[:-1])
+    print("="*5)
+    if confirm("修改是否完成，可以提交？"):
+        print("请为每项操作填写注释，可留空。")
+        print()
+        for i in range(len(logs)):
+            res = input(logs[i][:-1]+": ")
+            if res == "":
+                logs[i] = logs[i][:-1]
+            else:
+                logs[i] = logs[i][:-1]+res
+        is_system_edited = confirm("是否进行系统级修改（包括模板）？")
+        if is_system_edited:
+            print("请对照git更改记录手动填写。")
+            if len(logs) >= 2:
+                summary = "操作了多个页面，进行了系统级优化："
+            else:
+                summary = logs[0] + "，并进行了系统级优化："
+        else:
+            if len(logs) >= 2:
+                summary = "操作了多个页面："
+            else:
+                summary = logs[0]
+        print()
+        print("="*5)
+        print(summary)
+        if not (len(logs) == 1 and is_system_edited):
+            for i in logs:
+                print("- "+i)
+        print("="*5)
+        print("请复制上述内容至“消息”。")
+        with open(PATH_LOG,"w",encoding="utf-8") as f:
+            pass  # 清空缓存
+        
 if __name__=="__main__":
     if is_admin():
         try:
@@ -573,22 +646,26 @@ if __name__=="__main__":
             PATH_LOCAL = os.getenv("LOCALAPPDATA")
             PATH_CACHE = os.path.join(PATH_LOCAL,"echos_under_willow")
             PATH_INDEX = os.path.join(PATH_CACHE,"index.json")
+            PATH_LOG = os.path.join(PATH_CACHE,"log.txt")
             if not os.path.exists(PATH_CACHE):
                 print("欢迎来到柳下回声的后台！")
                 print("即将创建缓存目录：",PATH_CACHE)
                 os.system("pause")
                 os.mkdir(PATH_CACHE)
                 update_index()
+            if not os.path.exists(PATH_LOG):
+                f = open(PATH_LOG,"w",encoding="utf-8")
+                f.close()
             ver_style="8"
             ver_template="12"
             ver_self_adaption="7"
             ver_decode="6"
+            ver_sp_days="1"
             announcement = '距离2027年高考只剩：<span id="countdown"></span><br/>2024/7/21<br/>手机端可以点击右侧的按钮打开目录！'
-            #挨多☆米那桑(◦˙▽˙◦)，今天是柚子社♡大贤☆宗☆师「绫地宁宁」的纪念日07.21喵。将这条消息转发到十个群（笑），将会在「图书馆」遇到一位正在打☆磨桌角的宁宁的说(=^▽^=)♡，我试过了，是假的喵(。・`ω´・)，还会被骂柚♪子♪厨退群，苦亚西(◦`~´◦)，得磨，今天真的是绫地宁宁的纪念日07.21……（｀Δ´）ゞ，让我们一起为宁宁庆祝喵！Ciallo～(∠・ω< )⌒☆
             # 基础页面
-            html = '<!DOCTYPE html><html lang="zh-CN"><head><title id="title">{{title}} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css?version={ver_style}"><link rel="stylesheet" href="../prism.css"/><script src="../js/template.js?version={ver_template}"></script><script src="../js/prism.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left"><div class="card"><a href="../index.html"><img src="https://i0.hdslb.com/bfs/new_dyn/6b9a00e9e33b23aa49a340015c86866c432466738.png" style="max-width: 100%;" title="主页" id="headimg"></a><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><div class="card"><h3>公告</h3>{announcement}</div></div><main id="main"><div class="title"><h1 style="margin-bottom: 0;" id="title_page">{{title}}</h1></div><div id="article-block" class="card"><div class="article" id="article">{{content}}</div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：{{date}}</span><br><span>创建时间：{{create}}</span><br><span>标签：{{tags}}</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/{{title}}/content.html" target="_blank">源文件(github)</a><br><a href="源代码查看.html?target={{title}}" target="_blank">源代码</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/{{title}}/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../js/decode.js?version={ver_decode}"></script><script src="../js/self-adaption.js?version={ver_self_adaption}"></script><script src="../js/countdown.js"></script></html>'.format(ver_style=ver_style,ver_template=ver_template,ver_self_adaption=ver_self_adaption,ver_decode=ver_decode,announcement=announcement)
+            html = '<!DOCTYPE html><html lang="zh-CN"><head><title id="title">{{title}} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css?version={ver_style}"><link rel="stylesheet" href="../prism.css"/><script src="../js/template.js?version={ver_template}"></script><script src="../js/prism.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left"><div class="card"><a href="../index.html"><img src="https://i0.hdslb.com/bfs/new_dyn/6b9a00e9e33b23aa49a340015c86866c432466738.png" style="max-width: 100%;" title="主页" id="headimg"></a><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><div class="card" id="announcement"><h3>公告</h3>{announcement}</div></div><main id="main"><div class="title"><h1 style="margin-bottom: 0;" id="title_page">{{title}}</h1></div><div id="article-block" class="card"><div class="article" id="article">{{content}}</div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：{{date}}</span><br><span>创建时间：{{create}}</span><br><span>标签：{{tags}}</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/{{title}}/content.html" target="_blank">源文件(github)</a><br><a href="源代码查看.html?target={{title}}" target="_blank">源代码</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/{{title}}/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../js/decode.js?version={ver_decode}"></script><script src="../js/self-adaption.js?version={ver_self_adaption}"></script><script src="../js/special_days.js?version={ver_sp_days}"></script><script src="../js/countdown.js"></script></html>'.format(ver_style=ver_style,ver_template=ver_template,ver_self_adaption=ver_self_adaption,ver_decode=ver_decode,announcement=announcement,ver_sp_days=ver_sp_days)
             # 主页
-            index_html = '<!DOCTYPE html><html lang="zh-CN"><head><title>柳下回声</title><link rel="stylesheet" type="text/css" href="style.css?version={ver_style}"><link rel="stylesheet" href="prism.css"/><script src="js/template.js?version={ver_template}"></script><script src="js/prism.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"><style>.card{{{{width: 100%;}}}}</style></head><body><div class="card" style="text-align: center;"><img src="https://i0.hdslb.com/bfs/new_dyn/6b9a00e9e33b23aa49a340015c86866c432466738.png" style="max-width: 100%;" title="主页"></div><div class="card"><h3>公告</h3>{announcement}</div><div class="card"><img src="https://i0.hdslb.com/bfs/new_dyn/5f38ca4098f7d3f27198d632caea1f1172204242.jpg" title="头图" width="40%" class="left" id="head_img"/><div style="display: flow-root;" id="head_text"><h2>欢迎来到柳下回声！</h2><p>本网站<b>柳下回声</b>是一个以wiki为运作模式的个人博客小网站，用于记录某些事件或观点，或者提供某些服务。本网站用纯html+css+js制作以及python辅助管理，页面样式参考了多个网站。本网站托管于<a href="https://github.com/DZX66/DZX66.github.io" target="_blank">GitHub Pages</a>，图片多来源于各种图床。</p><p>图源：<a href="https://baike.baidu.com/item/%E9%A5%BF%E6%AE%8D%EF%BC%9A%E6%98%8E%E6%9C%AB%E5%8D%83%E9%87%8C%E8%A1%8C/63539762" target="_blank">饿殍：明末千里行</a></p></div></div><div class="card"><h2>最新页面</h2><a href="blogs.html">所有页面</a><ul style="list-style-type: none;">{{latest}}</ul></div><div class="card"><h2>官方文档</h2><ul style="list-style-type: none;">{{offical}}</ul></div><div class="card"><h2>小工具</h2><ul style="list-style-type: none;">{{tools}}</ul></div></body><script src="js/countdown.js"></script><script>if(document.documentElement.clientWidth <= 736){{{{document.getElementById("head_img").style.width = "98%";document.getElementById("head_text").style.display = "inline-block";}}}}</script></html>'.format(ver_style=ver_style,ver_template=ver_template,announcement=announcement)
+            index_html = '<!DOCTYPE html><html lang="zh-CN"><head><title>柳下回声</title><link rel="stylesheet" type="text/css" href="style.css?version={ver_style}"><link rel="stylesheet" href="prism.css"/><script src="js/template.js?version={ver_template}"></script><script src="js/prism.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"><style>.card{{{{width: 100%;}}}}</style></head><body><div class="card" style="text-align: center;"><img src="https://i0.hdslb.com/bfs/new_dyn/6b9a00e9e33b23aa49a340015c86866c432466738.png" style="max-width: 100%;" title="主页"></div><div class="card" id="announcement"><h3>公告</h3>{announcement}</div><div class="card"><img src="https://i0.hdslb.com/bfs/new_dyn/5f38ca4098f7d3f27198d632caea1f1172204242.jpg" title="头图" width="40%" class="left" id="head_img"/><div style="display: flow-root;" id="head_text"><h2>欢迎来到柳下回声！</h2><p>本网站<b>柳下回声</b>是一个以wiki为运作模式的个人博客小网站，用于记录某些事件或观点，或者提供某些服务。本网站用纯html+css+js制作以及python辅助管理，页面样式参考了多个网站。本网站托管于<a href="https://github.com/DZX66/DZX66.github.io" target="_blank">GitHub Pages</a>，图片多来源于各种图床。</p><p>图源：<a href="https://baike.baidu.com/item/%E9%A5%BF%E6%AE%8D%EF%BC%9A%E6%98%8E%E6%9C%AB%E5%8D%83%E9%87%8C%E8%A1%8C/63539762" target="_blank">饿殍：明末千里行</a></p></div></div><div class="card"><h2>最新页面</h2><a href="blogs.html">所有页面</a><ul style="list-style-type: none;">{{latest}}</ul></div><div class="card"><h2>官方文档</h2><ul style="list-style-type: none;">{{offical}}</ul></div><div class="card"><h2>小工具</h2><ul style="list-style-type: none;">{{tools}}</ul></div></body><script src="js/special_days.js?version={ver_sp_days}"></script><script src="js/countdown.js"></script><script>if(document.documentElement.clientWidth <= 736){{{{document.getElementById("head_img").style.width = "98%";document.getElementById("head_text").style.display = "inline-block";}}}}</script></html>'.format(ver_style=ver_style,ver_template=ver_template,announcement=announcement,ver_sp_days=ver_sp_days)
             # 一个条目
             page = "<li><div class='head'><a href='pages/{title}.html'>{title}</a></div><div class='foot'> {locked} 更新时间：{date} 标签：{tags}</div></li>"
             while True:
@@ -597,6 +674,9 @@ if __name__=="__main__":
                 print("工作目录：",os.getcwd())
                 print("="*10)
                 print("这是网站后台")
+                with open(PATH_LOG,"r",encoding="utf-8") as f:
+                    if f.read() != "":
+                        print("[!]有未应用的更改。")
                 print("1.页面管理")
                 print("2.网站部署")
                 print("="*10)

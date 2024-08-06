@@ -590,10 +590,10 @@ white-space: pre-wrap !important;
 }
 
 /* 目录相关 */
-.catalog a{
+.content-link div{
 color: rgb(44, 62, 80);
 }
-.catalog a .number{
+.catalog span .number{
 opacity: .5;
 font-size: 0.8rem;
 margin-right: 4px;

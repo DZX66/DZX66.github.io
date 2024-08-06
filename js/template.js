@@ -183,7 +183,6 @@ let h3 = 0;
 let h4 = 0;
 let h5 = 0;
 for (var i = 0; i < titles.length; i++) {
-console.log(titles[i].tagName);
 if(titles[i].tagName=="H2"){
 h2++;
 h3=0;
@@ -200,7 +199,6 @@ numbers.push(String(h2)+"."+String(h3)+"."+String(h4));}else if(titles[i].tagNam
 h5++;
 numbers.push(String(h2)+"."+String(h3)+"."+String(h4)+"."+String(h5));}
 }
-console.log(numbers)
   // 在文章元素内获取所有标题元素
   const articleHeadings = article.querySelectorAll('h1, h2, h3, h4, h5');
 

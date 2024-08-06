@@ -201,8 +201,10 @@ top:5px;
 overflow: auto;
 transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
 transform: translateX(-100px) scale(0.5);
+opacity: 0;
 @media (min-width: 800px) {
 transform: none;
+opacity: 1;
 }
 @media (max-width: 800px) {
     width: 98%;
@@ -212,7 +214,6 @@ transform: none;
     bottom: 0;
     z-index: 15;
     height: 70%;
-    opacity: 0;
 }}
 aside.active{
 transform: translateX(0) scale(1);

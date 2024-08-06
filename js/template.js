@@ -220,9 +220,7 @@ numbers.push(String(h2)+"."+String(h3)+"."+String(h4)+"."+String(h5));}
       let paddingLeft = 5 + (headingLevel - 1) * 5; // 5px起始值，每级标题增加5px内边距
       // 创建目录条目
       const catalogItem = document.createElement('div');
-      catalogItem.classList.add('catalog', `catalog-${headingLevel}`);
-      catalogItem.setAttribute('name', anchorName);
-      catalogItem.innerHTML = `<a href="#${anchorName}" style="padding-left: ${paddingLeft}px;" class="content-link"><span class="number">${numbers[index]}</span>${headingName}</a>`;
+      catalogItem.innerHTML = `<a href="#${anchorName}"><div class="catalog catalog-${headingLevel}" name="${anchorName}"><span style="padding-left: ${paddingLeft}px;" class="content-link"><span class="number">${numbers[index]}</span>${headingName}</span></div></a>`;
       catalogs.appendChild(catalogItem);
   });
   // 说明已生成了目录

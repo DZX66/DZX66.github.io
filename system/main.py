@@ -673,8 +673,8 @@ if __name__=="__main__":
             if not os.path.exists(PATH_LOG):
                 f = open(PATH_LOG,"w",encoding="utf-8")
                 f.close()
-            ver_style="10"
-            ver_template="14"
+            ver_style="11"
+            ver_template="15"
             ver_self_adaption="8"
             ver_decode="6"
             ver_sp_days="1"

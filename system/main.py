@@ -427,6 +427,7 @@ def new_page():
     title = ""
     while title == "":
         title = input("标题（按0撤回）：")
+        dir = os.path.join("pages",title)  # 获取dir
         if title == "0":
             return -1
         if title == "":
@@ -434,7 +435,13 @@ def new_page():
         if os.path.exists(dir):
             print("该页面已存在！")
             title = ""
-    dir = os.path.join("pages",title)  # 获取dir
+        try:
+            os.mkdir(dir)
+        except OSError as e:
+            print("标题不符合要求（请检查是否包含\\ / : * ? \" < > |）：{e}")
+            title = ""
+        else:
+            os.rmdir(dir)
     # 获取tags
     tags = []
     while True:
@@ -666,9 +673,9 @@ if __name__=="__main__":
             if not os.path.exists(PATH_LOG):
                 f = open(PATH_LOG,"w",encoding="utf-8")
                 f.close()
-            ver_style="8"
-            ver_template="12"
-            ver_self_adaption="7"
+            ver_style="9"
+            ver_template="13"
+            ver_self_adaption="8"
             ver_decode="6"
             ver_sp_days="1"
             announcement = '距离2027年高考只剩：<span id="countdown"></span><br/>2024/7/21<br/>手机端可以点击右侧的按钮打开目录！'
@@ -687,8 +694,13 @@ if __name__=="__main__":
                 print("="*10)
                 print("这是网站后台")
                 with open(PATH_LOG,"r",encoding="utf-8") as f:
-                    if f.read() != "":
+                    logs = f.readlines()
+                    if logs != []:
                         print("[!]有未应用的更改。")
+                        print("="*5)
+                        for i in logs:
+                            print("- "+i[:-1])
+                        print("="*5)
                 print("1.页面管理")
                 print("2.网站部署")
                 print("="*10)

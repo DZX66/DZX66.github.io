@@ -41,6 +41,11 @@ for (var i = 0; i < pObjs.length; i++) {
         pObjs[i].setAttribute("side_color","green");
         pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","50");
         pObjs[i].innerHTML="<b>本页面内容较多，您可以使用浏览器的页内查找功能 <span style=\"color:green;\">Ctrl + F</span> (Windows/Linux) / <span style=\"color:green;\">⌘ + F</span> (MacOS) / <span style=\"color:green;\">右上角三个点 -> 查找页面内容/在网页上查找</span> (手机端) 查找所需要的信息。</b><br/>如果未能获取理想的搜索结果，可以尝试提取搜索项中的关键文本。";}
+    else if(pObjs[i].innerHTML == "施工中"){
+        pObjs[i].setAttribute("img_src","https://img.moegirl.org.cn/common/thumb/2/26/Nuvola_apps_important_blue.svg/75px-Nuvola_apps_important_blue.svg.png");
+        pObjs[i].setAttribute("side_color","blue");
+        pObjs[i].setAttribute("width","50");pObjs[i].setAttribute("height","50");
+        pObjs[i].innerHTML="<b>这个页面正在施工中。</b><br/>您所看到的页面未必是最新，可能存在文字缺失。";}
 }
 
 // 一级模板处理
@@ -170,9 +175,34 @@ function generateCatalog(articleSelector, dirSelector) {
   // 获取文章元素和目录容器元素
   const article = document.querySelector(articleSelector);
   const catalogs = document.querySelector(dirSelector);
-
+// 获取层级关系
+var numbers = []
+const titles = article.querySelectorAll("h2,h3,h4,h5")
+let h2 = 0;
+let h3 = 0;
+let h4 = 0;
+let h5 = 0;
+for (var i = 0; i < titles.length; i++) {
+console.log(titles[i].tagName);
+if(titles[i].tagName=="H2"){
+h2++;
+h3=0;
+h4=0;
+h5=0;
+numbers.push(String(h2));}else if(titles[i].tagName=="H3"){
+h3++;
+h4=0;
+h5=0;
+numbers.push(String(h2)+"."+String(h3));}else if(titles[i].tagName=="H4"){
+h4++;
+h5=0;
+numbers.push(String(h2)+"."+String(h3)+"."+String(h4));}else if(titles[i].tagName=="H5"){
+h5++;
+numbers.push(String(h2)+"."+String(h3)+"."+String(h4)+"."+String(h5));}
+}
+console.log(numbers)
   // 在文章元素内获取所有标题元素
-  const articleHeadings = article.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  const articleHeadings = article.querySelectorAll('h1, h2, h3, h4, h5');
 
   // 遍历文章标题，生成目录
   articleHeadings.forEach(function(heading, index) {
@@ -194,7 +224,7 @@ function generateCatalog(articleSelector, dirSelector) {
       const catalogItem = document.createElement('div');
       catalogItem.classList.add('catalog', `catalog-${headingLevel}`);
       catalogItem.setAttribute('name', anchorName);
-      catalogItem.innerHTML = `<a href="#${anchorName}" style="padding-left: ${paddingLeft}px;" class="content-link">${headingName}</a>`;
+      catalogItem.innerHTML = `<a href="#${anchorName}" style="padding-left: ${paddingLeft}px;" class="content-link"><span class="number">${numbers[index]}</span>${headingName}</a>`;
       catalogs.appendChild(catalogItem);
   });
   // 说明已生成了目录

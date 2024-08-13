@@ -1,44 +1,50 @@
 /* 背景 */
-body{
+body {
     background-color: #fcfdf8;
 }
+
 /* 根字体 */
-html{
-color: rgb(44, 62, 80);
+html {
+    color: rgb(44, 62, 80);
 }
+
 /* 行间距 */
-p{
-line-height: 1.6;
+p {
+    line-height: 1.6;
 }
+
 /* 上标 */
-sup{
-font-size:xx-small;
-color: #999;
+sup {
+    font-size: xx-small;
+    color: #999;
 }
+
 /* 分割线 */
-hr{
+hr {
     margin-left: 4px;
     margin-right: 4px;
 }
+
 /* 未访问的链接 */
 a:link {
-color: #9cb480;
+    color: #9cb480;
 }
 
 /* 已访问的链接 */
 a:visited {
-color: #9cb480;
+    color: #9cb480;
 }
 
 /* 鼠标悬停链接 */
 a:hover {
-color: #82d622;
+    color: #82d622;
 }
 
 /* 已选择的链接 */
 a:active {
-color: #9cb480;
+    color: #9cb480;
 }
+
 /* 黑幕模板配合CSS */
 /* 源自萌娘百科，URL地址 https://zh.moegirl.org.cn/MediaWiki:Gadget-site-styles.css */
 .heimu,
@@ -94,52 +100,58 @@ a.extiw:visited:hover span.heimu {
 }
 
 /* 日志相关 */
-summary{
-    border: 1px solid #ccc!important;
-    padding:14px;
-    border-radius: 16px!important;
+summary {
+    border: 1px solid #ccc !important;
+    padding: 14px;
+    border-radius: 16px !important;
 }
 
-details{
-    border-bottom: 1px solid #ccc!important;padding:14px;border-color: #f4433621!important;
+details {
+    border-bottom: 1px solid #ccc !important;
+    padding: 14px;
+    border-color: #f4433621 !important;
 }
 
-.right{
-    float:right;
+.right {
+    float: right;
     margin: 5px;
 }
 
-.left{
+.left {
     float: left;
     margin: 5px;
 }
 
 /* new year */
-.fu{
-animation: move 5s linear infinite;
+.fu {
+    animation: move 5s linear infinite;
 }
 
-        @keyframes move{
-             
-             0%{
-                 transform: rotate(0deg);
-             }
-             100%{
-                 transform: rotate(360deg);
-             }
-            }
+@keyframes move {
+
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 /* ul */
-.head{
-font-size: 26px;
-margin-top: 12px;
+.head {
+    font-size: 26px;
+    margin-top: 12px;
 }
-.foot{
-color: #ffb5b5;
-font-size: 12px;
+
+.foot {
+    color: #ffb5b5;
+    font-size: 12px;
 }
-a{
-text-decoration: none;}
+
+a {
+    text-decoration: none;
+}
 
 /* 信息框 来源萌娘百科https://commons.moegirl.org.cn/Template:Info*/
 .common-box {
@@ -157,87 +169,116 @@ text-decoration: none;}
 
 /* 普通页面 */
 
-.title{
-background-color: rgb(191, 232, 232);
-border-radius: 5px;
-padding-top: 0;
-padding-bottom: 5px;
-margin-bottom: 1%;
+.title {
+    background-color: rgb(191, 232, 232);
+    border-radius: 5px;
+    padding-top: 0;
+    padding-bottom: 5px;
+    margin-bottom: 1%;
 }
 
-#headimg{max-height: 80px;}
-#left{
-width: 12%;margin-top: 20px;top:5px;float: left;
-@media (max-width: 800px) {
-    margin-top: 0;
-    width: 100%;
-    text-align: center;
-}}
-
-#left > div{width: 100%;}
-
-#article-block{
-width: 75%;
-@media (max-width: 800px) {
-    width: 100%;
-}}
-
-.article{
-margin-left: 3px;
-margin-right: 3px;
+#headimg {
+    max-height: 80px;
 }
-main{
-width: 87%;
-float: left;
-@media (max-width: 800px) {
-    width: 100%;
-}}
 
-aside{
-width: 23%;
-margin-left: 1%;
-position: sticky;
-top:5px;
-overflow: auto;
-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
-transform: translateX(-600px) scale(0.5);
-opacity: 0;
-@media (min-width: 800px) {
-transform: none;
-opacity: 1;
+#left {
+    width: 12%;
+    margin-top: 20px;
+    top: 5px;
+    float: left;
+
+    @media (max-width: 800px) {
+        margin-top: 0;
+        width: 100%;
+        text-align: center;
+    }
 }
-@media (max-width: 800px) {
-    width: 98%;
-    position: fixed;
-    margin-left: 0;
-    top:auto;
-    bottom: 0;
-    z-index: 15;
-    height: 70%;
-}}
-aside.active{
-transform: translateX(0) scale(1);
-display: block;
-opacity: 1;}
-.card{
-background-color: rgb(255, 255, 255);
-border: 1px solid rgb(133, 114, 114);
-border-radius: 5px;
-float: left;
-margin-top: 5px;
+
+#left>div {
+    width: 100%;
+}
+
+#article-block {
+    width: 75%;
+
+    @media (max-width: 800px) {
+        width: 100%;
+    }
+}
+
+.article {
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
+main {
+    width: 87%;
+    float: left;
+
+    @media (max-width: 800px) {
+        width: 100%;
+    }
+}
+
+aside {
+    width: 23%;
+    margin-left: 1%;
+    position: sticky;
+    top: 5px;
+    overflow: auto;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+    transform: translateX(-600px) scale(0.5);
+    opacity: 0;
+
+    @media (min-width: 800px) {
+        transform: none;
+        opacity: 1;
+    }
+
+    @media (max-width: 800px) {
+        width: 98%;
+        position: fixed;
+        margin-left: 0;
+        top: auto;
+        bottom: 0;
+        z-index: 15;
+        height: 70%;
+    }
+}
+
+aside.active {
+    transform: translateX(0) scale(1);
+    display: block;
+    opacity: 1;
+}
+
+.card {
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(133, 114, 114);
+    border-radius: 5px;
+    float: left;
+    margin-top: 5px;
 }
 
 
 /* 来自萌娘百科 */
-h2, h3, h4, h5, h6{
-margin: 1rem 0;
-padding: .2rem .2rem .2rem 1rem;
-color: rgb(44, 62, 80);
-font-weight: 700;
-position: relative;
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 1rem 0;
+    padding: .2rem .2rem .2rem 1rem;
+    color: rgb(44, 62, 80);
+    font-weight: 700;
+    position: relative;
 }
 
-h2:before, h3:before, h4:before, h5:before, h6:before{
+h2:before,
+h3:before,
+h4:before,
+h5:before,
+h6:before {
     width: .25em;
     height: 70%;
     background-color: rgb(37, 180, 73);
@@ -250,7 +291,9 @@ h2:before, h3:before, h4:before, h5:before, h6:before{
     border-radius: 1em;
 }
 
-*, :before, :after {
+*,
+:before,
+:after {
     --un-rotate: 0;
     --un-rotate-x: 0;
     --un-rotate-y: 0;
@@ -303,15 +346,16 @@ h2:before, h3:before, h4:before, h5:before, h6:before{
     --un-backdrop-sepia: ;
 }
 
-h1{
-font-size: 2.25rem;
+h1 {
+    font-size: 2.25rem;
 }
 
 /* 居中图 */
-.container{
-text-align: center;
-margin: 20px 0;
+.container {
+    text-align: center;
+    margin: 20px 0;
 }
+
 figcaption {
     color: #999;
     font-size: 14px;
@@ -323,16 +367,16 @@ figcaption {
 }
 
 /* 红色强调 */
-.stress{
-    color:red;
-    font-size:larger;
+.stress {
+    color: red;
+    font-size: larger;
 }
 
 /* 目录滚动条*/
-.dir{
-display: block;
-height: calc((100vh - 80px - 6rem)/2);
-overflow: auto;
+.dir {
+    display: block;
+    height: calc((100vh - 80px - 6rem)/2);
+    overflow: auto;
 }
 
 .circle-text {
@@ -350,23 +394,25 @@ overflow: auto;
     text-align: center;
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box; 
-    font-family: 12px/1.5 Tahoma,Helvetica,Arial,'宋体',sans-serif; 
+    -moz-box-sizing: border-box;
+    font-family: 12px/1.5 Tahoma, Helvetica, Arial, '宋体', sans-serif;
 }
 
-@keyframes rt-fade-in-down{
-0%{
-opacity: 0;
-transform: translate(0, -20px);
+@keyframes rt-fade-in-down {
+    0% {
+        opacity: 0;
+        transform: translate(0, -20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
 }
-100% {
-    opacity: 1;
-    transform: translate(0, 0);
-}
-}
+
 .referbox {
-  position:absolute;
-z-index: 100;
+    position: absolute;
+    z-index: 100;
     max-width: 350px;
     background: #fff;
     color: #222;
@@ -378,23 +424,27 @@ z-index: 100;
     overflow-wrap: break-word;
     animation: rt-fade-in-down 0.2s ease forwards;
 }
-.tooltipTail{
+
+.tooltipTail {
     transform: rotate(-45deg);
     transform-origin: 100% 100%;
     bottom: 0;
     left: 15px;
 }
+
 .tooltipTail {
     background: linear-gradient(to top right, #c8ccd1 50%, rgb(0 0 0 / 0%) 50%);
 }
 
-.tooltipTail, .tooltipTail::after {
+.tooltipTail,
+.tooltipTail::after {
     position: absolute;
     width: 12px;
     height: 12px;
 }
 
-.referbox, .tooltipContent {
+.referbox,
+.tooltipContent {
     margin-bottom: -8px;
     padding-bottom: 16px;
 }
@@ -407,13 +457,13 @@ z-index: 100;
     box-sizing: content-box;
 }
 
-refer{
-padding-top: 7px;
+refer {
+    padding-top: 7px;
 }
 
 /* 手机端目录悬浮窗 */
-.content-botton{
-position: fixed;
+.content-botton {
+    position: fixed;
     right: 0;
     bottom: 30%;
     z-index: 10;
@@ -426,12 +476,13 @@ position: fixed;
     color: rgb(37, 180, 73);
     transition: all .48s ease;
     margin-right: -10rem;
-@media (max-width: 800px) {
-    margin-right: -1.5rem;
-}
+
+    @media (max-width: 800px) {
+        margin-right: -1.5rem;
+    }
 }
 
-.icon{
+.icon {
     width: 1em;
     height: 1em;
     display: inline-flex;
@@ -444,11 +495,11 @@ position: fixed;
     stroke-width: 2;
 }
 
-#float-toc-trigger:hover{
+#float-toc-trigger:hover {
     margin-right: -0.01rem !important;
 }
 
-.backdrop{
+.backdrop {
     position: fixed;
     left: 0;
     top: 0;
@@ -571,43 +622,47 @@ position: fixed;
     color: var(--n-text-color-hover);
 }
 
-.sidenav-header-close{
-right: 5px;
-position: relative;
-top: 5px;
-float: right;
-display: none;
-@media (max-width: 800px) {
-    display: block;
-}
-    
+.sidenav-header-close {
+    right: 5px;
+    position: relative;
+    top: 5px;
+    float: right;
+    display: none;
+
+    @media (max-width: 800px) {
+        display: block;
+    }
+
 
 }
 
 /* prism自动换行 */
-.line-numbers{
-white-space: pre-wrap !important;
+.line-numbers {
+    white-space: pre-wrap !important;
 }
 
 /* 目录相关 */
-.content-link div{
-color: rgb(44, 62, 80);
+.content-link div {
+    color: rgb(44, 62, 80);
 }
-.catalog span .number{
-opacity: .5;
-font-size: 0.8rem;
-margin-right: 4px;
+
+.catalog span .number {
+    opacity: .5;
+    font-size: 0.8rem;
+    margin-right: 4px;
 }
-.catalog{
-font-size: 1.05rem;
-padding-top: 8px;
-padding-bottom: 8px;
-padding-left: 4px;
-margin-top: 0;
-margin-bottom: 0;
-position: relative;
+
+.catalog {
+    font-size: 1.05rem;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 4px;
+    margin-top: 0;
+    margin-bottom: 0;
+    position: relative;
 }
-.catalog:before{
+
+.catalog:before {
     width: .25em;
     height: 110%;
     background-color: rgb(228, 227, 226);
@@ -617,11 +672,14 @@ position: relative;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    border-radius: 1em;}
-.catalog-active span{
-color: rgb(33, 158, 64);
+    border-radius: 1em;
 }
-.catalog-active{
-background-color: rgb(185, 230, 200);
-border-radius: 3px;
+
+.catalog-active span {
+    color: rgb(33, 158, 64);
+}
+
+.catalog-active {
+    background-color: rgb(185, 230, 200);
+    border-radius: 3px;
 }

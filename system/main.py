@@ -613,6 +613,7 @@ def apply():
         is_system_edited = confirm("是否进行系统级修改（包括模板）？")
         if is_system_edited:
             print("请对照git更改记录手动填写。")
+            print("[!] 请注意是否在main.py里修改了js,css文件的版本。")
             if len(logs) >= 2:
                 summary = "操作了多个页面，进行了系统级优化："
             else:
@@ -675,10 +676,10 @@ if __name__=="__main__":
                 f = open(PATH_LOG,"w",encoding="utf-8")
                 f.close()
             ver_style="11"
-            ver_template="15"
+            ver_template="16"
             ver_self_adaption="8"
             ver_decode="6"
-            ver_sp_days="2"
+            ver_sp_days="3"
             announcement = '距离2027年高考只剩：<span id="countdown"></span><br/>手机端可以点击右侧的按钮打开目录！'
             # 基础页面
             html = '<!DOCTYPE html><html lang="zh-CN"><head><title id="title">{{title}} - 柳下回声</title><link rel="stylesheet" type="text/css" href="../style.css?version={ver_style}"><link rel="stylesheet" href="../prism.css"/><script src="../js/template.js?version={ver_template}"></script><script src="../js/prism.js"></script><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"></head><body><div id="left"><div class="card"><a href="../index.html"><img src="https://i0.hdslb.com/bfs/new_dyn/6b9a00e9e33b23aa49a340015c86866c432466738.png" style="max-width: 100%;" title="主页" id="headimg"></a><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><div class="card" id="announcement"><h3>公告</h3>{announcement}</div></div><main id="main"><div class="title"><h1 style="margin-bottom: 0;" id="title_page">{{title}}</h1></div><div id="article-block" class="card"><div class="article" id="article">{{content}}</div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：{{date}}</span><br><span>创建时间：{{create}}</span><br><span>标签：{{tags}}</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/{{title}}/content.html" target="_blank">源文件(github)</a><br><a href="源代码查看.html?target={{title}}" target="_blank">源代码</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/{{title}}/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../js/decode.js?version={ver_decode}"></script><script src="../js/self-adaption.js?version={ver_self_adaption}"></script><script src="../js/special_days.js?version={ver_sp_days}"></script><script src="../js/countdown.js"></script></html>'.format(ver_style=ver_style,ver_template=ver_template,ver_self_adaption=ver_self_adaption,ver_decode=ver_decode,announcement=announcement,ver_sp_days=ver_sp_days)

@@ -49,6 +49,36 @@ for (var i = 0; i < pObjs.length; i++) {
 }
 
 // 一级模板处理
+// 年月日
+// <year></year><month></month><day></day>
+today = new Date();
+var pObjs = document.getElementsByTagName("year");
+for (var i = 0; i < pObjs.length; i++) {
+pObjs[i].innerHTML = today.getFullYear()
+}
+var pObjs = document.getElementsByTagName("month");
+for (var i = 0; i < pObjs.length; i++) {
+pObjs[i].innerHTML = today.getMonth()+1
+}
+var pObjs = document.getElementsByTagName("day");
+for (var i = 0; i < pObjs.length; i++) {
+pObjs[i].innerHTML = today.getDate()
+}
+
+// 网易云外链播放器
+//<wyy>歌曲id/完整的歌曲链接</wyy>
+var pObjs = document.getElementsByTagName("wyy");
+if(pObjs.length > 3){
+// 防止外链播放器过多导致卡顿
+for (var i = 0; i < pObjs.length; i++) {
+if(pObjs[i].innerHTML.startsWith("https")){pObjs[i].innerHTML = pObjs[i].innerHTML.match(/\d+/g)[1]}
+pObjs[i].innerHTML = '<iframe title="网易云音乐" frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 loading="lazy" id="wyy_'+i+'" osrc="https://music.163.com/outchain/player?type=2&id='+ pObjs[i].innerHTML +'&auto=0&height=66"></iframe><button id="wyy_button_'+i+'" type="button" onclick="document.getElementById(\'wyy_'+i+'\').setAttribute(\'src\',document.getElementById(\'wyy_'+i+'\').getAttribute(\'osrc\'));document.getElementById(\'wyy_button_'+i+'\').outerHTML=\'\';">加载音乐</button>'
+}
+}else{
+for (var i = 0; i < pObjs.length; i++) {
+if(pObjs[i].innerHTML.startsWith("https")){pObjs[i].innerHTML = pObjs[i].innerHTML.match(/\d+/g)[1]}
+pObjs[i].innerHTML = '<iframe title="网易云音乐" frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id='+ pObjs[i].innerHTML +'&auto=0&height=66"></iframe>'
+}}
 
 // 外部链接跳转
 

@@ -174,7 +174,7 @@ def edit_page():
                 else:
                     break
             except ValueError as e:
-                print("输入不符合要求：{e}")
+                print(f"输入不符合要求：{e}")
         title = ordered_data[cmd]["title"]
         dir = os.path.join("pages",title)
         is_locked = ordered_data[cmd]["is_locked"]
@@ -347,7 +347,7 @@ def edit_page():
                                 r = encrypt_oracle("locked"+r,password)
                                 break
                             except ValueError as e:
-                                print("加密失败，{e}。请尝试修改长度！")
+                                print(f"加密失败，{e}。请尝试修改长度！")
                         else:
                             break
                     os.remove("temp.html")
@@ -405,6 +405,7 @@ def edit_page():
                         traceback.print_exc()
                         print("无法删除，请手动删除",dir)
                     # 更新索引
+                    log("删除了页面[[{0}]]".format(title))
                     edit_index(title,mode=1)
                     break
             elif cmd == "7" and is_locked:
@@ -438,7 +439,7 @@ def new_page():
         try:
             os.mkdir(dir)
         except OSError as e:
-            print("标题不符合要求（请检查是否包含\\ / : * ? \" < > |）：{e}")
+            print(f"标题不符合要求（请检查是否包含\\ / : * ? \" < > |）：{e}")
             title = ""
         else:
             os.rmdir(dir)
@@ -492,7 +493,7 @@ def new_page():
             try:
                 r = encrypt_oracle("locked"+r,password)
             except Exception as e:
-                print("加密失败：{e}，请修改长度后重试")
+                print(f"加密失败：{e}，请修改长度后重试")
             else:
                 break
         else:

@@ -52,7 +52,13 @@ function apply_template() {
             pObjs[i].setAttribute("img_src", "https://img.moegirl.org.cn/common/thumb/2/26/Nuvola_apps_important_blue.svg/75px-Nuvola_apps_important_blue.svg.png");
             pObjs[i].setAttribute("side_color", "blue");
             pObjs[i].setAttribute("width", "50"); pObjs[i].setAttribute("height", "50");
-            pObjs[i].innerHTML = "<b>这个页面正在施工中。</b><br/>您所看到的页面未必是最新，可能存在文字缺失。";
+            pObjs[i].innerHTML = "<b>这个页面正在施工中。</b><br/>您所看到的页面未必是最新，可能存在内容缺失。";
+        }
+        else if (pObjs[i].innerHTML == "长期更新") {
+            pObjs[i].setAttribute("img_src", "https://img.moegirl.org.cn/common/thumb/1/19/Ambox_currentevent.svg/75px-Ambox_currentevent.svg.png");
+            pObjs[i].setAttribute("side_color", "blue");
+            pObjs[i].setAttribute("width", "50"); pObjs[i].setAttribute("height", "50");
+            pObjs[i].innerHTML = "<b>此页面中存在需要长期更新的内容，现存条目中内容未必是最新。</b>";
         }
     }
 

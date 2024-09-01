@@ -1,6 +1,8 @@
 /* 背景 */
 body {
     background: var(--background) fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 /* 根字体 */

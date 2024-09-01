@@ -8,7 +8,7 @@ alert("输入格式不正确！")
 }
 function url_apply(target,config){
 if(/^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/.test(document.getElementById(target).value)){
-document.cookie = "{config}={color}; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/".replace("{color}", document.getElementById(target).value).replace("{config}",config);
+document.cookie = "{config}=url({url}); expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/".replace("{url}", document.getElementById(target).value).replace("{config}",config);
 location.reload();}else{
 alert("输入格式不正确！")
 }

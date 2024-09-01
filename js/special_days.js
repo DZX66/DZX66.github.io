@@ -2,8 +2,9 @@
 function generateRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-const today = new Date();
-const yesterday = new Date();
+{
+let today = new Date();
+let yesterday = new Date();
 yesterday.setDate(today.getDate() - 1); // 设置为前一天的日期
 
 function findSpecialDay(year, month, day) {
@@ -28,3 +29,4 @@ text_yesterday = findSpecialDay(today.getFullYear(), today.getMonth() + 1, today
 text_today = findSpecialDay(yesterday.getFullYear(), yesterday.getMonth() + 1, yesterday.getDate())
 if (text_yesterday != null) { document.getElementById("announcement").innerHTML = document.getElementById("announcement").innerHTML + text_yesterday.replace(/{t}/g, "昨") }
 if (text_today != null) { document.getElementById("announcement").innerHTML = document.getElementById("announcement").innerHTML + text_today.replace(/{t}/g, "今") }
+}

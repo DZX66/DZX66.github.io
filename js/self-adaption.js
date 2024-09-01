@@ -19,6 +19,7 @@ function open_info() {
     document.getElementById("black_backdrop").style.display = 'block';
     document.getElementById("aside").classList.add("active");
     document.getElementById("aside").style.display = 'block';
+    document.getElementById("aside").style.backgroundColor = 'rgba(255, 255, 255, 1)';
     if (document.getElementById("main").hasAttribute("catalog_written")) {
         if (!document.getElementById("main").hasAttribute("onclick_corrected")) {
             document.getElementById("main").setAttribute("onclick_corrected", "true");

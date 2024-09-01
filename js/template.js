@@ -1,3 +1,31 @@
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+}
+// 应用用户自定义样式
+if(!getCookie("config_background")){
+document.documentElement.style.setProperty("--background",getCookie("config_background"))
+}
+if(!getCookie("config_link_color")){
+document.documentElement.style.setProperty("--link-color",getCookie("config_link_color"))
+}
+if(!getCookie("config_link_color_hover")){
+document.documentElement.style.setProperty("--link-color-hover",getCookie("config_link_color_hover"))
+}
+if(!getCookie("config_theme_color")){
+document.documentElement.style.setProperty("--theme-color",getCookie("config_theme_color"))
+}
+if(!getCookie("config_theme_color_secondary")){
+document.documentElement.style.setProperty("--theme-color-secondary",getCookie("config_theme_color_secondary"))
+}
+if(!getCookie("config_foot_color")){
+document.documentElement.style.setProperty("--foot-color",getCookie("config_foot_color"))
+}
 function apply_template() {
 
     // 二级模板处理

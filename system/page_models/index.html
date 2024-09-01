@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title>柳下回声</title>
+    <link rel="stylesheet" type="text/css" href="../../style.css?version={ver_style}">
+    <link rel="stylesheet" href="../../prism.css" />
+    <script src="../../js/template.js?version={ver_template}"></script>
+    <script src="../../js/prism.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="referrer" content="no-referrer">
+</head>
+
+<body>
+    <div class="card" style="text-align: center;"><img src="https://i0.hdslb.com/bfs/new_dyn/6b9a00e9e33b23aa49a340015c86866c432466738.png" style="max-width: 100%;" title="主页"></div>
+    <div class="card" id="announcement">
+        <h3>公告</h3>{announcement}
+    </div>
+    <div class="card">
+<img src="https://img.moegirl.org.cn/common/thumb/a/ad/ATRI_KV.jpg/1920px-ATRI_KV.jpg" title="头图" width="40%" class="left" id="head_img"/>
+        <div style="display: flow-root;" id="head_text">
+            <h2>欢迎来到柳下回声！</h2>
+            <p>本网站<b>柳下回声</b>是一个以wiki为运作模式的个人博客小网站，用于记录某些事件或观点，或者提供某些服务。本网站用纯html+css+js制作以及python辅助管理，页面样式参考了多个网站。本网站托管于<a href="https://github.com/DZX66/DZX66.github.io" target="_blank">GitHub Pages</a>，图片多来源于各种图床。</p>
+            <p>图源：<a href="https://zh.moegirl.org.cn/ATRI_-My_Dear_Moments-" target="_blank">ATRI_-My_Dear_Moments-</a>
+            </p>
+        </div>
+    </div>
+    <div class="card">
+        <h2>最新页面</h2><a href="../../blogs.html">所有页面</a>
+        <ul style="list-style-type: none;">{{latest}}</ul>
+    </div>
+    <div class="card">
+        <h2>官方文档</h2>
+        <ul style="list-style-type: none;">{{offical}}</ul>
+    </div>
+    <div class="card">
+        <h2>小工具</h2>
+        <ul style="list-style-type: none;">{{tools}}</ul>
+    </div>
+</body>
+<script src="../../js/special_days.js?version={ver_sp_days}"></script>
+<script src="../../js/countdown.js?{ver_countdown}"></script>
+<script>if (document.documentElement.clientWidth <= 736){{{{document.getElementById("head_img").style.width = "98%"; document.getElementById("head_text").style.display = "inline-block";}}}}</script>
+</html>

@@ -1,6 +1,6 @@
 /* 背景 */
 body {
-    background-color: #fcfdf8;
+    background: var(--background) fixed;
 }
 
 /* 根字体 */
@@ -27,22 +27,22 @@ hr {
 
 /* 未访问的链接 */
 a:link {
-    color: #9cb480;
+    color: var(--link-color);
 }
 
 /* 已访问的链接 */
 a:visited {
-    color: #9cb480;
+    color: var(--link-color);
 }
 
 /* 鼠标悬停链接 */
 a:hover {
-    color: #82d622;
+    color: var(--link-color-hover);
 }
 
 /* 已选择的链接 */
 a:active {
-    color: #9cb480;
+    color: var(--link-color);
 }
 
 /* 黑幕模板配合CSS */
@@ -145,7 +145,7 @@ details {
 }
 
 .foot {
-    color: #ffb5b5;
+    color: var(--foot-color);
     font-size: 12px;
 }
 
@@ -220,7 +220,7 @@ main {
     }
 }
 
-aside {
+#aside {
     width: 23%;
     margin-left: 1%;
     position: sticky;
@@ -246,18 +246,19 @@ aside {
     }
 }
 
-aside.active {
+#aside.active {
     transform: translateX(0) scale(1);
     display: block;
     opacity: 1;
 }
 
 .card {
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0.85);
     border: 1px solid rgb(133, 114, 114);
     border-radius: 5px;
     float: left;
     margin-top: 5px;
+    width: 100%;
 }
 
 
@@ -281,7 +282,7 @@ h5:before,
 h6:before {
     width: .25em;
     height: 70%;
-    background-color: rgb(37, 180, 73);
+    background-color: var(--theme-color);
     content: "";
     display: block;
     position: absolute;
@@ -473,7 +474,7 @@ refer {
     box-shadow: 0 0 .5rem #0000004d;
     padding: 1rem 2rem 1rem 1rem;
     font-size: 1.5rem;
-    color: rgb(37, 180, 73);
+    color: var(--theme-color);
     transition: all .48s ease;
     margin-right: -10rem;
 
@@ -676,10 +677,19 @@ refer {
 }
 
 .catalog-active span {
-    color: rgb(33, 158, 64);
+    color: var(--theme-color);
 }
 
 .catalog-active {
-    background-color: rgb(185, 230, 200);
+    background-color: var(--theme-color-secondary);
     border-radius: 3px;
+}
+
+:root{
+--background: #fcfdf8;
+--link-color: #9cb480;
+--link-color-hover: #82d622;
+--theme-color: rgb(37, 180, 73);
+--theme-color-secondary: rgb(185, 230, 200);
+--foot-color: #ffb5b5;
 }

@@ -1,6 +1,6 @@
 <script>
 function color_apply(target,config){
-if(/^#[0-9a-fA-F]{1,6}$/.test(document.getElementById(target).value)){
+if(/^#[0-9a-fA-F]{1,6}$/.test(document.getElementById(target).value) || /^(RGB|rgb)\((0|1\d{0,2}|2[0-4]\d|25[0-5]|\d{1,2}), (0|1\d{0,2}|2[0-4]\d|25[0-5]|\d{1,2}), (0|1\d{0,2}|2[0-4]\d|25[0-5]|\d{1,2})\)$/.test(document.getElementById(target).value)){
 document.cookie = "{config}={color}; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/".replace("{color}", document.getElementById(target).value).replace("{config}",config);
 location.reload();}else{
 alert("输入格式不正确！")
@@ -13,18 +13,9 @@ location.reload();}else{
 alert("输入格式不正确！")
 }
 }
-if(/^#[0-9a-fA-F]{1,6}$/.test(getCookie("config_background"))){
-document.getElementById("background-color").value = getCookie("config_background");}else{
-document.getElementById("background-image").value = getCookie("config_background");
-}
-document.getElementById("link-color").value = getCookie("config_link_color");
-document.getElementById("link-color-hover").value = getCookie("config_link_color_hover");
-document.getElementById("theme-color").value = getCookie("config_theme_color");
-document.getElementById("theme-color-secondary").value = getCookie("config_theme_color_secondary");
-document.getElementById("foot-color").value = getCookie("config_foot_color");
 </script>
 <h2>自定义样式</h2>
-<p>请在输入框内填入十六进制颜色（如：#fcfdf8），您可以在<a href="https://www.sojson.com/web/panel.html" target="_blank" rel="noopener noreferrer">调色板</a>获取颜色。</p>
+<p>请在输入框内填入十六进制颜色（如：#fcfdf8）或rgb（如：rgb(255,255,255)），您可以在<a href="https://www.sojson.com/web/panel.html" target="_blank" rel="noopener noreferrer">调色板</a>获取颜色。</p>
 <h3>背景</h3>
 <p>纯色：<span style="width: 20px; height: 20px; display: inline-block;background: var(--background);"></span><input value="" id="background-color"><button onclick='color_apply("background-color","config_background")'>应用</button></p>
 <p>图片（网址）：<input value="" id="background-image"><button onclick='url_apply("background-image","config_background")'>应用</button></p>
@@ -36,3 +27,14 @@ document.getElementById("foot-color").value = getCookie("config_foot_color");
 <p>次要：<span style="width: 20px; height: 20px; display: inline-block;background: var(--theme-color-secondary);"></span><input value="" id="theme-color-secondary"><button onclick='color_apply("theme-color-secondary","config_theme_color_secondary")'>应用</button></p>
 <h3>其他</h3>
 <p>小字信息部分：<span style="width: 20px; height: 20px; display: inline-block;background: var(--foot-color);"></span><input value="" id="foot-color"><button onclick='color_apply("theme-color","config_foot_color")'>应用</button></p>
+<script>
+window.addEventListener("load",function(){
+if(/^#[0-9a-fA-F]{1,6}$/.test(window.getComputedStyle(document.documentElement).getPropertyValue("--background"))){
+document.getElementById("background-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--background");}else{
+document.getElementById("background-image").value = window.getComputedStyle(document.documentElement).getPropertyValue("--background");
+}
+document.getElementById("link-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--link-color");
+document.getElementById("link-color-hover").value = window.getComputedStyle(document.documentElement).getPropertyValue("--link-color-hover");
+document.getElementById("theme-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--theme-color");
+document.getElementById("theme-color-secondary").value = window.getComputedStyle(document.documentElement).getPropertyValue("--theme-color-secondary");
+document.getElementById("foot-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--foot-color");});</script>

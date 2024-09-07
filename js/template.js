@@ -10,8 +10,10 @@ function getCookie(cname) {
 // 应用用户自定义样式
 var background = getCookie("config_background");
 if(background){
-if(background.startsWith("url")){document.body.style.backgroundImage = background.slice(4,-1);}
-document.documentElement.style.setProperty("--background",background)
+if(background.startsWith("url")){
+window.addEventListener("load",function(){
+document.body.style.backgroundImage = background.slice(4,-1);});}
+document.documentElement.style.setProperty("--background",background);
 }
 if(getCookie("config_link_color")){
 document.documentElement.style.setProperty("--link-color",getCookie("config_link_color"))

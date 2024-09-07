@@ -610,7 +610,7 @@ def apply():
             if res == "":
                 logs[i] = logs[i][:-1]
             else:
-                logs[i] = logs[i][:-1]+res
+                logs[i] = logs[i][:-1]+": "+res
         is_system_edited = confirm("是否进行系统级修改（包括模板）？")
         if is_system_edited:
             print("请对照git更改记录手动填写。")
@@ -696,7 +696,7 @@ if __name__=="__main__":
                 ver_style = hashlib.md5(f.read().encode("utf-8")).hexdigest()[:8]
                 print("style.css:",ver_style)
             print("版本获取完成。")
-            announcement = '距离2027年高考只剩：<span id="countdown"></span><br/>距离开学只剩：<span id="countdown1"></span><br/>手机端可以点击右侧的按钮打开目录！'
+            announcement = '距离2027年高考只剩：<span id="countdown"></span><br/>手机端可以点击右侧的按钮打开目录！'
             with open("page_models/index.html","r",encoding="utf-8") as f:
                 content = f.readlines()
                 res = ""

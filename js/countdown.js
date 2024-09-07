@@ -24,4 +24,3 @@ function updateCountdown() {
 // 开始倒计时
 const intervalId = setInterval(updateCountdown, 1000);}
 countdown("countdown","2027-6-7")
-countdown("countdown1",Date.parse("2024/8/19 8:00"))

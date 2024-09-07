@@ -11,8 +11,10 @@ function getCookie(cname) {
 var background = getCookie("config_background");
 if(background){
 if(background.startsWith("url")){
-window.addEventListener("load",function(){
-document.body.style.backgroundImage = background.slice(4,-1);});}
+const background_img = document.createElement("img");
+background_img.src = background.slice(4,-1);
+background_img.style.display = "none";
+document.head.appendChild(background_img);}
 document.documentElement.style.setProperty("--background",background);
 }
 if(getCookie("config_link_color")){

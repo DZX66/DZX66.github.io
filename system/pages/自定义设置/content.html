@@ -34,7 +34,7 @@ alert("输入格式不正确！")
 window.addEventListener("load",function(){
 if(/^#[0-9a-fA-F]{1,6}$/.test(window.getComputedStyle(document.documentElement).getPropertyValue("--background"))){
 document.getElementById("background-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--background");}else{
-document.getElementById("background-image").value = window.getComputedStyle(document.documentElement).getPropertyValue("--background");
+document.getElementById("background-image").value = window.getComputedStyle(document.documentElement).getPropertyValue("--background").slice(4,-1);
 }
 document.getElementById("link-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--link-color");
 document.getElementById("link-color-hover").value = window.getComputedStyle(document.documentElement).getPropertyValue("--link-color-hover");

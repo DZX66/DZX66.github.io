@@ -202,13 +202,16 @@ def edit_page():
             print("="*10)
             print("0.返回上一级")
             print("1.修改标题")
-            print("2.上锁/解锁")
-            print("3.修改标签")
-            print("4.修改内容")
-            print("5.查看内容")
+            if "重定向页面" not in tags:
+                print("2.上锁/解锁")
+                print("3.修改标签")
+                print("4.修改内容")
+                print("5.查看内容")
             print("6.删除页面")
             if is_locked:
                 print("7.修改密码提示")
+            if "重定向页面" not in tags:
+                print("8.创建此页面的重定向页面")
             print("="*10)
             cmd = input("输入指令：")
             print()
@@ -245,7 +248,7 @@ def edit_page():
                 # 更新title和dir变量
                 title = ntitle
                 dir = ndir
-            elif cmd == "2":
+            elif cmd == "2" and "重定向页面" not in tags:
                 # 上锁/解锁
                 with open(os.path.join(dir,"content.html"),"r",encoding="utf-8") as f:
                     org_content = f.read()
@@ -304,7 +307,7 @@ def edit_page():
                     # 更新索引
                     edit_index(title,is_locked=True,tip=tip)
                     log("上锁了页面[[{0}]]".format(title))
-            elif cmd == "4":
+            elif cmd == "4" and "重定向页面" not in tags:
                 # 修改内容
                 with open(os.path.join("pages",title,"content.html"),"r",encoding="utf-8") as f:
                     org_content = f.read()
@@ -370,7 +373,7 @@ def edit_page():
                     if not (message+"\n" in res or "创建页面[[{0}]]\n".format(title) in res):
                         # 创建记录会覆盖修改记录，多个修改记录会合并
                         log(message)
-            elif cmd == "5":
+            elif cmd == "5" and "重定向页面" not in tags:
                 # 查看内容
                 with open(os.path.join("pages",title,"content.html"),"r",encoding="utf-8") as f:
                     org_content = f.read()
@@ -422,6 +425,34 @@ def edit_page():
                 # 更新索引
                 edit_index(title,tip=tip)
                 log("修改了[[{0}]]的密码提示".format(title))
+            elif cmd == "8" and "重定向页面" not in tags:
+                # 创建重定向页面
+                # 获取rtitle
+                rtitle = ""
+                while rtitle == "":
+                    rtitle = input("重定向自：")
+                    rdir = os.path.join("pages",rtitle)  # 获取rdir
+                    if rtitle == "":
+                        print("不能为空！")
+                    if os.path.exists(rdir):
+                        print(f"[[{rtitle}]]已存在！")
+                        rtitle = ""
+                    try:
+                        os.mkdir(rdir)
+                    except OSError as e:
+                        print(f"标题不符合要求（请检查是否包含\\ / : * ? \" < > |）：{e}")
+                        rtitle = ""
+                    else:
+                        os.rmdir(rdir)
+                os.mkdir(rdir)
+                with open(os.path.join(rdir,"content.html"),"w",encoding="utf-8") as f:
+                    f.write(title)
+                rattributes = {"title":rtitle,"tags":["重定向页面"],"is_locked":False,"create_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),"last_edit_time":datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}
+                with open(os.path.join(rdir,"attribute.json"),"w",encoding="utf-8") as f:
+                    f.write(json.dumps(rattributes, sort_keys=True, indent=4, separators=(',', ': '),ensure_ascii=False))
+                # 写入缓存
+                edit_index(rtitle,rattributes["last_edit_time"],rattributes["create_time"],False,["重定向页面"],-1 ,2)
+                log(f"创建重定向页面[[{rtitle}]]，重定向至[[{title}]]")
 def new_page():
     '''新建页面'''
     global html
@@ -516,7 +547,7 @@ def new_page():
     log("创建页面[[{0}]]".format(title))
 def apply():
     '''部署网站'''
-    global html,page,index_html
+    global html,page,index_html,redirect_html
     # 删除原有文件
     print("删除原有文件...")
     folder_path = "../pages"
@@ -535,24 +566,28 @@ def apply():
         data:dict[str,dict[Literal["title","tags","is_locked","create_time","last_edit_time","tip"],Union[str,bool,list[str]]]] = json.load(f)
     for i in data:
         with open(os.path.join("../pages/",data[i]["title"]+".html"),"w",encoding="utf-8") as f:
-            tag = ""
-            for o in data[i]["tags"]:
-                tag+=o+" "
-            if data[i]["is_locked"]:
-                with open(os.path.join("pages",data[i]["title"],"content.html"),"r",encoding="utf-8") as f1:
-                    f.write(html.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"],tags=tag,content='<div id="inputer"><p>这个文档被加密了，需要密码...</p><p id="code" style="display:none;">{base64}</p><p>密码提示:<span id="tip">{tip}</span></p><br/><span>密码：</span><input type="password" name="password" id="password"><button onclick="submit_password();">确定</button></div><div id="content"></div></div><script src="../js/crypto-js.min.js"></script>'.format(tip=data[i]["tip"],base64=f1.read())))
-            else:
-                with open(os.path.join("pages",data[i]["title"],"content.html"),"r",encoding="utf-8") as f1:
-                    f.write(html.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"],tags=tag,content=f1.read()))
+            with open(os.path.join("pages",data[i]["title"],"content.html"),"r",encoding="utf-8") as f1:
+                # 判断是否为重定向页面
+                if "重定向页面" in data[i]["tags"]:
+                    f.write(redirect_html.format(title=f1.read(),source=data[i]["title"]))
+                else:
+                    tag = ""
+                    for o in data[i]["tags"]:
+                        tag+=o+" "
+                    if data[i]["is_locked"]:
+                        f.write(html.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"],tags=tag,content='<div id="inputer"><p>这个文档被加密了，需要密码...</p><p id="code" style="display:none;">{base64}</p><p>密码提示:<span id="tip">{tip}</span></p><br/><span>密码：</span><input type="password" name="password" id="password"><button onclick="submit_password();">确定</button></div><div id="content"></div></div><script src="../js/crypto-js.min.js"></script>'.format(tip=data[i]["tip"],base64=f1.read())))
+                    else:
+                        f.write(html.format(title=data[i]["title"],date=data[i]["last_edit_time"],create=data[i]["create_time"],tags=tag,content=f1.read()))
     # 创建索引
     print("创建索引...")
     with open("../blogs.html","w",encoding="utf-8") as f:
         f.write('<!DOCTYPE html><html lang="zh-CN"><head><title>所有页面 - 柳下回声</title><link rel="stylesheet" type="text/css" href="style.css?version=1"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"></head><body><h1>所有页面</h1><p><a href="index.html">主页面</a></p><p>最后一次更新时间：{date}</p><hr><ul style="list-style-type: none;">'.format(date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")))
         for i in data:
-            tag = ""
-            for o in data[i]["tags"]:
-                tag+=o+" "
-            f.write(page.format(title=data[i]["title"],locked="已加密" if data[i]["is_locked"] else "公开",date=data[i]["last_edit_time"],tags=tag))
+            if "重定向页面" not in data[i]["tags"]:
+                tag = ""
+                for o in data[i]["tags"]:
+                    tag+=o+" "
+                f.write(page.format(title=data[i]["title"],locked="已加密" if data[i]["is_locked"] else "公开",date=data[i]["last_edit_time"],tags=tag))
         f.write("</ul></body></html>")
     # 创建主页
     print("创建主页...")
@@ -560,7 +595,8 @@ def apply():
     latest = ""
     edit_times_dict = {}
     for i in data:
-        edit_times_dict[parser.parse(data[i]["last_edit_time"]).timestamp()] = i # 以时间戳为键
+        if "重定向页面" not in data[i]["tags"]:
+            edit_times_dict[parser.parse(data[i]["last_edit_time"]).timestamp()] = i # 以时间戳为键
     edit_times_list = []
     for i in edit_times_dict:
         edit_times_list.append(i)
@@ -696,7 +732,7 @@ if __name__=="__main__":
                 ver_style = hashlib.md5(f.read().encode("utf-8")).hexdigest()[:8]
                 print("style.css:",ver_style)
             print("版本获取完成。")
-            announcement = '距离2027年高考只剩：<span id="countdown"></span><br/>手机端可以点击右侧的按钮打开目录！'
+            announcement = '距离2027年高考只剩：<span id="countdown"></span><br/>手机端可以点击右侧的按钮打开目录！<br/>现在可以在<a href="https://dzx66.github.io/pages/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AE%BE%E7%BD%AE.html">这个页面</a>自定义背景和其他样式了！'
             with open("page_models/index.html","r",encoding="utf-8") as f:
                 content = f.readlines()
                 res = ""
@@ -717,6 +753,12 @@ if __name__=="__main__":
                 for i in range(len(content)):
                     res += content[i].strip()
                 html_404 = res.format(ver_style=ver_style,ver_template=ver_template,ver_self_adaption=ver_self_adaption,announcement=announcement,ver_sp_days=ver_sp_days,ver_countdown=ver_countdown)
+            with open("page_models/redirect.html","r",encoding="utf-8") as f:
+                content = f.readlines()
+                res = ""
+                for i in range(len(content)):
+                    res += content[i].strip()
+                redirect_html = res
             # 一个条目
             page = "<li><div class='head'><a href='pages/{title}.html'>{title}</a></div><div class='foot'> {locked} 更新时间：{date} 标签：{tags}</div></li>"
             while True:

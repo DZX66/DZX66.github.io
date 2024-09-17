@@ -21,6 +21,7 @@ alert("输入格式不正确！")
 <h3>背景</h3>
 <p>纯色：<span style="width: 20px; height: 20px; display: inline-block;background: var(--background);"></span><input value="" id="background-color"><button onclick='color_apply("background-color","config_background")'>应用</button></p>
 <p>图片（网址）：<input value="" id="background-image"><button onclick='url_apply("background-image","config_background")'>应用</button></p>
+<p>图片（自己上传，支持png/jpg）：<input type="file" id="file" accept="image/jpeg,image/png" onchange="upload_image(event)"><span id="indexedDB_not_allowed" style="display: none;">您的浏览器不支持此功能：不支持indexedDB。</span></p>
 <h3>链接</h3>
 <p>默认：<span style="width: 20px; height: 20px; display: inline-block;background: var(--link-color);"></span><input value="" id="link-color"><button onclick='color_apply("link-color","config_link_color")'>应用</button></p>
 <p>鼠标悬停时：<span style="width: 20px; height: 20px; display: inline-block;background: var(--link-color-hover);"></span><input value="" id="link-color-hover"><button onclick='color_apply("link-color-hover","config_link_color_hover")'>应用</button></p>
@@ -32,10 +33,14 @@ alert("输入格式不正确！")
 </div>
 <script>
 window.addEventListener("load",function(){
+// 填充当前值
+
+// 判断是否为用户自行上传的图片
+if(!window.getComputedStyle(document.documentElement).getPropertyValue("--background").startsWith("url(blob")){
 if(/^#[0-9a-fA-F]{1,6}$/.test(window.getComputedStyle(document.documentElement).getPropertyValue("--background"))){
 document.getElementById("background-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--background");}else{
 document.getElementById("background-image").value = window.getComputedStyle(document.documentElement).getPropertyValue("--background").slice(4,-1);
-}
+}}
 document.getElementById("link-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--link-color");
 document.getElementById("link-color-hover").value = window.getComputedStyle(document.documentElement).getPropertyValue("--link-color-hover");
 document.getElementById("theme-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--theme-color");
@@ -43,4 +48,59 @@ document.getElementById("theme-color-secondary").value = window.getComputedStyle
 document.getElementById("foot-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--foot-color");
 document.getElementById("hint").style.display = "none";
 document.getElementById("settings").style.display ="block";
-});</script>
+});
+
+// IndexDB处理
+function upload_image(event) {
+const file = event.target.files[0];
+console.log(file);
+if (file.type == 'image/jpeg' || file.type == 'image/png') { // 如果文件是图片
+let blob = new Blob([file], { type: 'image/jpeg' });
+addFile({
+name: file.name,
+data: blob
+})
+document.cookie = "config_background=user; expires=Thu, 18 Dec 2043 12:00:00 GMT; path=/";
+location.reload();
+}
+}
+
+// 检查是否支持IndexedDB
+if(!window.indexedDB){
+document.getElementById("file").disabled=true;
+document.getElementById("indexedDB_not_allowed").style.display="block";
+}else{
+// 浏览器本地数据库
+console.log(indexedDB);// window.indexedDB
+// 打开数据库
+const request = indexedDB.open('background_image', 2);
+request.onerror = function (event) {
+console.error('数据库打开报错');
+}
+request.onupgradeneeded = function (event) {
+const db = event.target.result;
+console.log('数据库需要升级');
+// 创建一个对象存储空间
+db.createObjectStore('imgStore', { keyPath: 'id', autoIncrement: false });
+console.log('对象存储表创建成功');
+}
+request.onsuccess = function (event) {
+const db = event.target.result;
+console.log('数据库打开成功');
+addFile = function (file) {
+// 连接数据库的表，获取读写权限，默认只读
+const transaction = db.transaction(['imgStore'], 'readwrite');
+const objectStore = transaction.objectStore('imgStore');
+const del = objectStore.delete(1)
+del.onsuccess = function (event) {
+console.log('原有文件删除成功');
+}
+file.id = 1;
+const re = objectStore.put(file);
+re.onsuccess = function (event) {
+console.log('文件添加成功');
+}
+}
+}
+}
+</script>

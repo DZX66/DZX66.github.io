@@ -10,13 +10,51 @@ function getCookie(cname) {
 // 应用用户自定义样式
 var background = getCookie("config_background");
 if(background){
+if(background=="user"){
+// 用户上传的图片
+// 浏览器本地数据库
+console.log(indexedDB);// window.indexedDB
+let addFile;//添加文件的方法
+// 打开数据库
+const request = indexedDB.open('background_image', 2);
+request.onerror = function (event) {
+console.error('数据库打开报错');
+}
+request.onupgradeneeded = function (event) {
+const db = event.target.result;
+console.log('数据库需要升级');
+// 创建一个对象存储空间
+db.createObjectStore('imgStore', { keyPath: 'id', autoIncrement: false });
+console.log('对象存储表创建成功');
+}
+request.onsuccess = function (event) {
+const db = event.target.result;
+console.log('数据库打开成功');
+let getFile = function(){
+// 连接数据库的表
+const transaction = db.transaction(['imgStore'], 'readonly');
+const objectStore = transaction.objectStore('imgStore');
+// 获取数据
+const re = objectStore.get(1);
+re.onsuccess = function (event) {
+console.log(re.result);
+if(re.result!=undefined){
+
+document.documentElement.style.setProperty("--background","url("+URL.createObjectURL(re.result.data)+")");
+}
+}
+}
+getFile()
+}
+}else{
 if(background.startsWith("url")){
+// 用户指定的网址
 const background_img = document.createElement("img");
 background_img.src = background.slice(4,-1);
 background_img.style.display = "none";
 document.head.appendChild(background_img);}
 document.documentElement.style.setProperty("--background",background);
-}
+}}
 if(getCookie("config_link_color")){
 document.documentElement.style.setProperty("--link-color",getCookie("config_link_color"))
 }
@@ -33,6 +71,14 @@ if(getCookie("config_foot_color")){
 document.documentElement.style.setProperty("--foot-color",getCookie("config_foot_color"))
 }
 function apply_template() {
+
+// 检查重定向
+const url = new URL(window.location.href);
+// 使用URLSearchParams读取参数
+var source = url.searchParams.get('from');
+if(source){
+document.getElementById("article-block").innerHTML = "<span class='subtitle'>（重定向自[["+source+"]]）</span>" + document.getElementById("article-block").innerHTML;
+}
 
     // 二级模板处理
     // 特殊信息框（继承自infobox）：“现实人物”“先一起喊（接受shout参数）”“多图警告”“官方文档”

@@ -172,7 +172,7 @@ a {
 /* 普通页面 */
 
 .title {
-    background-color: rgb(191, 232, 232);
+    background-color: var(--theme-color-secondary);
     border-radius: 5px;
     padding-top: 0;
     padding-bottom: 5px;
@@ -685,6 +685,11 @@ refer {
 .catalog-active {
     background-color: var(--theme-color-secondary);
     border-radius: 3px;
+}
+
+/* 小字提示 */
+.subtitle{
+font-size: 0.8rem;
 }
 
 :root{

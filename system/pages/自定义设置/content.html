@@ -33,6 +33,7 @@ alert("输入格式不正确！")
 </div>
 <script>
 window.addEventListener("load",function(){
+setTimeout(function(){
 // 填充当前值
 
 // 判断是否为用户自行上传的图片
@@ -49,7 +50,7 @@ document.getElementById("theme-color-secondary").value = window.getComputedStyle
 document.getElementById("foot-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--foot-color");
 document.getElementById("hint").style.display = "none";
 document.getElementById("settings").style.display ="block";
-});
+},100);});
 
 // IndexDB处理
 function upload_image(event) {

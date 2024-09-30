@@ -78,6 +78,10 @@ const url = new URL(window.location.href);
 var source = url.searchParams.get('from');
 if(source){
 document.getElementById("article-block").innerHTML = "<span class='subtitle'>（重定向自[["+source+"]]）</span>" + document.getElementById("article-block").innerHTML;
+// 删除url中的from参数
+url.searchParams.delete("from");
+url.search=url.searchParams.toString();
+history.replaceState(null,"",url.href);
 }
 
     // 二级模板处理
@@ -90,7 +94,7 @@ document.getElementById("article-block").innerHTML = "<span class='subtitle'>（
             pObjs[i].setAttribute("img_src", "https://img.moegirl.org.cn/common/thumb/b/bc/Commons-emblem-issue.svg/75px-Commons-emblem-issue.svg.png");
             pObjs[i].setAttribute("side_color", "orange");
             pObjs[i].setAttribute("width", "50"); pObjs[i].setAttribute("height", "49");
-            pObjs[i].innerHTML = "<b>这是一个有关现存于世人物的条目。</b>编辑者不应对此条目所涉及的人物做出道德谴责，所有观点仅供参考，如觉得不妥，请联系编辑者修改或删除。";
+            pObjs[i].innerHTML = "<b>这是一个有关现存于世人物的条目。</b>所有内容仅供参考。理解万岁！";
         }
         else if (pObjs[i].innerHTML == "先一起喊") {
             pObjs[i].setAttribute("img_src", "https://img.moegirl.org.cn/common/thumb/6/6f/Emo_%E3%82%8F%E3%81%84%E3%81%AE%E3%82%8F%E3%81%84%E3%81%AE.png/75px-Emo_%E3%82%8F%E3%81%84%E3%81%AE%E3%82%8F%E3%81%84%E3%81%AE.png");

@@ -13,15 +13,26 @@ location.reload();}else{
 alert("输入格式不正确！")
 }
 }
+function reset(){
+var all_config = ["config_background","config_link_color","config_link_color_hover","config_theme_color","config_theme_color_secondary","config_foot_color"];
+all_config.forEach(function(i){
+document.cookie = i+"=";
+});
+location.reload();
+}
 </script>
+<infobox img_src="https://img.moegirl.org.cn/common/thumb/b/b1/Gnome-emblem-important.svg/75px-Gnome-emblem-important.svg.png" side_color="red" id="cookie_tip" style="display: none;"><span class="stress">无法使用cookie！</span><br/>您可能禁用了cookie，请检查设置。<br/>自定义设置功能依赖cookie。</infobox>
 <div id="hint"><p>加载中...</p><p>Loading...</p></div>
 <div id="settings" style="display: none;">
 <h2>自定义样式</h2>
 <p>请在输入框内填入十六进制颜色（如：#fcfdf8）或rgb（如：rgb(255,255,255)），您可以在<a href="https://www.sojson.com/web/panel.html" target="_blank" rel="noopener noreferrer">调色板</a>获取颜色。</p>
+<p>如果您的浏览器支持的话，您可以用这个简单的调色板：</p>
+<input type="color" id="color_getter" onchange="document.getElementById('color_getter_display').value=document.getElementById('color_getter').value;"><input type="text" value="#000000" id="color_getter_display" readonly><br/>
+<input type="button" onclick="reset();" value="重置所有设置">
 <h3>背景</h3>
-<p>纯色：<span style="width: 20px; height: 20px; display: inline-block;background: var(--background);"></span><input value="" id="background-color"><button onclick='color_apply("background-color","config_background")'>应用</button></p>
-<p>图片（网址）：<input value="" id="background-image"><button onclick='url_apply("background-image","config_background")'>应用</button></p>
-<p>图片（自己上传，支持png/jpg）：<input type="file" id="file" accept="image/jpeg,image/png" onchange="upload_image(event)"><span id="indexedDB_not_allowed" style="display: none;">您的浏览器不支持此功能：不支持indexedDB。</span></p>
+<p><input type="radio" name="background" id="radio-color" disabled>纯色：<span style="width: 20px; height: 20px; display: inline-block;background: var(--background);"></span><input value="" id="background-color"><button onclick='color_apply("background-color","config_background")'>应用</button></p>
+<p><input type="radio" name="background" id="radio-url" disabled>图片（网址）：<input value="" id="background-image"><button onclick='url_apply("background-image","config_background")'>应用</button></p>
+<p><input type="radio" name="background" id="radio-image" disabled>图片（自己上传，支持png/jpg）：<input type="file" id="file" accept="image/jpeg,image/png" onchange="upload_image(event)"><span id="indexedDB_not_allowed" style="display: none;">您的浏览器不支持此功能：不支持indexedDB。</span></p>
 <h3>链接</h3>
 <p>默认：<span style="width: 20px; height: 20px; display: inline-block;background: var(--link-color);"></span><input value="" id="link-color"><button onclick='color_apply("link-color","config_link_color")'>应用</button></p>
 <p>鼠标悬停时：<span style="width: 20px; height: 20px; display: inline-block;background: var(--link-color-hover);"></span><input value="" id="link-color-hover"><button onclick='color_apply("link-color-hover","config_link_color_hover")'>应用</button></p>
@@ -32,6 +43,10 @@ alert("输入格式不正确！")
 <p>小字信息部分：<span style="width: 20px; height: 20px; display: inline-block;background: var(--foot-color);"></span><input value="" id="foot-color"><button onclick='color_apply("theme-color","config_foot_color")'>应用</button></p>
 </div>
 <script>
+// 检查cookie是否被禁用
+document.cookie = 'test=123;';
+if(document.cookie==''){document.getElementById("cookie_tip").style.display="block";}
+document.cookie = 'test=; expires=Thu, 01 Jan 1970 00:00:01 GMT;'
 window.addEventListener("load",function(){
 setTimeout(function(){
 // 填充当前值
@@ -40,9 +55,11 @@ setTimeout(function(){
 console.log(window.getComputedStyle(document.documentElement).getPropertyValue("--background"))
 if(!window.getComputedStyle(document.documentElement).getPropertyValue("--background").startsWith("url(blob")){
 if(/^#[0-9a-fA-F]{1,6}$/.test(window.getComputedStyle(document.documentElement).getPropertyValue("--background"))){
+document.getElementById("radio-color").checked = true;
 document.getElementById("background-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--background");}else{
+document.getElementById("radio-image").checked = true;
 document.getElementById("background-image").value = window.getComputedStyle(document.documentElement).getPropertyValue("--background").slice(4,-1);
-}}
+}}else{document.getElementById("radio-image").checked = true;}
 document.getElementById("link-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--link-color");
 document.getElementById("link-color-hover").value = window.getComputedStyle(document.documentElement).getPropertyValue("--link-color-hover");
 document.getElementById("theme-color").value = window.getComputedStyle(document.documentElement).getPropertyValue("--theme-color");
@@ -105,4 +122,4 @@ console.log('文件添加成功');
 }
 }
 }
-</script></div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：2024-09-30 23:29:04</span><br><span>创建时间：2024-09-01 10:17:31</span><br><span>标签：特殊 官方文档 </span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/自定义设置/content.html" target="_blank">源文件(github)</a><br><a href="源代码查看.html?target=自定义设置" target="_blank">源代码</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/自定义设置/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../js/decode.js?version=9b165aab"></script><script src="../js/self-adaption.js?version=0990b180"></script><script src="../js/special_days.js?version=ab19c13a"></script><script src="../js/countdown.js?2b9479e5"></script></html>
+</script></div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：2024-10-01 17:44:04</span><br><span>创建时间：2024-09-01 10:17:31</span><br><span>标签：特殊 官方文档 </span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/自定义设置/content.html" target="_blank">源文件(github)</a><br><a href="源代码查看.html?target=自定义设置" target="_blank">源代码</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/自定义设置/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../js/decode.js?version=9b165aab"></script><script src="../js/self-adaption.js?version=0990b180"></script><script src="../js/special_days.js?version=ab19c13a"></script><script src="../js/countdown.js?2b9479e5"></script></html>

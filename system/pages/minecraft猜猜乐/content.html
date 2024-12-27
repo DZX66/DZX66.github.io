@@ -1,0 +1,148 @@
+<script>
+// 获取./assets/minecraftGuess/blocks.json的数据
+
+// 请求文件
+
+/**
+ * @type {Array}
+ */
+var data;
+if(window.XMLHttpRequest!=null && location.protocol == 'https:'){
+var xhr = new XMLHttpRequest();
+xhr.open('GET', './assets/minecraftGuess/blocks.json', true);
+xhr.send();
+xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+        data = JSON.parse(xhr.responseText);
+document.getElementById('start').style.display = 'none';
+document.getElementById('settings').style.display = 'block';
+    }else{
+        console.log('请求失败');
+    }
+}}else{
+    console.log('未检测到XMLHttpRequest或者处于本地环境');
+var json= open('../assets/minecraftGuess/blocks.json');
+json.onload = function(){
+data = JSON.parse(json.document.body.children[0].innerHTML);
+document.getElementById('start').style.display = 'none';
+document.getElementById('settings').style.display = 'block';
+json.close();
+}
+
+
+}
+var blocks = [];
+var num;
+var correct = 0;
+var wrong = 0;
+var process = 0;
+var acc = 1;
+var all_words = 0;
+var correct_words = 0;
+var index = 0;
+var showing = false;
+function create(){
+    num = document.getElementById('num').value;
+    
+    for (var i = 0; i < num; i++) {
+        var block = data[Math.floor(Math.random() * data.length)];
+        if (blocks.includes(block)) {
+            i--;
+            continue;
+        }
+        blocks.push(block);
+    }
+    document.getElementById('settings').style.display = 'none';
+    document.getElementById('game').style.display = 'block';
+    document.getElementById('img').src = 'https://zh.minecraft.wiki' + blocks[0].pic_path;
+    document.getElementById('img_next').src = 'https://zh.minecraft.wiki' + blocks[1].pic_path;
+    document.getElementById('input').focus();
+    document.getElementById('process').innerText = process + '/' + num;
+    document.getElementById('correct').innerText = correct;
+    document.getElementById('wrong').innerText = wrong;
+    document.getElementById('result').innerText = '';
+    document.getElementById('input').onkeydown = function (e) {
+        if (e.keyCode == 13 ) {
+            check();
+        }
+    }
+}
+function check(){
+    if(showing){return;}
+        var input = document.getElementById('input').value;
+        document.getElementById('input').disabled = true;
+        document.getElementById('link').href = 'https://zh.minecraft.wiki/w/' + blocks[index].name;
+        if (input == blocks[index].name) {
+            correct++;
+            document.getElementById('input').style.backgroundColor = 'lightgreen';
+            document.getElementById('correct').innerText = correct;
+            document.getElementById('result').innerHTML = '正确：' + '<span style="color: green;">' + blocks[index].name + '</span>(' + blocks[index].english + ')';
+            all_words += blocks[index].name.length;
+            correct_words += blocks[index].name.length;
+        } else {
+            wrong++;
+            document.getElementById('input').style.backgroundColor = 'red';
+            document.getElementById('wrong').innerText = wrong;
+            
+            all_words += blocks[index].name.length;
+            correct_words_index = [];
+            blocks[index].name.split('').forEach(function (word, index) {
+                input.split('').forEach(function (input_word) {
+                    if (word == input_word) {
+                        correct_words += 0.8;
+                        correct_words_index.push(index);
+                        return;
+                    }
+                });
+            });
+            var result = '';
+            blocks[index].name.split('').forEach(function (word, index) {
+                if (correct_words_index.includes(index)) {
+                    result += '<span style="color: green;">' + word + '</span>';
+                } else {
+                    result += '<span style="color: red;">' + word + '</span>';
+                }
+            });
+            document.getElementById('result').innerHTML = '错误：' + result + '(' + blocks[index].english + ')';
+        }
+        acc = correct_words / all_words;
+        document.getElementById('acc').innerText = (acc * 100).toFixed(2) + '%(' + correct_words.toFixed(2) + '/' + all_words + ')';
+showing = true;
+setTimeout(function(){
+        document.getElementById('input').style.backgroundColor = 'white';
+        process++;
+        document.getElementById('process').innerText = process + '/' + num;
+        index++;
+        if (index < num) {
+            document.getElementById('img').src = 'https://zh.minecraft.wiki' + blocks[index].pic_path;
+            if (index < num-1){document.getElementById('img_next').src = 'https://zh.minecraft.wiki' + blocks[index+1].pic_path;}
+            document.getElementById('input').value = '';
+            document.getElementById('input').disabled = false;
+            document.getElementById('input').focus();
+showing = false;
+        } else {
+            console.log("游戏结束")
+            document.getElementById("retry").style.display = "block";
+        }
+}, 1000);
+    }
+</script>
+<div id="start">加载中...</div>
+<div id="settings" style="display: none;">
+<p>所有译名以minecraft wiki为准，参考<a href="https://zh.minecraft.wiki/w/Minecraft_Wiki:%E8%AF%91%E5%90%8D%E6%A0%87%E5%87%86%E5%8C%96" target="_blank" rel="noopener noreferrer">标准译名列表</a></p>
+<p>关于准确率：每个词的分值为词的长度，踩到多少个词，便得多少分，若整体错误，分值*80%，所得分值/总分值就是准确率。</p>
+<span>个数：</span><input type="number" id="num" value="10" style="width: 50px;" min="5" max="943"><br>
+<button onclick="create()">开始游戏</button><br>
+</div>
+
+<div id="game" style="display: none;">
+<img src="" id="img_next" style="display: none;">
+<div style="display: block; text-align: center;"><img src="" id="img" style="max-width: 80%;"></div><br>
+<div style="width: 100%;"><input type="text" id="input" style="width: 80%;"><button onclick="check()">确认</button></div><br>
+<a href="#" target="_blank" rel="noopener noreferrer" id="link"><span id="result"></span></a>
+<p>进度：<span id="process"></span></p>
+<p>正确个数：<span id="correct"></span></p>
+<p>错误个数：<span id="wrong"></span></p>
+<p>准确率：<span id="acc">100%</span></p>
+<button style="display: none;" onclick="location.reload();" id="retry">再来一次</button>
+</div>

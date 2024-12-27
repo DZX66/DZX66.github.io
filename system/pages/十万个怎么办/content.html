@@ -1,0 +1,25 @@
+<infobox>页内查找</infobox>
+<h2>pyinstaller的使用</h2>
+<p>pyinstaller是一个将Python代码打包成可执行文件的工具，使用方法如下：</p>
+<pre><code class="language-bash">
+pyinstaller -F xxx.py -w -i xxx.ico
+</code></pre>
+<p>其中，-F表示打包成单个可执行文件，-w表示不显示控制台，-i表示设置图标。</p>
+<h2>学校网络无法下载steam游戏</h2>
+<p>将下载地区切换为中亚即可。</p>
+<h2>学校电脑u盘插入无反应</h2>
+<p>可以尝试重启。</p>
+<h2>python如何修改工作目录到文件所在目录</h2>
+<p>可以使用以下代码：</p>
+<pre><code class="language-python">
+import os
+os.chdir(os.path.dirname(__file__))
+</code></pre>
+<h2>如何给aspro板供电</h2>
+<p><bilibili title="【保姆级教程】如何使用语音控制爱丽丝开关灯">BV1ADmbYEEGp</bilibili><-this one</p>
+<p>结果是三个电池的4.5Vusb电池盒用一会电压就跟不上了，所以需要5V的充电头。</p>
+<h2>使用selenium报错找不到驱动</h2>
+<p>在<code class="language-bash">selenium/common/driver_finder.py</code>中修改line 39，DriverFinder类__init__函数</p>
+<pre><code class="language-python">
+self._paths = {"driver_path": "chromedriver.exe", "browser_path": ""}
+</code></pre>

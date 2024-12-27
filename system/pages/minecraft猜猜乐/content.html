@@ -9,7 +9,7 @@
 var data;
 if(window.XMLHttpRequest!=null && location.protocol == 'https:'){
 var xhr = new XMLHttpRequest();
-xhr.open('GET', './assets/minecraftGuess/blocks.json', true);
+xhr.open('GET', '../assets/minecraftGuess/blocks.json', true);
 xhr.send();
 xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {

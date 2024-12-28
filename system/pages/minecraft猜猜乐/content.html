@@ -43,7 +43,10 @@ var index = 0;
 var showing = false;
 function create(){
     num = document.getElementById('num').value;
-    
+    if (num > data.length || num < 5) {
+        alert('数量不能大于' + data.length + '或小于5');
+        return;
+    }
     for (var i = 0; i < num; i++) {
         var block = data[Math.floor(Math.random() * data.length)];
         if (blocks.includes(block)) {
@@ -66,6 +69,7 @@ function create(){
             check();
         }
     }
+play_music();
 }
 function check(){
     if(showing){return;}
@@ -145,4 +149,5 @@ showing = false;
 <p>错误个数：<span id="wrong"></span></p>
 <p>准确率：<span id="acc">100%</span></p>
 <button style="display: none;" onclick="location.reload();" id="retry">再来一次</button>
+<music src="../assets/minecraftGuess/フランソワさんのよもぎ畑 - おてんば恋娘.mp3" title="<b>おてんば恋娘</b>-フランソワさんのよもぎ畑" img="https://p2.music.126.net/gtSVUTjY3gQZE4zcxMBuBA==/616826023188596.jpg?param=90y90" loop="1"></music>
 </div>

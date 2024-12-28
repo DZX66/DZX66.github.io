@@ -43,7 +43,10 @@ var index = 0;
 var showing = false;
 function create(){
     num = document.getElementById('num').value;
-    
+    if (num > data.length || num < 5) {
+        alert('数量不能大于' + data.length + '或小于5');
+        return;
+    }
     for (var i = 0; i < num; i++) {
         var block = data[Math.floor(Math.random() * data.length)];
         if (blocks.includes(block)) {
@@ -66,6 +69,7 @@ function create(){
             check();
         }
     }
+play_music();
 }
 function check(){
     if(showing){return;}
@@ -145,4 +149,6 @@ showing = false;
 <p>错误个数：<span id="wrong"></span></p>
 <p>准确率：<span id="acc">100%</span></p>
 <button style="display: none;" onclick="location.reload();" id="retry">再来一次</button>
-</div></div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：2024-12-27 23:40:23</span><br><span>创建时间：2024-12-27 22:09:49</span><br><span>标签：</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/minecraft猜猜乐/content.html" target="_blank">源文件(github)</a><br><a href="源代码查看.html?target=minecraft猜猜乐" target="_blank">源代码</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/minecraft猜猜乐/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../js/decode.js?version=9b165aab"></script><script src="../js/self-adaption.js?version=0990b180"></script><script src="../js/special_days.js?version=ab19c13a"></script><script src="../js/countdown.js?2b9479e5"></script></html>
+<music src="../assets/minecraftGuess/フランソワさんのよもぎ畑 - おてんば恋娘.mp3" title="<b>おてんば恋娘</b>-フランソワさんのよもぎ畑" img="https://p2.music.126.net/gtSVUTjY3gQZE4zcxMBuBA==/616826023188596.jpg?param=90y90" loop="1"></music>
+</div>
+</div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：2024-12-28 17:24:45</span><br><span>创建时间：2024-12-27 22:09:49</span><br><span>标签：</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/minecraft猜猜乐/content.html" target="_blank">源文件(github)</a><br><a href="源代码查看.html?target=minecraft猜猜乐" target="_blank">源代码</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/minecraft猜猜乐/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../js/decode.js?version=9b165aab"></script><script src="../js/self-adaption.js?version=0990b180"></script><script src="../js/special_days.js?version=ab19c13a"></script><script src="../js/countdown.js?2b9479e5"></script></html>

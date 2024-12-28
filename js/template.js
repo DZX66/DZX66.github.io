@@ -164,20 +164,59 @@ history.replaceState(null,"",url.href);
     }
 
     // 网易云外链播放器
-    //<wyy>歌曲id/完整的歌曲链接</wyy>
+    //<wyy [auto="1"/"0"]>歌曲id/完整的歌曲链接</wyy>
     var pObjs = document.getElementsByTagName("wyy");
     if (pObjs.length > 3) {
         // 防止外链播放器过多导致卡顿
         for (var i = 0; i < pObjs.length; i++) {
             if (pObjs[i].innerHTML.startsWith("https")) { pObjs[i].innerHTML = pObjs[i].innerHTML.match(/\d+/g)[1] }
-            pObjs[i].innerHTML = '<iframe title="网易云音乐" frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 loading="lazy" id="wyy_' + i + '" osrc="https://music.163.com/outchain/player?type=2&id=' + pObjs[i].innerHTML + '&auto=0&height=66"></iframe><button id="wyy_button_' + i + '" type="button" onclick="document.getElementById(\'wyy_' + i + '\').setAttribute(\'src\',document.getElementById(\'wyy_' + i + '\').getAttribute(\'osrc\'));document.getElementById(\'wyy_button_' + i + '\').outerHTML=\'\';">加载音乐</button>'
+            if (pObjs[i].getAttribute("auto") == null) { pObjs[i].setAttribute("auto", "0") }
+            pObjs[i].innerHTML = '<iframe title="网易云音乐" frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 loading="lazy" id="wyy_' + i + '" osrc="https://music.163.com/outchain/player?type=2&id=' + pObjs[i].innerHTML + '&auto=' + pObjs[i].getAttribute("auto")+ '&height=66"></iframe><button id="wyy_button_' + i + '" type="button" onclick="document.getElementById(\'wyy_' + i + '\').setAttribute(\'src\',document.getElementById(\'wyy_' + i + '\').getAttribute(\'osrc\'));document.getElementById(\'wyy_button_' + i + '\').outerHTML=\'\';">加载音乐</button>'
         }
     } else {
         for (var i = 0; i < pObjs.length; i++) {
             if (pObjs[i].innerHTML.startsWith("https")) { pObjs[i].innerHTML = pObjs[i].innerHTML.match(/\d+/g)[1] }
-            pObjs[i].innerHTML = '<iframe title="网易云音乐" frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id=' + pObjs[i].innerHTML + '&auto=0&height=66"></iframe>'
+            if (pObjs[i].getAttribute("auto") == null) { pObjs[i].setAttribute("auto", "0") }
+            pObjs[i].innerHTML = '<iframe title="网易云音乐" frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="https://music.163.com/outchain/player?type=2&id=' + pObjs[i].innerHTML + '&auto=' + pObjs[i].getAttribute("auto")+ '&height=66"></iframe>'
         }
     }
+
+    // 自制音频播放器
+    // <music src="音频链接" title="音频标题" img="图片链接" loop="1"/"0"></music>
+    var pObjs = document.getElementsByTagName("music");
+    for (var i = 0; i < pObjs.length; i++) {
+        var title = pObjs[i].getAttribute("title");
+        if (title == null) { title = "音频" }
+        var img = pObjs[i].getAttribute("img");
+        if (img == null) { img = "" }
+        if (pObjs[i].getAttribute("loop") == null) {loop = "0"} else {loop = "1"}
+        pObjs[i].innerHTML = '<div class="player player-mid f-cb f-pr"><div class="cover cover-sm f-pr"><img id="cover" src="'+img+'"><div class="mask"></div><div id="play" class="bg play-bg" data-action="play" onclick="play_music();"></div><div id="pause" class="bg pause-bg f-hide" data-action="pause" onclick="pause_music();"></div></div><div id="mid-ctrl" class="ctrlBox" style="width: 225px;"><div class="f-pr m_t"><i data-action="home" class="bg logo"></i><div id="mtitle" class="mtitle" style="width: 201px;"><marquee scrollamount="2" onmouseover="this.stop()" onmouseout="this.start()">'+title+'</marquee></div></div><div id="bar" class="bar" style="width: 181px;"><div class="played j-flag" style="width: 0.862466%;"><span class="bg thumb j-flag"></span></div></div></div><span id="time" class="time">- 00:00</span></div><audio id="audio" src="'+pObjs[i].getAttribute("src")+'" loop="'+loop+'"></audio>';
+    }
+setInterval(function(){
+    var audio = document.getElementById("audio");
+    var bar = document.getElementById("bar");
+    var time = document.getElementById("time");
+    bar.onclick = function(e){
+        var x = e.clientX - bar.getBoundingClientRect().left;
+        var percent = x / bar.offsetWidth;
+        audio.currentTime = percent * audio.duration;
+    }
+    audio.ontimeupdate = function(){
+        var percent = audio.currentTime / audio.duration;
+        bar.children[0].style.width = percent * 100 + "%";
+        var min = parseInt(audio.currentTime / 60);
+        var sec = parseInt(audio.currentTime % 60);
+        time.innerHTML = "- " + (min < 10 ? "0" + min : min) + ":" + (sec < 10 ? "0" + sec : sec);
+        if(audio.currentTime == audio.duration){
+            document.getElementById("play").classList.remove("f-hide");
+            document.getElementById("pause").classList.add("f-hide");
+        }
+    }
+},1000);
+
+
+
+
 
     // 外部链接跳转
 
@@ -391,3 +430,15 @@ function generateCatalog(articleSelector, dirSelector) {
         }
     });
 }
+
+// 音乐播放器js部分
+function play_music() {
+        document.getElementById('play').classList.add('f-hide');
+        document.getElementById('pause').classList.remove('f-hide');
+        document.getElementById('audio').play();
+    }
+function pause_music() {
+        document.getElementById('play').classList.remove('f-hide');
+        document.getElementById('pause').classList.add('f-hide');
+        document.getElementById('audio').pause();
+    }

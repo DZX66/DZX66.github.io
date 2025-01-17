@@ -1124,6 +1124,7 @@
 
         // 触摸
         canvas.addEventListener('touchmove', (e) => {
+e.preventDefault();
             if (!isDrawing) return;
             const brushSize = document.getElementById('brushSize').value;
             const eraserSize = document.getElementById('eraserSize').value;

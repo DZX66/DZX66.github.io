@@ -192,6 +192,7 @@ history.replaceState(null,"",url.href);
         if (pObjs[i].getAttribute("loop") == null) {loop = "0"} else {loop = "1"}
         pObjs[i].innerHTML = '<div class="player player-mid f-cb f-pr"><div class="cover cover-sm f-pr"><img id="cover" src="'+img+'"><div class="mask"></div><div id="play" class="bg play-bg" data-action="play" onclick="play_music();"></div><div id="pause" class="bg pause-bg f-hide" data-action="pause" onclick="pause_music();"></div></div><div id="mid-ctrl" class="ctrlBox" style="width: 225px;"><div class="f-pr m_t"><i data-action="home" class="bg logo"></i><div id="mtitle" class="mtitle" style="width: 201px;"><marquee scrollamount="2" onmouseover="this.stop()" onmouseout="this.start()">'+title+'</marquee></div></div><div id="bar" class="bar" style="width: 181px;"><div class="played j-flag" style="width: 0.862466%;"><span class="bg thumb j-flag"></span></div></div></div><span id="time" class="time">- 00:00</span></div><audio id="audio" src="'+pObjs[i].getAttribute("src")+'" loop="'+loop+'"></audio>';
     }
+if(document.getElementById("audio")){
 setInterval(function(){
     var audio = document.getElementById("audio");
     var bar = document.getElementById("bar");
@@ -213,7 +214,7 @@ setInterval(function(){
         }
     }
 },1000);
-
+}
 
 
 

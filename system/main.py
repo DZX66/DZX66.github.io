@@ -203,7 +203,8 @@ def edit_page():
             print("0.返回上一级")
             print("1.修改标题")
             if "重定向页面" not in tags:
-                print("2.上锁/解锁")
+                if "独立页面" not in tags:
+                    print("2.上锁/解锁")
                 print("3.修改标签")
                 print("4.修改内容")
                 print("5.查看内容")
@@ -248,7 +249,7 @@ def edit_page():
                 # 更新title和dir变量
                 title = ntitle
                 dir = ndir
-            elif cmd == "2" and "重定向页面" not in tags:
+            elif cmd == "2" and "重定向页面" not in tags and "独立页面" not in tags:
                 # 上锁/解锁
                 with open(os.path.join(dir,"content.html"),"r",encoding="utf-8") as f:
                     org_content = f.read()
@@ -333,7 +334,10 @@ def edit_page():
                     content = org_content
                 if not is_cancelled:
                     f = open("temp.html","w",encoding="utf-8")
-                    f.write(html.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),create=create_time,tags=tag_string,content="\n<!-- 请在以下输入代码 -->\n"+content+"\n<!-- 请在以上输入代码 -->\n"))
+                    if "独立页面" in attributes["tags"]:
+                        f.write(content)
+                    else:
+                        f.write(html.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),create=create_time,tags=tag_string,content="\n<!-- 请在以下输入代码 -->\n"+content+"\n<!-- 请在以上输入代码 -->\n"))
                     f.close()
                     os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
                     print("请修改后保存")
@@ -394,7 +398,10 @@ def edit_page():
                 else:
                     content = org_content
                 f = open("temp.html","w",encoding="utf-8")
-                f.write(html.format(title=title,date=latest_edit_time,content=content,create=create_time,tags=tag_string))
+                if "独立页面" in attributes["tags"]:
+                    f.write(content)
+                else:
+                    f.write(html.format(title=title,date=latest_edit_time,content=content,create=create_time,tags=tag_string))
                 f.close()
                 os.system('start temp.html')
                 os.system("pause")
@@ -486,36 +493,48 @@ def new_page():
                 print("不能为空")
             else:
                 tags.append(tag)
-    # 获取是否上锁
-    locked = confirm("是否上锁")
-    if locked:
-        password = ""
-        while password in ("","0"):
-            password = input("密码：")
-            if password == "":
-                print("不能为空！")
-            if password == "0":
-                print("非法的密码：\"0\"被用于取消操作。")
-        tip = input("密码提示：")
-        if tip == "":
-            tip = "【无密码提示的页面：{0}】".format(title)
-            print("空的密码提示将被替换为：【无密码提示的页面：{0}】".format(title))
-            print("因为密码提示是“自动输入密码”功能的依据。")
-            os.system("pause")
+    # 是否为独立页面
+    is_independent = confirm("是否为独立页面")
+    if not is_independent:
+        # 获取是否上锁
+        locked = confirm("是否上锁")
+        if locked:
+            password = ""
+            while password in ("","0"):
+                password = input("密码：")
+                if password == "":
+                    print("不能为空！")
+                if password == "0":
+                    print("非法的密码：\"0\"被用于取消操作。")
+            tip = input("密码提示：")
+            if tip == "":
+                tip = "【无密码提示的页面：{0}】".format(title)
+                print("空的密码提示将被替换为：【无密码提示的页面：{0}】".format(title))
+                print("因为密码提示是“自动输入密码”功能的依据。")
+                os.system("pause")
+    else:
+        locked = False
+        tags.append("独立页面")
     # tags合为一个字符串
     o = ""
     for i in tags:
         o += i+" "
     # 打开临时页面，获取代码
     f = open("temp.html","w",encoding="utf-8")
-    f.write(html.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),create=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),tags=o,content="\n<!-- 请在以下输入代码 -->\n\n\n<!-- 请在以上输入代码 -->\n"))
+    if not is_independent:
+        f.write(html.format(title=title,date=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),create=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),tags=o,content="\n<!-- 请在以下输入代码 -->\n\n\n<!-- 请在以上输入代码 -->\n"))
+    else:
+        pass
     f.close()
     os.system('start "" "D:/Microsoft VS Code/Code.exe" temp.html')
     print("请修改后保存")
     while True:
         os.system("pause")
         f = open("temp.html","r",encoding="utf-8")
-        res = f.readlines()[2:-2]
+        if is_independent:
+            res = f.readlines()
+        else:
+            res = f.readlines()[2:-2]
         f.close()
         r = ""
         for i in res:
@@ -570,6 +589,9 @@ def apply():
                 # 判断是否为重定向页面
                 if "重定向页面" in data[i]["tags"]:
                     f.write(redirect_html.format(title=f1.read(),source=data[i]["title"]))
+                # 判断是否为独立页面
+                elif "独立页面" in data[i]["tags"]:
+                    f.write(f1.read())
                 else:
                     tag = ""
                     for o in data[i]["tags"]:

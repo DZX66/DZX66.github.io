@@ -17,9 +17,79 @@ os.chdir(os.path.dirname(__file__))
 </code></pre>
 <h2>如何给aspro板供电</h2>
 <p><bilibili title="【保姆级教程】如何使用语音控制爱丽丝开关灯">BV1ADmbYEEGp</bilibili><-this one</p>
-<p>结果是三个电池的4.5Vusb电池盒用一会电压就跟不上了，所以需要5V的充电头。</p>
+<p>结果是三个电池的4.5Vusb电池盒用一会电压就跟不上了，所以需要5V的充电头。<span class="heimu">coplit都知道。。。</span></p>
 <h2>使用selenium报错找不到驱动</h2>
 <p>在<code class="language-bash">selenium/common/driver_finder.py</code>中修改line 39，DriverFinder类__init__函数</p>
 <pre><code class="language-python">
 self._paths = {"driver_path": "chromedriver.exe", "browser_path": ""}
 </code></pre>
+<h2>potplayer的下载</h2>
+<p>使用microsoft store。</p>
+<h2>在未登录的情况下，b站干掉登录窗口</h2>
+<p>可以实现，但无法恢复全屏，因为浏览器安全策略不允许脚本自发全屏</p>
+<p>代码如下：</p>
+<pre><code class="language-javascript">
+// ==UserScript==
+// @name         B站（bilibili）自动续播因未登录而暂停的视频 (Bilibili: Continue playing without logging-in)
+// @namespace    http://tampermonkey.net/
+// @version      0.3
+// @description  解决B站（bilibili）因未登录而自动暂停视频并弹出登录窗口的问题 / Solve the problem of Bilibili automatically pausing video and popping up a login window because it is not logged in
+// @author       TheBeacon&dzxhbwls
+// @match        https://www.bilibili.com/video/*
+// @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
+// @grant        none
+// @license      MIT
+// ==/UserScript==
+
+
+(function () {
+  'use strict';
+  var is_fullscreen = 0;
+  var config = { attributes: true, attributeFilter: ["class"] };
+
+  function monitorHTMLCollection(collection, callback) {
+    let lengthBefore = collection.length;
+
+    // 定时器检查集合是否有变化
+    setInterval(function () {
+      if (collection.length !== lengthBefore) {
+        // 如果集合长度发生变化，执行回调函数
+        callback();
+        lengthBefore = collection.length; // 更新长度记录
+      }
+    }, 100); // 间隔时间可以根据需要调整
+  }
+  var fs = document.getElementsByClassName("bpx-player-ctrl-btn bpx-player-ctrl-full");
+
+  window.onload = function () {
+
+    monitorHTMLCollection(fs, function () {
+      fs = fs[0];
+      fs.addEventListener("click", () => {
+        is_fullscreen = 1 - is_fullscreen;
+        if (is_fullscreen) { console.log("fullscreened"); } else { console.log("unfullscreened"); }
+      });
+    });
+
+  };
+
+  var target = document.getElementsByClassName("bpx-player-row-dm-wrap")[0];
+  var observer = new MutationObserver(function (motationList, observer) {
+    setTimeout(function () {
+      if (document.getElementsByClassName("bili-mini-mask").length > 0) {
+        document.getElementsByClassName("bili-mini-close-icon")[0].click();
+        if (!is_fullscreen) {
+            // 由于浏览器安全策略，无法自动全屏
+          document.getElementsByClassName("bpx-player-ctrl-btn bpx-player-ctrl-play")[0].click();
+        }
+        observer.takeRecords();
+      }
+    }, 1000);
+  });
+  observer.observe(target, config);
+})();
+</code></pre>
+<h2>flash文件.swf文件的打开</h2>
+<p>使用第三方播放器：<bilibili title="【开发故事】如何优雅地播放 Flash 动画（swf）？">BV1j8411D7Zp</bilibili></p>
+<p><a href="https://fp.vnisoft.top/" target="_blank" rel="noopener noreferrer">官网</a> <a href="https://3sqrt7.lanzouq.com/iUmYK0pn85cj" target="_blank" rel="noopener noreferrer">蓝奏云下载页面</a></p>
+<p>这算是找到的最舒服的播放器了。顺便一提，up居然是08年生，太厉害了<span class="heimu">翻了一下ta的交涉圈挺...nb，搞得有头有脸的，虽然从市场的眼光上来看还是有很多缺点，但有这股劲已经很了不起了<del>而不是像某人一样沉迷galgame</del>，哎，别人的初中</span></p>

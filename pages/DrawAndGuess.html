@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title id="title">DrawAndGuess - 柳下回声</title><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="../style.css?version=21e46da6"><link rel="stylesheet" href="../prism.css" /><script src="../js/template.js?version=1c782a85"></script><script src="../js/prism.js"></script></head><body><div id="left"><div class="card"><a href="../index.html"><img src="https://i0.hdslb.com/bfs/new_dyn/6b9a00e9e33b23aa49a340015c86866c432466738.png" style="max-width: 100%;" title="主页" id="headimg"></a><a href="../blogs.html"><button style="float: right;margin-right: 1px;">返回</button></a></div><div class="card" id="announcement"><h3>公告</h3>距离2027年高考只剩：<span id="countdown"></span><br/>手机端可以点击右侧的按钮打开目录！<br/>现在可以在<a href="https://dzx66.github.io/pages/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AE%BE%E7%BD%AE.html">这个页面</a>自定义背景和其他样式了！</div></div><main id="main"><div class="title"><h1 style="margin-bottom: 0;" id="title_page">DrawAndGuess</h1></div><div id="article-block" class="card"><div class="article" id="article">
+<input type="text" id="msg" placeholder="请输入消息" style="width: 200px;">
+<button onclick="sendMsg()">发送消息</button>
+<script>
+const socket = new WebSocket('ws://127.0.0.1:12345');
+socket.onopen = function() {
+    console.log('WebSocket连接成功');
+    socket.send('Hello Server!');
+};
+socket.onmessage = function(event) {
+    console.log('服务器返回消息：', event.data);
+};
+socket.onclose = function() {
+    console.log('WebSocket连接关闭');
+};
+socket.onerror = function() {
+    console.log('WebSocket连接出错');
+};
+
+function sendMsg() {
+    const msg = document.getElementById('msg').value;
+    socket.send(msg);
+}
+
+</script></div></div><aside class="card" id="aside"><div class="sidenav-header-close" id="sidenav-header-close"><button class="__button-1c6bqbn-eflsmd n-button n-button--default-type n-button--small-type n-button--secondary" tabindex="0" type="button" title="关闭" onclick="close_info()"><span class="n-button__icon" style="margin: 0px;"><div class="n-icon-slot" role="none"><span class="icon xicon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-x"><path d="M18 6l-12 12"></path><path d="M6 6l12 12"></path></svg></span></div></span><div aria-hidden="true" class="n-base-wave"></div></button></div><span>最后一次编辑时间：2025-01-05 06:41:36</span><br><span>创建时间：2025-01-04 20:05:34</span><br><span>标签：</span><hr><a href="https://github.com/DZX66/DZX66.github.io/blob/main/system/pages/DrawAndGuess/content.html" target="_blank">源文件(github)</a><br><a href="源代码查看.html?target=DrawAndGuess" target="_blank">源代码</a><br><a href="https://github.com/DZX66/DZX66.github.io/commits/main/system/pages/DrawAndGuess/content.html" target="_blank">编辑历史</a><hr><h3>目录</h3><div class="dir"></div></aside></main></body><div id="float-toc-container"><button id="float-toc-trigger" title="目录" class="content-botton" onclick="open_info()"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" class="tabler-icon tabler-icon-list"><path d="M9 6l11 0"></path><path d="M9 12l11 0"></path><path d="M9 18l11 0"></path><path d="M5 6l0 .01"></path><path d="M5 12l0 .01"></path><path d="M5 18l0 .01"></path></svg></span></button></div><div class="backdrop" id="black_backdrop" onclick="close_info()"></div><script src="../js/decode.js?version=9b165aab"></script><script src="../js/self-adaption.js?version=0990b180"></script><script src="../js/special_days.js?version=ab19c13a"></script><script src="../js/countdown.js?2b9479e5"></script></html>

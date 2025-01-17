@@ -3,7 +3,8 @@
 
 <head>
     <title>Draw&Guess</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta charset="utf-8">
     <meta name="referrer" content="no-referrer">
 </head>
@@ -1034,6 +1035,7 @@
 
         // 画板代码
 
+
         // 当前画笔模式：1 空心矩形 2 实心矩形 3 空心圆形 4 实心圆形 5 直线 6 箭头 7 自由画笔 8 橡皮
         let brush = 7;
 
@@ -1055,6 +1057,7 @@
         let points = []; //存储坐标点
         let undoStack = []; // 存储画布状态，用于撤销上一步操作
         let step = 0; // 记录当前步数
+
 
         // 鼠标按下
         canvas.onpointerdown = function (e) {
@@ -1105,6 +1108,54 @@
             ctx.strokeStyle = lineColor;
             draw(e.offsetX, e.offsetY, e.ctrlKey);
         };
+
+        window.addEventListener('touchstart', function check_touch() {
+            console.log('检测到触摸屏');
+            canvas.onpointermove = function (e) {
+            }
+            canvas.onpointerup = function (e) {
+            }
+            canvas.onpointerdown = function (e) {
+            }
+            canvas.onpointerout = function (e) {
+            }
+            window.removeEventListener('touchstart', check_touch);
+        });
+
+        // 触摸
+        canvas.addEventListener('touchmove', (e) => {
+            if (!isDrawing) return;
+            const brushSize = document.getElementById('brushSize').value;
+            const eraserSize = document.getElementById('eraserSize').value;
+            lineWidth = (e.ctrlKey || brush === 8) ? eraserSize : brushSize;
+            lineColor = document.getElementById('brushColor').value;
+            ctx.lineWidth = lineWidth;
+            ctx.strokeStyle = lineColor;
+            draw(e.touches[0].clientX, e.touches[0].clientY, e.ctrlKey);
+
+        }, { passive: false });
+
+        canvas.addEventListener('touchstart', (e) => {
+            points = [];
+            isDrawing = true;
+            isMouseDown = true;
+            points.push({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+            if (e.ctrlKey || brush === 8) { // 如果是橡皮擦，则设置为destination-out
+                ctx.globalCompositeOperation = 'destination-out';
+            } else { // 否则设置为默认值source-over
+                ctx.globalCompositeOperation = 'source-over';
+            }
+            ctx.beginPath(); // 新增：开始一个绘画路径
+        }, { passive: false });
+        canvas.addEventListener('touchend', (e) => {
+            isMouseDown = false;
+            points = [];
+            isDrawing = false;
+            ctx.closePath(); // 新增：结束绘画路径
+            // 绘画结束后，将值重新设置为默认值，否则当前值为destination-out时，使用撤销功能后会把整个画布的内容都给擦掉
+            ctx.globalCompositeOperation = 'source-over';
+            addUndoStack(canvas.toDataURL("image/webp", 0.5)); // 将当前画布状态保存起来
+        }, { passive: false });
 
         // 绘制
         function draw(mousex, mousey, ctrlKey) {
@@ -1340,6 +1391,8 @@
             });
             document.getElementById(display).classList.add('active');
         }
+
+
     </script>
 
 </body>

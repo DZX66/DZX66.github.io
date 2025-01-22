@@ -12,6 +12,10 @@
 <body>
     <!-- 画板css -->
     <style>
+        body {
+            user-select: none;
+        }
+
         .content {
             margin: 20px;
             margin-bottom: 5px;
@@ -19,7 +23,7 @@
         }
 
         .content div {
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             width: 80px;
             text-align: center;
             float: left;
@@ -30,7 +34,7 @@
             height: auto;
             width: 100%;
             position: absolute;
-            z-index: 999;
+            z-index: 1002;
             background-color: bisque;
             border: 1px solid #ccc;
         }
@@ -59,7 +63,7 @@
             position: absolute;
             top: 0;
             transform: rotate(0deg);
-            z-index: 998;
+            z-index: 1001;
             height: fit-content;
         }
 
@@ -284,7 +288,7 @@
             right: 0;
             width: 70px;
             height: 70px;
-            z-index: 1002;
+            z-index: 1011;
         }
 
         .chatball button {
@@ -305,23 +309,66 @@
             top: 0;
             height: 100%;
             width: 300px;
-            z-index: 1001;
+            z-index: 1015;
             background-color: aliceblue;
             padding-left: 8px;
+            display: flex;
+            flex-direction: column;
         }
 
         .chatbox ul {
-            height: 60%;
+            flex: 1;
             overflow-y: scroll;
             padding: 10px;
             /*边框*/
             border: 1px solid #ccc;
+            user-select: text;
         }
 
         .chatbox ul li {
             margin-bottom: 10px;
             text-align: left;
         }
+
+        .chatbox form {
+            margin-bottom: 10px;
+        }
+
+        .chatbox * {
+            position: relative;
+        }
+
+        .chatbox form {
+            display: flex;
+        }
+
+        #chat_input {
+            flex: 1;
+            margin-right: 5px;
+            padding-left: 5px;
+        }
+
+        .chatbox_close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+        }
+
+        .chatbox_close button {
+            height: 100%;
+            width: 100%;
+            background: url("close.jpeg");
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+
+        .chatbox_close button:hover {
+            background-size: 110%;
+        }
+
+
 
         .black {
             position: absolute;
@@ -330,19 +377,19 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
+            z-index: 1010;
         }
 
         .info_lefttop {
             position: absolute;
             top: 10px;
             width: 100%;
-            z-index: 998;
+            z-index: 999;
         }
 
         .bg {
             background-color: aliceblue;
-            padding: 1;
+            padding: 1px;
             width: fit-content;
         }
 
@@ -350,9 +397,10 @@
             position: absolute;
             top: 10px;
             width: 100%;
-            left: 40%;
-            z-index: 998;
+            z-index: 999;
             border-bottom: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
         }
 
         .canvas_container {
@@ -388,15 +436,20 @@
             left: 0;
             width: 100%;
             height: 100%;
+            background: no-repeat center center fixed;
+            background-size: contain;
+            z-index: 0;
         }
 
         .info_bottom {
             position: absolute;
             bottom: 10px;
             width: 100%;
-            left: 40%;
-            z-index: 998;
+            z-index: 999;
             border-top: 1px solid #ccc;
+            display: flex;
+            justify-content: center;
+            right: 30px;
         }
 
         .center_window {
@@ -405,7 +458,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1001;
+            z-index: 1011;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -415,13 +468,93 @@
         .center_window div {
             background-color: antiquewhite;
         }
+
+        footer {
+            color: gray;
+            font-size: xx-small;
+        }
+
+        #chat_preview {
+            position: absolute;
+            right: 20px;
+            bottom: 120px;
+            height: 40%;
+            width: 200px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        #chat_preview ul {
+            font-size: small;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        #chat_preview ul li {
+            margin-bottom: 2px;
+            color: turquoise;
+        }
+
+        .fade {
+            animation-name: fade;
+            animation-duration: 0.3s;
+            -webkit-animation-name: fade;
+            /* Safari 和 Chrome */
+            -webkit-animation-duration: 0.3s;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: 0.4;
+            }
+
+            to {
+                opacity: 0.9;
+            }
+        }
+
+        @-webkit-keyframes fade {
+
+            /* Safari 和 Chrome */
+            from {
+                opacity: 0.4;
+            }
+
+            to {
+                opacity: 0.9;
+            }
+        }
+
+        #painter_mode_btns {
+            width: auto;
+            margin-bottom: 0;
+            display: none;
+        }
+
+        .painter_color_chose_button {
+            display: block;
+            width: 20px;
+            height: 20px;
+            margin: 0 5px;
+            border: #ccc solid 3px;
+            border-radius: 30%;
+            float: left;
+            cursor: pointer;
+        }
     </style>
 
-    <div id="server" class="scene info" style="display: none;">
+    <div id="server" class="scene info">
         <h1>Draw&Duess</h1>
-        <input type="text" id="nickname" placeholder="你的昵称..." style="width: 200px;">
-        <input type="text" id="server_url" placeholder="服务器地址..." style="width: 200px;">
-        <button onclick="connectServer()">连接服务器</button>
+        <form action="javascript:void(0);" onsubmit="connectServer()" style="display: flex;flex-direction: column;">
+            <input type="text" id="nickname" placeholder="你的昵称..." style="width: 200px;">
+            <input type="text" id="server_url" placeholder="服务器地址..." style="width: 200px;">
+            <button type="submit">连接服务器</button>
+        </form>
+        <footer>v0.1</footer>
     </div>
 
     <div id="prepare" style="display: none;" class="scene info">
@@ -433,9 +566,10 @@
         <p>等待开始游戏...</p>
     </div>
 
-    <div id="drawing_phase" style="display: ;" class="scene">
+    <div id="drawing_phase" style="display: none;" class="scene">
         <div class="info_lefttop">
-            <div class="bg">倒计时：<span id="countdown_draw"></span>秒</div>
+            <div class="bg"><img src="countdown.jpg" alt="倒计时" width="30px" height="30px"><span
+                    id="countdown_draw"></span></div>
         </div>
         <div class="info_top">
             <div class="bg">题目：<span id="word"></span></div>
@@ -454,27 +588,52 @@
                     <div>
                         <input type="color" id="brushColor" style="width: 78px;">
                     </div>
+
                     <div style="float: left;">
                         <div>
                             <span class="painter_mode_chose_button" id="画笔" onclick="change_mode('画笔',7);"></span>
                             <span class="painter_mode_chose_button" id="橡皮" onclick="change_mode('橡皮',8);"></span>
                         </div>
-                        <div>
-                            <span class="painter_mode_chose_button" id="空心矩形" onclick="change_mode('空心矩形',1);"></span>
-                            <span class="painter_mode_chose_button" id="实心矩形" onclick="change_mode('实心矩形',2);"></span>
-                        </div>
-                    </div>
-                    <div style="float: left;">
-                        <div>
-                            <span class="painter_mode_chose_button" id="空心圆形" onclick="change_mode('空心圆形',3);"></span>
-                            <span class="painter_mode_chose_button" id="实心圆形" onclick="change_mode('实心圆形',4);"></span>
-                        </div>
-                        <div>
-                            <span class="painter_mode_chose_button" id="直线" onclick="change_mode('直线',5);"></span>
-                            <span class="painter_mode_chose_button" id="箭头" onclick="change_mode('箭头',6);"></span>
-                        </div>
-                    </div>
 
+                    </div>
+                    <div id="painter_mode_btns">
+                        <div style="float: left;">
+                            <div>
+                                <span class="painter_mode_chose_button" id="空心矩形"
+                                    onclick="change_mode('空心矩形',1);"></span>
+                                <span class="painter_mode_chose_button" id="实心矩形"
+                                    onclick="change_mode('实心矩形',2);"></span>
+                            </div>
+                            <div>
+                                <span class="painter_mode_chose_button" id="空心圆形"
+                                    onclick="change_mode('空心圆形',3);"></span>
+                                <span class="painter_mode_chose_button" id="实心圆形"
+                                    onclick="change_mode('实心圆形',4);"></span>
+                            </div>
+                            <div>
+                                <span class="painter_mode_chose_button" id="直线" onclick="change_mode('直线',5);"></span>
+                                <span class="painter_mode_chose_button" id="箭头" onclick="change_mode('箭头',6);"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="painter_colors_btns">
+                        <div style="float: left;">
+                            <div>
+                                <span class="painter_color_chose_button" style="background-color: #000000;"
+                                    onclick="change_color('#000000');"></span>
+                                <span class="painter_color_chose_button" style="background-color: #ff0000;"
+                                    onclick="change_color('#ff0000');"></span>
+                            </div>
+                        </div>
+                        <div style="float: left;">
+                            <div>
+                                <span class="painter_color_chose_button" style="background-color: #0000ff;"
+                                    onclick="change_color('#0000ff');"></span>
+                                <span class="painter_color_chose_button" style="background-color: #ffff00;"
+                                    onclick="change_color('#ffff00');"></span>
+                            </div>
+                        </div>
+                    </div>
                     <div style="margin: 0;">
                         <div>
                             <label for="brushSize">画笔 <span id="brushSizeValue">5</span></label>
@@ -524,13 +683,17 @@
 
     <div id="guess_phase" style="display: none;" class="scene">
         <div class="info_lefttop">
-            <div class="bg">倒计时：<span id="countdown_guess"></span>秒</div>
+            <div class="bg"><img src="countdown.jpg" alt="倒计时" width="30px" height="30px"><span
+                    id="countdown_guess"></span></div>
         </div>
-        <img id="pic" src="" alt="图片" class="pic">
+        <div id="pic" class="pic"></div>
         <div class="info_top">
             <div class="bg">
-                <input type="text" id="guess" placeholder="请输入你的答案" style="width: 200px;" autocomplete="off">
-                <button onclick="submitGuess()">提交答案</button>
+                <form action="javascript:void(0);" onsubmit="submitGuess()">
+                    <input type="text" id="guess" placeholder="这是什么？" style="width: 140px;" autocomplete="off"
+                        maxlength="10">
+                    <button type="submit">提交</button>
+                </form>
             </div>
         </div>
     </div>
@@ -539,18 +702,25 @@
         <div class="info_top">
             <div class="bg"><span id="drawer"></span>画了：<span id="appr_word"></span></div>
         </div>
-        <img id="appr_pic" src="" alt="图片" class="pic">
+        <div id="appr_pic" class="pic"></div>
         <div class="info_bottom">
-            <div class="bg"><span id="guesser">xxxxxxx</span></div>
+            <div class="bg"><span id="guesser"></span></div>
         </div>
 
         <div class="center_window" style="display: none;" id="match_window">
             <div>
-                <p>倒计时：<span id="countdown_appreciation"></span>秒</p>
+                <p><img src="countdown.jpg" alt="倒计时" width="30px" height="30px"><span
+                        id="countdown_appreciation"></span></p>
                 <p id="appreciation_result"></p>
-                <p id="is_match">认为匹配吗？</p>
+                <p id="is_match">这个匹配吗？</p>
                 <button onclick="match('1')">匹配</button>
                 <button onclick="match('0')" id="unmatch">不匹配</button>
+            </div>
+        </div>
+        <div class="center_window" style="display: none;" id="first_word_window">
+            <div>
+                第一个词是...
+                <span id="first_word_display"></span>
             </div>
         </div>
     </div>
@@ -563,8 +733,8 @@
             <div style="display: none;" id="if_the_one">
                 <p>你最喜欢哪幅图？</p>
             </div>
-            <p>倒计时：<span id="countdown_favourite"></span>秒</p>
-            <ol id="choice_list"></ol>
+            <p><img src="countdown.jpg" alt="倒计时" width="30px" height="30px"><span id="countdown_favourite"></span></p>
+            <ol id="choice_list" style="width: 90%;"></ol>
         </div>
     </div>
 
@@ -578,7 +748,8 @@
     <div id="game_over" style="display: none;" class="scene">
         <h2>游戏结束</h2>
         <ol id="rank"></ol>
-        <button onclick="restart()">再来一局</button> <!-- to do -->
+        <button onclick="restart()">再来一局</button>
+        <button onclick="save_game_data();">保存游戏数据</button><!-- to do -->
     </div>
 
 
@@ -587,9 +758,16 @@
     <div id="chat" class="chatbox" style="display: none;">
         <h2>消息</h2>
         <ul id="messages"></ul>
-        <input id="chat_input" autocomplete="off" />
-        <button onclick="chat_send()">发送</button>
+        <form action="javascript:void(0);" onsubmit="chat_send()">
+            <input id="chat_input" autocomplete="off" />
+            <button type="submit">发送</button>
+        </form>
+        <div class="chatbox_close"><button onclick="chatbox()" class="pic_btn"></button></div>
     </div>
+
+    <div id="chat_preview">
+        <ul id="chat_preview_list">
+        </ul>
     </div>
     <script>
         // 游戏核心代码
@@ -597,11 +775,16 @@
         var nickname;
         var player_id;
         var players;
-        var phase = "prepare";  // prepare, draw, guess, appreciation, favourite
+        var phase = "end";  // prepare, draw, guess, appreciation, checktime, favourite, end
         var the_one;  // 选择最喜欢的画作阶段中，那个选择的人(id)
         var is_black = false;  // 除了聊天框，是否有其他功能需求遮罩层
         var appreciation;
         var ready_num;
+        var ping_start_time = 0;
+        var is_touch = false;
+
+        var scenes = ["server", "prepare", "drawing_phase", "guess_phase", "appreciation_phase", "game_over"]
+        var items = ["players", "turn_now", "num_turn", "chains"]
 
         // 检查是否保存了用户名，服务器地址，id
         if (localStorage.getItem('dg_nickname')) {
@@ -647,15 +830,20 @@
                 // 如果是"name_exists"，表示昵称已存在
                 if (event.data == 'name_exists') {
                     alert('房间内已有同名玩家，请更换昵称');
+                    return_to_main();
                     return;
                 }
                 // 如果是"playing"，表示游戏已经开始
-                if (event.data == 'playing') {
+                else if (event.data == 'playing') {
                     alert('游戏已经开始，请等待下一局');
+                    return_to_main();
                     return;
                 }
-                // 如果以[new_player]开头，表示有新玩家加入
-                if (event.data.startsWith('[new_player]')) {
+                // 如果是"start"，表示游戏开始
+                else if (event.data == 'start') {
+                    chat('<span style="color: gold">游戏开始</span>');
+                }
+                else if (event.data.startsWith('[new_player]')) {
                     var player = event.data.substring(12);
                     var li = document.createElement('li');
                     li.textContent = player;
@@ -666,8 +854,9 @@
                     players.push(player);
                 }
                 // 如果以[all_players]开头，表示返回了一个包含所有玩家的json列表
-                if (event.data.startsWith('[all_players]')) {
+                else if (event.data.startsWith('[all_players]')) {
                     players = JSON.parse(event.data.substring(13));
+                    document.getElementById('players').innerHTML = '';
                     players.forEach(function (player) {
                         var li = document.createElement('li');
                         li.textContent = player;
@@ -676,12 +865,12 @@
                     document.getElementById('num_of_players').textContent = document.getElementById('players').getElementsByTagName('li').length;
                 }
                 // 如果以[id]开头，表示返回了玩家的id
-                if (event.data.startsWith('[id]')) {
+                else if (event.data.startsWith('[id]')) {
                     player_id = event.data.substring(4);
                     localStorage.setItem('dg_id', player_id);
                 }
                 // 如果以[draw]开头，表示进入画图阶段
-                if (event.data.startsWith('[draw]')) {
+                else if (event.data.startsWith('[draw]')) {
                     phase = 'draw';
                     document.getElementById('ready_players').innerHTML = '';
                     ready_num = 0;
@@ -692,8 +881,7 @@
                     document.getElementById('guess_phase').style.display = 'none';
                     document.getElementById('drawing_phase').style.display = '';
                     document.getElementById('word').textContent = event.data.substring(6);
-                    const timestamp = new Date().getTime();
-                    var time = 120 - Math.ceil(timestamp / 1000);
+                    var time = 120;
                     document.getElementById('countdown_draw').textContent = time;
                     var interval = setInterval(function () {
                         time--;
@@ -705,7 +893,7 @@
                     }, 1000);
                 }
                 // 如果以[guess]开头，表示返回了题目
-                if (event.data.startsWith('[guess]')) {
+                else if (event.data.startsWith('[guess]')) {
                     phase = 'guess';
                     document.getElementById('ready_players').innerHTML = '';
                     ready_num = 0;
@@ -713,9 +901,8 @@
                     clear_window();
                     document.getElementById('drawing_phase').style.display = 'none';
                     document.getElementById('guess_phase').style.display = '';
-                    document.getElementById('pic').src = event.data.substring(7);
-                    const timestamp = new Date().getTime();
-                    var time = 60 - Math.ceil(timestamp / 1000);
+                    document.getElementById('pic').style.backgroundImage = "url(" + event.data.substring(7) + ")";
+                    var time = 60;
                     document.getElementById('countdown_guess').textContent = time;
                     var interval = setInterval(function () {
                         time--;
@@ -727,7 +914,7 @@
                     }, 1000);
                 }
                 // 如果以[done]开头，表示有人完成
-                if (event.data.startsWith('[done]')) {
+                else if (event.data.startsWith('[done]')) {
                     var id = event.data.substring(6);
                     chat('<span style="color: gold">' + id + '完成了' + '</span>');
                     var li = document.createElement('li');
@@ -737,7 +924,7 @@
                     document.getElementById('ready_players_num').textContent = ready_num + '/' + players.length;
                 }
                 // 如果以[appreciation]开头，表示返回了json评价
-                if (event.data.startsWith('[appreciation]')) {
+                else if (event.data.startsWith('[appreciation]')) {
                     phase = 'appreciation';
                     document.getElementById('black').style.display = 'none';
                     document.getElementById('chat').style.display = 'none';
@@ -749,77 +936,83 @@
                     document.getElementById('favourite').style.display = 'none';
                     appreciation = JSON.parse(event.data.substring(14));
 
-                    var index = 0;
 
-                    function a() {
+                    document.getElementById('first_word_window').style.display = '';
+                    document.getElementById('first_word_display').textContent = '';
+                    document.getElementById('guesser').textContent = '';
+                    document.getElementById('drawer').textContent = '';
+                    document.getElementById('appr_word').textContent = '';
+                    new Audio("announce.mp3").play();
 
-                        if (index > appreciation.pictures.length - 1) {
+                    var pic_index = 0;
 
-                            show_match_window();
-                            clearInterval(timer);
-                            return;
-                        }
-                        var picture = appreciation.pictures[index];
-                        document.getElementById('drawer').textContent = appreciation.players[index * 2]
-                        if (index == 0) {
+                    setTimeout(function () {
+                        document.getElementById('first_word_display').textContent = appreciation.first_word;
+                    }, 690);
+
+                    setTimeout(function () {
+                        document.getElementById('first_word_window').style.display = 'none';
+                        cyclic_bar();
+                    }, 3000);
+
+
+                    function cyclic_bar() {
+                        var index = 0;
+                        /** @type {list<string>} */
+                        var picture = appreciation.pictures[pic_index];
+                        document.getElementById('drawer').textContent = appreciation.players[pic_index * 2];
+                        if (pic_index == 0) {
                             document.getElementById('appr_word').textContent = appreciation.first_word;
                         } else {
-                            document.getElementById('appr_word').textContent = appreciation.words[index - 1];
+                            document.getElementById('appr_word').textContent = appreciation.words[pic_index - 1];
                         }
-
-                        document.getElementById("appr_pic").src = picture;
-                        // to-do: 展现绘画过程
-
                         var guesser = document.getElementById("guesser");
-                        var guesser_text = appreciation.words[index];
-                        guesser.textContent = appreciation.players[index * 2 + 1];
-                        if (index == appreciation.pictures.length - 1) {
-                            var ad = new Audio("long_announce.mp3");
-                            ad.ontimeupdate = function () {
-                                if (ad.currentTime > 2.855 && !showed) { show_res(); showed = true; }
+                        var guesser_text = appreciation.words[pic_index];
+                        guesser.textContent = appreciation.players[pic_index * 2 + 1];
+                        function a() {
+                            document.getElementById("appr_pic").style.backgroundImage = "url(" + picture[index] + ")";
+                            index++;
+                            if (index > picture.length - 1) {
+                                new Audio("announce.mp3").play();
+                                setTimeout(function () {
+                                    if (guesser_text.endsWith("(新词)")) {
+                                        guesser.textContent += " 什么也没猜到！新词：" + guesser_text.substring(0, guesser_text.length - 3);
+                                    } else {
+                                        guesser.textContent += " 猜了：" + guesser_text;
+                                    }
+                                }, 690);
+
+                                setTimeout(function () {
+                                    pic_index++;
+
+                                    if (pic_index < appreciation.pictures.length) {
+                                        cyclic_bar();
+                                    } else {
+                                        document.getElementById('waiting').style.display = '';
+                                        document.getElementById('black').style.display = '';
+                                        is_black = true;
+                                        socket.send("[ready]");
+                                    }
+                                }, 5000);
+                                clearInterval(timer);
                             }
-                        } else {
-                            var ad = new Audio("short_announce.mp3");
-                            ad.ontimeupdate = function () {
-                                if (ad.currentTime > 2.16 && !showed) { show_res(); showed = true; }
-                            }
+
+
                         }
-                        var showed = false;
-                        ad.play();
-                        function show_res() {
-                            if (guesser_text.endsWith("(新词)")) {
-                                guesser.textContent += " 什么也没猜到！新词：" + guesser_text.substring(0, guesser_text.length - 3);
-                            } else {
-                                guesser.textContent += " 猜了：" + guesser_text;
-                            }
-                        }
-                        index++;
+                        var timer = setInterval(a, 500);
+                        a();
+
 
                     }
-                    a();
-                    var timer = setInterval(a, 5000);
 
-                    const timestamp = new Date().getTime();
-                    var time = 20 + appreciation.pictures.length * 5 - Math.ceil(timestamp / 1000);
-                    document.getElementById('countdown_appreciation').textContent = time;
-                    var interval = setInterval(function () {
-                        time--;
-                        document.getElementById('countdown_appreciation').textContent = time;
-                        if (time <= 0 || phase != 'appreciation') {
-                            clearInterval(interval);
-                        }
-                    }, 1000);
-                    function show_match_window() {
-                        document.getElementById('match_window').style.display = '';
-                        document.getElementById('black').style.display = '';
-                        is_black = true;
-                    }
+
+
 
                     document.getElementById('appreciation_result').textContent = appreciation.first_word + " -> " + appreciation.words[appreciation.words.length - 1];
                     if (appreciation.first_word == appreciation.words[appreciation.words.length - 1]) {
                         document.getElementById('is_match').innerHTML = "完全匹配！";
                         document.getElementById('unmatch').style.display = 'none';
-                    }
+                    } else { document.getElementById('unmatch').style.display = ''; }
 
                     document.getElementById('ready_players').innerHTML = '';
                     ready_num = 0;
@@ -830,7 +1023,7 @@
                     for (var i = 0; i < appreciation.pictures.length; i++) {
                         var option = document.createElement('button');
                         option.value = i;
-                        option.innerHTML = "<img src='" + appreciation.pictures[i] + "' width='100px' height='100px'>";
+                        option.innerHTML = "<img src='" + appreciation.pictures[i][appreciation.pictures[i].length - 1] + "' width='100px' height='100px'>";
                         option.onclick = choosePicture(i);
                         option.classList.add('choice_button');
                         choice_list.appendChild(option);
@@ -839,8 +1032,25 @@
 
 
                 }
+                // 如果是[checktime]，则表示进入给出评价阶段
+                else if (event.data.startsWith('[checktime]')) {
+                    phase = 'checktime';
+                    document.getElementById('waiting').style.display = 'none';
+                    document.getElementById('match_window').style.display = '';
+                    document.getElementById('black').style.display = '';
+                    is_black = true;
+                    var time = 20;
+                    document.getElementById('countdown_appreciation').textContent = time;
+                    var interval = setInterval(function () {
+                        time--;
+                        document.getElementById('countdown_appreciation').textContent = time;
+                        if (time <= 0 || phase != 'checktime') {
+                            clearInterval(interval);
+                        }
+                    }, 1000);
+                }
                 // 如果以[favourite]开头，则表示进入评价最喜欢的画作阶段
-                if (event.data.startsWith('[favourite]')) {
+                else if (event.data.startsWith('[favourite]')) {
                     phase = 'favourite';
                     document.getElementById('favourite').style.display = '';
                     document.getElementById('waiting').style.display = 'none';
@@ -863,8 +1073,7 @@
                             button.disabled = true;
                         });
                     }
-                    const timestamp = new Date().getTime();
-                    var time = 20 - Math.ceil(timestamp / 1000);
+                    var time = 20;
                     document.getElementById('countdown_favourite').textContent = time;
                     var interval = setInterval(function () {
                         time--;
@@ -875,18 +1084,18 @@
                     }, 1000);
                 }
                 // 如果以[favourite_choosed]开头，则表示最喜欢的画作被选择了
-                if (event.data.startsWith('[favourite_choosed]')) {
+                else if (event.data.startsWith('[favourite_choosed]')) {
                     new Audio("win.mp3").play();
                     document.getElementById('favourite').style.display = 'none';
                     document.getElementById('waiting').style.display = 'none';
                     document.getElementById('favourite_choosed').style.display = '';
                     document.getElementById('chooser').textContent = appreciation.players[0];
                     document.getElementById('favourite_pic').src =
-                        appreciation.pictures[event.data.substring(19)];
+                        appreciation.pictures[event.data.substring(19)][appreciation.pictures[event.data.substring(19)].length - 1];
                     chat('<span style="color: gold">' + "第" + (Number(event.data.substring(19)) + 1) + "张画作被选为最喜欢的画作" + "</span>");
                 }
                 // 如果以[checked]开头，表示有人已经评价了画作
-                if (event.data.startsWith('[checked]')) {
+                else if (event.data.startsWith('[checked]')) {
                     var data = event.data.substring(9).split(',');
                     chat('<span style="color: gold">' + data[0] + "评价：" + data[1] + "</span>");
                     var rd_players = document.getElementById('ready_players');
@@ -896,8 +1105,9 @@
                     new Audio("check.mp3").play();
                 }
                 // 如果以[end]开头，则表示游戏结束
-                if (event.data.startsWith('[end]')) {
-                    phase = 'prepare';
+                else if (event.data.startsWith('[end]')) {
+                    phase = 'end';
+                    player_id = "";
                     document.getElementById('game_over').style.display = '';
                     document.getElementById('waiting').style.display = 'none';
                     document.getElementById('appreciation_phase').style.display = 'none';
@@ -917,7 +1127,7 @@
                     }
                 }
                 // 如果以[leave]开头，则表示有人离开了房间
-                if (event.data.startsWith('[leave]')) {
+                else if (event.data.startsWith('[leave]')) {
                     var data = event.data.substring(7);
                     chat('<span style="color: gold">' + data + "离开了房间" + "</span>");
                     if (phase == "prepare") {
@@ -934,23 +1144,54 @@
                     }
                 }
                 // 如果以[chat]开头，表示有人发送了消息
-                if (event.data.startsWith('[chat]')) {
+                else if (event.data.startsWith('[chat]')) {
                     var data = event.data.substring(6);
                     chat(data);
                 }
+                // 如果以[ping]开头，表示返回了响应ping
+                else if (event.data.startsWith('[ping]')) {
+                    chat('<span style="color: gray">ping:' + (new Date().getTime() - ping_start_time) + 'ms</span>');
+                    ping_start_time = 0;
+                }
+                // 如果是[not_admin]，表示不是管理员
+                else if (event.data == '[not_admin]') {
+                    chat('<span style="color: red">你没有运行此命令的权限。</span>');
+                }
+                //如果都不是，表示服务器直接发送的信息
+                else {
+                    chat('<span style="color: gray">' + event.data + '</div>');
+                }
+
             };
             socket.onclose = function () {
                 console.log('WebSocket连接关闭');
+                alert("与服务器断开连接");
+                return_to_main();
             };
             socket.onerror = function () {
                 console.log('WebSocket连接出错');
+                alert("连接服务器失败，请检查网络连接");
+                return_to_main();
             };
             document.getElementById('server').style.display = 'none';
             document.getElementById('prepare').style.display = '';
+            phase = "prepare";
         }
 
         // 提交图片
         function submit_pic() {
+            if (!undoStack.length) { return; }
+            if (undoStack.length > 10) {
+                // 限制上传步数
+                var last = undoStack[undoStack.length - 1];
+                undoStack = undoStack.slice(0, undoStack.length - 1);
+                var k = Math.floor(undoStack.length / 9);
+                var res = [];
+                for (var i = 0; i < 9; i++) {
+                    res.push(undoStack[k * i + 1]);
+                }
+                undoStack = res.concat(last);
+            }
             socket.send("[draw]" + JSON.stringify(undoStack));
             document.getElementById('black').style.display = '';
             is_black = true;
@@ -992,6 +1233,9 @@
             } else {
                 document.getElementById('chat').style.display = '';
                 document.getElementById('black').style.display = '';
+                var chat_display = document.getElementById('messages');
+                chat_display.scrollTop = chat_display.scrollHeight;
+                document.getElementById('chat_input').focus();
             }
         }
 
@@ -1015,6 +1259,7 @@
 
         function restart() {
             socket.send("[initialization]" + nickname);
+            phase = "prepare";
             document.getElementById('prepare').style.display = '';
             document.getElementById('game_over').style.display = 'none';
             document.getElementById('rank').innerHTML = '';
@@ -1022,16 +1267,195 @@
 
         function chat(message) {
             var chat_display = document.getElementById('messages');
+            var chat_pre = document.getElementById("chat_preview_list");
             var chat_item = document.createElement('li');
             chat_item.innerHTML = message;
-            chat_display.appendChild(chat_item);
+            chat_display.appendChild(chat_item.cloneNode(true));
             chat_display.scrollTop = chat_display.scrollHeight;
+            chat_item.classList.add("fade");
+            chat_pre.appendChild(chat_item);
+            chat_pre.scrollTop = chat_pre.scrollHeight;
+            setTimeout(function () {
+                chat_pre.removeChild(chat_item);
+            }, 4000);
         }
 
         function chat_send() {
-            socket.send("[chat]" + document.getElementById('chat_input').value);
+            /**
+              *@type {string} content
+            */
+            var content = document.getElementById('chat_input').value;
+            if (!content) { return; }
             document.getElementById('chat_input').value = '';
+            if (content.startsWith("/")) {
+                // 指令
+                content = content.substring(1);
+                var cmd_blocks = content.split(" ");
+                if (cmd_blocks[0] == "help") {
+                    if (!check_arguements_num(cmd_blocks.length, [0, 1])) { return; }
+                    if (cmd_blocks.length == 1) {
+                        chat("<div style='color: gray'>/help [command] - 获取帮助<br>/ping - 获取延迟<br>/debug &lt;type&gt; [arguements] - debug模式<br>/get <item> - 获取服务器数据<br>/send &lt;message&gt; - 向服务器发送信息<br>以下需要管理员权限：<br>/start - 开始游戏<br>/close - 关闭服务器</div>");
+                    } else {
+                        if (cmd_blocks[1] == "ping") {
+                            chat("<div style='color: gray'>/ping - 获取延迟<br>延迟的计算以本地时间为准，结果显示在聊天栏。</div>");
+                        } else if (cmd_blocks[1] == "debug") {
+                            //to do
+                        } else if (cmd_blocks[1] == "get") {
+                            chat("<div style='color: gray'>/get &lt;item&gt; - 获取服务器数据<br>获取的数据会显示在聊天栏。<br>可获取的数据有：<br>players - 获取玩家列表<br>chains - 获取所有传递链<br>turn_now - <br>num_turn - 游戏回合数</div>");
+                        } else if (cmd_blocks[1] == "start") {
+                            chat("<div style='color: gray'>/start - 开始游戏<br>开始游戏后，玩家将无法加入游戏。</div>");
+                        } else if (cmd_blocks[1] == "close") {
+                            chat("<div style='color: gray'>/close - 关闭服务器<br>这将踢出所有玩家。</div>");
+                        } else if (cmd_blocks[1] == "send") {
+                            chat("<div style='color: gray'>/send &lt;message&gt; - 向服务器发送信息</div>");
+                        } else {
+                            chat("<div style='color: red'>没有" + cmd_blocks[1] + "的相关帮助。</div>");
+                        }
+                    }
+                } else if (cmd_blocks[0] == "ping") {
+                    if (!check_arguements_num(cmd_blocks.length, 0)) { return; }
+                    if (!ping_start_time == 0) { chat("<div style='color: red'>正在ping...</div>"); return; }
+                    if (check_server_connected()) {
+                        ping_start_time = new Date().getTime();
+                        socket.send("[ping]");
+                    } else { chat("<div style='color: red'>未连接服务器</div>"); return; }
+                } else if (cmd_blocks[0] == "start") {
+                    if (!check_arguements_num(cmd_blocks.length, 0)) { return; }
+                    if (check_server_connected()) {
+                        socket.send("[admin]start");
+                    } else { chat("<div style='color: red'>未连接服务器</div>"); return; }
+
+                } else if (cmd_blocks[0] == "close") {
+                    if (!check_arguements_num(cmd_blocks.length, 0)) { return; }
+                    if (check_server_connected()) {
+                        socket.send("[admin]close");
+                    } else { chat("<div style='color: red'>未连接服务器</div>"); return; }
+
+                } else if (cmd_blocks[0] == "send") {
+                    if (!check_arguements_num(cmd_blocks.length, 1)) { return; }
+                    if (check_server_connected()) {
+                        socket.send(cmd_blocks[1]);
+                    } else { chat("<div style='color: red'>未连接服务器</div>"); return; }
+
+                } else if (cmd_blocks[0] == "debug") {
+                    if (!check_arguements_num(cmd_blocks.length, [1, 2])) { return; }
+                    if (cmd_blocks[1] == "scene") {
+                        if (!check_arguements_num(cmd_blocks.length, 2)) { return; }
+
+                        if (!scenes.includes(cmd_blocks[2])) {
+                            chat("<div style='color: red'>参数必须是" + scenes + "中的一个</div>");
+                            return;
+                        }
+                        Array.prototype.forEach.call(document.getElementsByClassName('scene'), function (element) {
+                            element.style.display = "none";
+                        });
+                        document.getElementById(cmd_blocks[2]).style.display = "";
+                    } else {
+                        chat("<div style='color: red'>未知参数：" + cmd_blocks[1] + "</div>");
+                    }
+                } else if (cmd_blocks[0] == "get") {
+                    if (!check_arguements_num(cmd_blocks.length, 1)) { return; }
+
+                    if (!items.includes(cmd_blocks[1])) {
+                        chat("<div style='color: red'>参数必须是" + items + "中的一个</div>");
+                        return;
+                    }
+                    if (check_server_connected()) {
+                        socket.send("[get]" + cmd_blocks[1]);
+                    } else { chat("<div style='color: red'>未连接服务器</div>"); return; }
+
+                }
+
+
+
+                else {
+                    chat("<div style='color: red'>未知指令：" + cmd_blocks[0] + "</div>");
+                }
+            } else {
+                if (!check_server_connected()) { chat("<div style='color: red'>未连接服务器</div>"); return; }
+                socket.send("[chat]" + content);
+            }
+
         }
+
+        function check_arguements_num(blocks_length, num) {
+            if (typeof num == "number") { num = [num]; }
+            if (!num.includes(blocks_length - 1)) {
+                var num_str = "";
+                for (var i = 0; i < num.length; i++) {
+                    if (i != 0) { num_str += "或"; }
+                    num_str += num[i];
+                }
+                chat("<div style='color: red'>指令要求" + num_str + "个参数，但提供了" + (blocks_length - 1) + "个参数</div>");
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function check_server_connected() {
+            if (socket) {
+                if (socket.readyState != 1 || phase == "end") {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+
+
+        }
+        // 聊天框快捷键
+        window.addEventListener('keydown', function (e) {
+            if (document.getElementById("chat").style.display == "none" && document.activeElement.tagName != "INPUT") {
+                if (e.key == "Enter" || e.key == "/" || e.key == "t") {
+                    if (!e.key == "/") { e.preventDefault(); }
+                    chatbox();
+                }
+            } else if (e.keyCode == 27) {
+                chatbox();
+            }
+        });
+
+        // 回到主界面
+        function return_to_main() {
+            document.getElementById("server").style.display = "";
+            document.getElementById("prepare").style.display = "none";
+            document.getElementById("drawing_phase").style.display = "none";
+            document.getElementById("chat").style.display = "none";
+            document.getElementById("waiting").style.display = "none";
+            document.getElementById("guess_phase").style.display = "none";
+            document.getElementById("appreciation_phase").style.display = "none";
+            document.getElementById("favourite").style.display = "none";
+            document.getElementById("favourite_choosed").style.display = "none";
+            document.getElementById("game_over").style.display = "none";
+            document.getElementById("black").style.display = "none";
+            is_black = false;
+        }
+
+
+        window.addEventListener('resize', function () {
+            if (!is_touch) {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+        });
+
+        window.addEventListener('beforeunload', function (event) {
+            if (phase == "prepare" || phase == "end") { return; }
+            event.returnValue = '真的要退出吗？';
+        });
+
+        document.getElementById("black").addEventListener("click", function () {
+            if (document.getElementById("chat").style.display != "none" && is_black == false) {
+                chatbox();
+            }
+        })
+
+        chat("<span style='color: gray'>欢迎来到Draw&Guess！您可以输入/help获取帮助。</span>");
+
+
 
         // 画板代码
 
@@ -1071,6 +1495,7 @@
                 ctx.globalCompositeOperation = 'source-over';
             }
             ctx.beginPath(); // 新增：开始一个绘画路径
+            pointermove(e);
         };
 
 
@@ -1096,9 +1521,7 @@
                 addUndoStack(canvas.toDataURL("image/webp", 0.5)); // 将当前画布状态保存起来
             }
         };
-
-        // 鼠标移动
-        canvas.onpointermove = function (e) {
+        function pointermove(e) {
             if (!isDrawing) return;
             const brushSize = document.getElementById('brushSize').value;
             const eraserSize = document.getElementById('eraserSize').value;
@@ -1107,10 +1530,13 @@
             ctx.lineWidth = lineWidth;
             ctx.strokeStyle = lineColor;
             draw(e.offsetX, e.offsetY, e.ctrlKey);
-        };
+        }
+        // 鼠标移动
+        canvas.onpointermove = pointermove;
 
         window.addEventListener('touchstart', function check_touch() {
             console.log('检测到触摸屏');
+            is_touch = true;
             canvas.onpointermove = function (e) {
             }
             canvas.onpointerup = function (e) {
@@ -1121,11 +1547,9 @@
             }
             window.removeEventListener('touchstart', check_touch);
         });
-
-        // 触摸
-        canvas.addEventListener('touchmove', (e) => {
-e.preventDefault();
+        function touchmove(e) {
             if (!isDrawing) return;
+            e.preventDefault();
             const brushSize = document.getElementById('brushSize').value;
             const eraserSize = document.getElementById('eraserSize').value;
             lineWidth = (e.ctrlKey || brush === 8) ? eraserSize : brushSize;
@@ -1134,7 +1558,9 @@ e.preventDefault();
             ctx.strokeStyle = lineColor;
             draw(e.touches[0].clientX, e.touches[0].clientY, e.ctrlKey);
 
-        }, { passive: false });
+        }
+        // 触摸
+        canvas.addEventListener('touchmove', touchmove, { passive: false });
 
         canvas.addEventListener('touchstart', (e) => {
             points = [];
@@ -1147,6 +1573,7 @@ e.preventDefault();
                 ctx.globalCompositeOperation = 'source-over';
             }
             ctx.beginPath(); // 新增：开始一个绘画路径
+            touchmove(e);
         }, { passive: false });
         canvas.addEventListener('touchend', (e) => {
             isMouseDown = false;
@@ -1393,7 +1820,9 @@ e.preventDefault();
             document.getElementById(display).classList.add('active');
         }
 
-
+        function change_color(val) {
+            document.getElementById('brushColor').value = val;
+        }
     </script>
 
 </body>

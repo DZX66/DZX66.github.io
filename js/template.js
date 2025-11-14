@@ -94,7 +94,7 @@ history.replaceState(null,"",url.href);
             pObjs[i].setAttribute("img_src", "https://img.moegirl.org.cn/common/thumb/b/bc/Commons-emblem-issue.svg/75px-Commons-emblem-issue.svg.png");
             pObjs[i].setAttribute("side_color", "orange");
             pObjs[i].setAttribute("width", "50"); pObjs[i].setAttribute("height", "49");
-            pObjs[i].innerHTML = "<b>这是一个有关现存于世人物的条目。</b>所有内容仅供参考。理解万岁！";
+            pObjs[i].innerHTML = "<b>这是一个有关现存于世人物的条目。</b>内容可能不准确或含有偏见，仅供参考。理解万岁！";
         }
         else if (pObjs[i].innerHTML == "先一起喊") {
             pObjs[i].setAttribute("img_src", "https://img.moegirl.org.cn/common/thumb/6/6f/Emo_%E3%82%8F%E3%81%84%E3%81%AE%E3%82%8F%E3%81%84%E3%81%AE.png/75px-Emo_%E3%82%8F%E3%81%84%E3%81%AE%E3%82%8F%E3%81%84%E3%81%AE.png");
@@ -124,7 +124,7 @@ history.replaceState(null,"",url.href);
             pObjs[i].setAttribute("img_src", "https://img.moegirl.org.cn/common/thumb/b/b1/Gnome-emblem-important.svg/75px-Gnome-emblem-important.svg.png");
             pObjs[i].setAttribute("side_color", "red");
             pObjs[i].setAttribute("width", "50"); pObjs[i].setAttribute("height", "50");
-            pObjs[i].innerHTML = "<b class=\"stress\">此页面包含冒犯他人的内容。</b><br/>柳下回声仅以介绍为目的而提及。随意提及可能会导致他人的<b>厌恶</b>。<br/>同时也请编辑者注意，不要使用<b>极度不中立</b>的言论向读者喊话。";
+            pObjs[i].innerHTML = "<b class=\"stress\">此页面包含冒犯他人的内容。</b><br/>随意提及可能会导致他人的<b>厌恶</b>。";
         }
         else if (pObjs[i].innerHTML == "页内查找") {
             pObjs[i].setAttribute("img_src", "https://img.moegirl.org.cn/common/thumb/5/5c/Ambox_glass_green.svg/38px-Ambox_glass_green.svg.png");

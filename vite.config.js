@@ -8,7 +8,8 @@ export default defineConfig({
         index: resolve(__dirname, 'index.html'),
         pages: resolve(__dirname, 'pages.html'),
         page: resolve(__dirname, 'page.html'),
-        404: resolve(__dirname, "404.html")
+        404: resolve(__dirname, "404.html"),
+        source: resolve(__dirname, "source.html"),
       }
     }
   },

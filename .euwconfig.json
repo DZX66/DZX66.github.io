@@ -1,5 +1,5 @@
 {
-  "templatesModule": "./js/euw.templates.js",
+  "templatesModule": "./public/js/euw.templates.js",
     "pages": {
         "contentDir": "public/pages",
         "metaDir": "public/pages_meta",

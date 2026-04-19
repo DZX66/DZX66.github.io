@@ -1,0 +1,187 @@
+/* css/components/card.css - 卡片组件样式 */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+  transition: box-shadow 0.2s ease, transform 0.15s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+.card-header {
+  padding: 1.2rem 1.5rem 0.6rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--border-light);
+}
+
+.card-header h2 {
+  font-size: 1.3rem;
+  font-weight: 470;
+  color: var(--accent-deep);
+  letter-spacing: 0.3px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-body {
+  padding: 1.3rem 1.5rem 1.5rem;
+  flex: 1;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+/* 公告栏 */
+.notice-card .card-body {
+  font-size: 1rem;
+}
+
+.notice-item {
+  margin-bottom: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px dotted var(--border-light);
+}
+
+.notice-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.notice-title {
+  font-weight: 550;
+  color: var(--text-primary);
+  margin-bottom: 0.2rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.notice-date {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-left: 0.3rem;
+  font-weight: normal;
+}
+
+.notice-content {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* 配图卡片 */
+.illustration {
+  text-align: center;
+}
+
+.site-illustration {
+  width: 100%;
+  max-height: 140px;
+  border-radius: 16px;
+  margin-bottom: 0.75rem;
+}
+
+.image-caption {
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* 最近更新列表 */
+.recent-list {
+  list-style: none;
+}
+
+.recent-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #edf3e9;
+}
+
+.recent-item:last-child {
+  border-bottom: none;
+}
+
+.recent-link {
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 470;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recent-link:hover {
+  color: var(--accent-deep);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.recent-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.recent-date {
+  font-feature-settings: "tnum";
+  white-space: nowrap;
+}
+
+.tag-indicator {
+  background: #edf3e9;
+  padding: 2px 8px;
+  border-radius: 30px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* 按钮样式 */
+.primary-button {
+  background: var(--accent-soft);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.primary-button:hover {
+  background: var(--accent-deep);
+}
+
+/* 骨架屏 */
+.skeleton-text {
+  background: #f0f4f0;
+  height: 1rem;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-text.short {
+  width: 70%;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}

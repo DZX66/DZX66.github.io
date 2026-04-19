@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>页面加载中 · 柳下回声</title>
+  <link rel="stylesheet" href="/css/page.css">
+  <!-- Markdown 解析库 -->
+  <script src="/js/external/marked.min.js"></script>
+  <script src="/js/external/prism.js"></script>
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- 头部 -->
+    <header class="site-header">
+      <div class="brand">
+        <span class="brand-icon"><img src="icon.png" alt="柳下回声" style="width: 220px; height: 58px;"></span>
+        <!-- <h1 class="site-title">柳下回声</h1> -->
+        <span class="site-sub">Echo Under Willow</span>
+      </div>
+      <div class="header-meta">
+        <a href="/" class="back-link">← 返回主页</a>
+      </div>
+    </header>
+
+    <!-- 主内容区 + 侧边栏布局 -->
+    <div class="page-layout">
+      <main id="pageContent" class="page-container">
+        <div class="loading-placeholder">🍵 正在加载，稍候片刻...</div>
+      </main>
+
+      <!-- 侧边栏（桌面固定 / 移动抽屉） -->
+      <aside id="pageSidebar" class="page-sidebar">
+        <button class="sidebar-close-btn" id="closeSidebarBtn" aria-label="关闭侧边栏">×</button>
+        
+        <div class="sidebar-section">
+          <h3>🔗 快捷链接</h3>
+          <ul class="sidebar-links">
+            <li><a href="#" id="githubSourceLink" target="_blank" rel="noopener">📄 源文件 (GitHub)</a></li>
+            <li><a href="#" id="sourceCodeLink" target="_blank" rel="noopener">📝 源代码</a></li>
+            <li><a href="#" id="historyLink" target="_blank" rel="noopener">🕒 编辑历史</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-section toc-section">
+          <h2>📑 目录</h2>
+          <nav id="tableOfContents" class="toc-container">
+            <div class="toc-empty">解析标题后显示</div>
+          </nav>
+        </div>
+      </aside>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+      <p> <span id="currentYear"></span> 柳下回声</p>
+    </footer>
+  </div>
+
+  <!-- 悬浮按钮（仅移动端可见） -->
+  <button class="toc-fab" id="tocFab" aria-label="打开目录">📋</button>
+  <!-- 移动端遮罩层 -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <script src="js/page.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "templatesModule": "./js/euw.templates.js",
+    "pages": {
+        "contentDir": "public/pages",
+        "metaDir": "public/pages_meta",
+        "indexPath": "public/pages.json"
+    }
+}

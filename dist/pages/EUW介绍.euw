@@ -1,0 +1,90 @@
+{infobox_official_doc}
+
+本文件演示 **EUW** 语言的所有特性 —— 完全兼容 Markdown 基础语法，并通过 `{模板名|参数}` 实现动态内容注入。  
+
+文件扩展名：`.euw` | 需要配合 `euw.templates.js` 使用。
+
+---
+
+## 基础 Markdown 语法支持
+
+### 标题（H2 - H6）
+`## H2 标题 `
+`### H3 标题`
+`#### H4 标题`
+`##### H5 标题`
+`###### H6 标题`
+
+### 文本样式
+- `**粗体**` 和 `__粗体__`
+- `*斜体*` 和 `_斜体_`
+- `~~删除线~~`
+- 行内代码：`const greeting = "Hello EUW";`
+- 混合样式：`***粗斜体***` 和 `~~**粗体删除线**~~`
+
+
+### 列表
+**无序列表**（支持 `-` `*` `+`）：
+```md
+- 项目一
+* 项目二
++ 项目三
+```
+
+**有序列表**：
+```md
+1. 第一项
+2. 第二项
+   1. 嵌套有序列表
+   2. 第二子项
+3. 第三项
+```
+
+### 分割线
+分割线用`---` `***` `___`表示，单独占一行。
+
+### 代码块
+支持语法高亮注入（JavaScript / TypeScript / CSS / HTML / JSON / Python 等）。
+
+**JavaScript 示例**：
+```javascript
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+console.log(greet("EUW"));
+```
+
+**Python 示例**：
+```python
+def factorial(n):
+    return 1 if n <= 1 else n * factorial(n-1)
+print(factorial(5))
+```
+
+如果需要显示字面花括号 `{` 或 `}`，目前请避免直接书写（或使用 HTML 实体），模板解析器只识别完整 `{name|...}` 格式。
+
+---
+
+## 模板调用语法
+
+模板调用格式：`{模板名|参数1=值1, 参数2=值2}`
+
+### 无参数调用
+`{current_datetime}` —— 假设模板已注册，将动态显示当前日期时间。
+
+### 基本参数类型演示
+- 字符串参数：`{greeting|name="开发者", style="enthusiastic"}`
+- 数字参数：`{counter|start=1, max=100}`
+- 布尔参数：`{toggle|active=true, visible=false}`
+- 数组参数：`{badge_list|items=["Feature", "Bugfix", "Docs"]}`
+
+---
+
+## 限制与注意事项
+
+- ❌ **不支持模板调用内嵌套模板**：例如 `{outer|inner={inner|param=1}}` 不允许。但可在 render 函数中调用其他模板的渲染结果。
+- ✅ **代码块语言高亮**：内置支持 JavaScript / TypeScript / CSS / HTML / JSON / Python，其他语言回退为纯文本。
+- ✅ **Markdown 完全兼容**：除模板调用区域外，所有 CommonMark 语法正常工作。
+- ⚠️ **参数值中的引号**：字符串必须使用双引号或单引号包裹，且引号内的逗号、花括号不会被解析为模板语法。
+
+---

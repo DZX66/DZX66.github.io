@@ -1,0 +1,39 @@
+/* css/base.css - 基础样式和变量定义 */
+:root {
+  --bg-page: #f8faf6;
+  --card-bg: #ffffff;
+  --text-primary: #2e3b2c;
+  --text-secondary: #5f735b;
+  --accent-soft: #71bd71;
+  --accent-deep: #4f6b4a;
+  --border-light: #dde5d8;
+  --shadow-sm: 0 4px 12px rgba(0, 20, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 8px 20px rgba(60, 80, 50, 0.06);
+  --radius-card: 20px;
+  --font-serif: 'Georgia', 'Times New Roman', '宋体', serif;
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  padding: 1.5rem 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.app-wrapper {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}

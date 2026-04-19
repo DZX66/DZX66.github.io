@@ -1,1 +1,82 @@
-<!DOCTYPE html><html lang="zh-CN"><head><title>柳下回声</title><meta name="viewport" content="width=device-width, initial-scale=1"><meta charset="utf-8"><meta name="referrer" content="no-referrer"><link rel="stylesheet" type="text/css" href="style.css?version=21e46da6"><link rel="stylesheet" href="prism.css" /><script src="js/template.js?version=8124ae86"></script><script src="js/prism.js"></script></head><body><div class="card" style="text-align: center;"><img src="https://i0.hdslb.com/bfs/new_dyn/6b9a00e9e33b23aa49a340015c86866c432466738.png" style="max-width: 100%;" title="主页"></div><div class="card" id="announcement"><h3>公告</h3>距离2027年高考只剩：<span id="countdown"></span><br/>手机端可以点击右侧的按钮打开目录！<br/>现在可以在<a href="https://dzx66.github.io/pages/%E8%87%AA%E5%AE%9A%E4%B9%89%E8%AE%BE%E7%BD%AE.html">这个页面</a>自定义背景和其他样式了！</div><div class="card"><img src="http://i0.hdslb.com/bfs/new_dyn/2cbd12d6c8b25070b0580aff636403491910873513.png" title="头图" width="40%" class="left" id="head_img"/><div style="display: flow-root;" id="head_text"><h2>欢迎来到柳下回声！</h2><p>本网站<b>柳下回声</b>是一个以wiki为运作模式的个人博客小网站，用于记录某些事件或观点，或者提供某些服务。本网站用纯html+css+js制作以及python辅助管理，页面样式参考了多个网站。本网站托管于<a href="https://github.com/DZX66/DZX66.github.io" target="_blank">GitHub Pages</a>，图片多来源于各种图床。</p><p>图源：<a href="https://www.bilibili.com/opus/1070524923579990054" target="_blank">milthm</a></p></div></div><div class="card"><h2>最新页面</h2><a href="blogs.html">所有页面</a><ul style="list-style-type: none;"><li><div class='head'><a href='pages/zxq.html'>zxq</a></div><div class='foot'> 已加密 更新时间：2026-01-01 00:30:17 标签：人物 </div></li><li><div class='head'><a href='pages/2.1版本.html'>2.1版本</a></div><div class='foot'> 公开 更新时间：2026-01-01 00:21:33 标签：崩铁 剧情 </div></li><li><div class='head'><a href='pages/hzh.html'>hzh</a></div><div class='foot'> 已加密 更新时间：2026-01-01 00:20:32 标签：人物 </div></li><li><div class='head'><a href='pages/zjh.html'>zjh</a></div><div class='foot'> 已加密 更新时间：2026-01-01 00:19:27 标签：人物 </div></li><li><div class='head'><a href='pages/编辑教程.html'>编辑教程</a></div><div class='foot'> 公开 更新时间：2026-01-01 00:16:11 标签：官方文档 指引 </div></li></ul></div><div class="card"><h2>官方文档</h2><ul style="list-style-type: none;"><li><div class='head'><a href='pages/源代码查看.html'>源代码查看</a></div><div class='foot'> 公开 更新时间：2024-07-28 13:51:24 标签：特殊 官方文档 </div></li><li><div class='head'><a href='pages/编辑教程.html'>编辑教程</a></div><div class='foot'> 公开 更新时间：2026-01-01 00:16:11 标签：官方文档 指引 </div></li><li><div class='head'><a href='pages/自定义设置.html'>自定义设置</a></div><div class='foot'> 公开 更新时间：2024-10-01 17:50:05 标签：特殊 官方文档 </div></li><li><div class='head'><a href='pages/调试页面.html'>调试页面</a></div><div class='foot'> 公开 更新时间：2024-05-31 19:57:05 标签：官方文档 特殊 </div></li></ul></div><div class="card"><h2>小工具</h2><ul style="list-style-type: none;"></ul></div></body><script src="js/special_days.js?version=ab19c13a"></script><script src="js/countdown.js?2b9479e5"></script><script>if (document.documentElement.clientWidth <= 736){document.getElementById("head_img").style.width = "98%"; document.getElementById("head_text").style.display = "inline-block";}</script></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>柳下回声 · 轻简博客</title>
+  <link rel="stylesheet" href="css/index.css">
+  <!-- 使用简洁的系统字体，无需外部依赖 -->
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- 头部：站点标识 + 简约导航（仅装饰） -->
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true"><img src="icon.png" alt="柳下回声" style="width: 220px; height: 58px;"></div>
+        <!-- <h1 class="site-title">柳下回声</h1> -->
+        <span class="site-sub">Echo Under Willow</span>
+      </div>
+      <div class="header-meta">
+        <span class="badge"></span>
+      </div>
+    </header>
+
+    <!-- 主内容网格 -->
+    <main class="home-grid">
+      <!-- 左侧：公告栏 + 配图（上下或并排？这里采用上下结构，更清晰） -->
+      <section class="card notice-card" id="noticeCard">
+        <div class="card-header">
+          <h2>📢 公告</h2>
+        </div>
+        <div class="card-body" id="noticeContainer">
+          <!-- 动态公告将由JS注入 -->
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text short"></div>
+        </div>
+      </section>
+
+      <section class="card image-card">
+        <div class="card-header">
+          <h2>🌿 檐下听风</h2>
+        </div>
+        <div class="card-body illustration">
+          <!-- 简约配图：内嵌SVG，呼应“柳下回声”，纯静态但风格一致 -->
+          <svg viewBox="0 0 240 120" class="site-illustration" preserveAspectRatio="xMidYMid meet">
+            <rect width="240" height="120" fill="#f5f7f2" rx="12" />
+            <path d="M30 90 L60 40 L90 90 Z" fill="#9bba9b" opacity="0.7" />
+            <path d="M70 95 L100 30 L130 95 Z" fill="#7fa07f" opacity="0.6" />
+            <circle cx="190" cy="40" r="16" fill="#e6c87c" opacity="0.8" />
+            <path d="M140 90 Q170 60 200 90" stroke="#5a7a5a" stroke-width="3" fill="none" stroke-linecap="round" />
+            <path d="M180 60 L185 75 L200 75" stroke="#5a7a5a" stroke-width="2" fill="none" />
+            <text x="20" y="30" font-family="system-ui, sans-serif" font-size="14" fill="#4a6741" opacity="0.7">柳下 · 回声</text>
+            <text x="160" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#7a8f7a">— 轻叙 —</text>
+          </svg>
+          <p class="image-caption">风拂柳岸，字句回响</p>
+        </div>
+      </section>
+
+      <!-- 右侧 / 下方：最近更新（占据两列？使用grid布局调整） 
+           我们让最近更新占一整行，下面所有页面占一整行，视觉清爽 -->
+      <section class="card recent-card full-width">
+        <div class="card-header">
+          <h2>🕊️ 最近更新</h2>
+          <a href="/pages" class="more-link" title="查看所有页面">全部 &rarr;</a>
+        </div>
+        <div class="card-body" id="recentUpdatesContainer">
+          <!-- 动态渲染5条最近更新 -->
+          <div class="loading-placeholder">🍃 正在聆听回声…</div>
+        </div>
+      </section>
+
+
+    </main>
+
+    <footer class="site-footer">
+      <p><span id="currentYear"></span>  ·  ✎ 柳下回声</p>
+    </footer>
+  </div>
+
+  <!-- 引入主逻辑脚本 -->
+  <script src="js/index.js" type="module"></script>
+</body>
+</html>

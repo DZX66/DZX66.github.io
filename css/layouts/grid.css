@@ -1,0 +1,55 @@
+/* css/layouts/grid.css - 网格布局 */
+.home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
+}
+
+@media (max-width: 768px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+  
+  .full-width {
+    grid-column: span 1;
+  }
+}
+
+/* 加载状态 */
+.loading-placeholder {
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 2rem;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* 更多链接样式 */
+.more-link {
+  font-size: 0.85rem;
+  color: var(--accent-soft);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.more-link:hover {
+  color: var(--accent-deep);
+}
+
+.page-count {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.entry-action p {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}

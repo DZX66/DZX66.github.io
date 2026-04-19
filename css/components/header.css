@@ -1,0 +1,77 @@
+/* css/components/header.css - 头部样式 */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  flex-wrap: wrap;
+}
+
+.brand-icon {
+  font-size: 2.2rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(70, 90, 60, 0.1));
+}
+
+.site-title {
+  font-size: 2.2rem;
+  font-weight: 450;
+  letter-spacing: 2px;
+  color: var(--accent-deep);
+  font-family: var(--font-serif);
+  margin: 0;
+}
+
+.site-sub {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-left: 4px;
+  font-weight: 300;
+}
+
+.header-meta .badge {
+  background: var(--card-bg);
+  padding: 0.3rem 1rem;
+  border-radius: 30px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-light);
+}
+
+/* 返回主页链接样式 */
+.back-link {
+  color: var(--accent-deep);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.back-link:hover {
+  background: rgba(79, 107, 74, 0.1);
+  border-color: var(--accent-soft);
+  transform: translateY(-1px);
+}
+
+/* 页脚样式 */
+.site-footer {
+  margin-top: 3rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding: 1rem;
+  border-top: 1px solid var(--border-light);
+}

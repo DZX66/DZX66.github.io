@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>柳下回声 · 轻简博客</title>
+  <!-- 使用简洁的系统字体，无需外部依赖 -->
+  <script type="module" crossorigin src="/assets/index-Dwx-g9nJ.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-CSRv37U6.js">
+  <link rel="modulepreload" crossorigin href="/assets/pageService-CRh8VmWs.js">
+  <link rel="stylesheet" crossorigin href="/assets/404-D-zzrU-w.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- 头部：站点标识 + 简约导航（仅装饰） -->
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true"><img src="/assets/icon-CNp0OmfW.png" alt="柳下回声" style="width: 220px; height: 58px;"></div>
+        <!-- <h1 class="site-title">柳下回声</h1> -->
+        <span class="site-sub">Echo Under Willow</span>
+      </div>
+      <div class="header-meta">
+        <span class="badge"></span>
+      </div>
+    </header>
+
+    <!-- 主内容网格 -->
+    <main class="home-grid">
+      <!-- 左侧：公告栏 + 配图（上下或并排？这里采用上下结构，更清晰） -->
+      <section class="card notice-card" id="noticeCard">
+        <div class="card-header">
+          <h2>📢 公告</h2>
+        </div>
+        <div class="card-body" id="noticeContainer">
+          <!-- 动态公告将由JS注入 -->
+          <div class="skeleton-text"></div>
+          <div class="skeleton-text short"></div>
+        </div>
+      </section>
+
+      <section class="card image-card">
+        <div class="card-header">
+          <h2>🌿 檐下听风</h2>
+        </div>
+        <div class="card-body illustration">
+          <!-- 简约配图：内嵌SVG，呼应“柳下回声”，纯静态但风格一致 -->
+          <svg viewBox="0 0 240 120" class="site-illustration" preserveAspectRatio="xMidYMid meet">
+            <rect width="240" height="120" fill="#f5f7f2" rx="12" />
+            <path d="M30 90 L60 40 L90 90 Z" fill="#9bba9b" opacity="0.7" />
+            <path d="M70 95 L100 30 L130 95 Z" fill="#7fa07f" opacity="0.6" />
+            <circle cx="190" cy="40" r="16" fill="#e6c87c" opacity="0.8" />
+            <path d="M140 90 Q170 60 200 90" stroke="#5a7a5a" stroke-width="3" fill="none" stroke-linecap="round" />
+            <path d="M180 60 L185 75 L200 75" stroke="#5a7a5a" stroke-width="2" fill="none" />
+            <text x="20" y="30" font-family="system-ui, sans-serif" font-size="14" fill="#4a6741" opacity="0.7">柳下 · 回声</text>
+            <text x="160" y="25" font-family="system-ui, sans-serif" font-size="10" fill="#7a8f7a">— 轻叙 —</text>
+          </svg>
+          <p class="image-caption">风拂柳岸，字句回响</p>
+        </div>
+      </section>
+
+      <!-- 右侧 / 下方：最近更新（占据两列？使用grid布局调整） 
+           我们让最近更新占一整行，下面所有页面占一整行，视觉清爽 -->
+      <section class="card recent-card full-width">
+        <div class="card-header">
+          <h2>🕊️ 最近更新</h2>
+          <a href="/pages" class="more-link" title="查看所有页面">全部 &rarr;</a>
+        </div>
+        <div class="card-body" id="recentUpdatesContainer">
+          <!-- 动态渲染5条最近更新 -->
+          <div class="loading-placeholder">🍃 正在聆听回声…</div>
+        </div>
+      </section>
+
+
+    </main>
+
+    <footer class="site-footer">
+      <p><span id="currentYear"></span>  ·  ✎ 柳下回声</p>
+    </footer>
+  </div>
+
+  <!-- 引入主逻辑脚本 -->
+</body>
+</html>

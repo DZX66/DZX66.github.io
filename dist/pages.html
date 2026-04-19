@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>所有页面 · 柳下回声</title>
+  <script type="module" crossorigin src="/assets/pages-CXBbvY9i.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/modulepreload-polyfill-CSRv37U6.js">
+  <link rel="modulepreload" crossorigin href="/assets/pageService-CRh8VmWs.js">
+  <link rel="stylesheet" crossorigin href="/assets/pages-Cjha407M.css">
+</head>
+<body>
+  <div class="app-wrapper">
+    <!-- 头部：站点标识 + 返回链接 -->
+    <header class="site-header">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true"><img src="/assets/icon-CNp0OmfW.png" alt="柳下回声" style="width: 220px; height: 58px;"></div>
+        <!-- <h1 class="site-title">柳下回声</h1> -->
+        <span class="site-sub">所有页面</span>
+      </div>
+      <div class="header-meta">
+        <a href="/" class="back-link" title="返回主页">← 主页</a>
+      </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="pages-container">
+      <!-- 页面统计卡片 -->
+      <section class="card stats-card">
+        <div class="card-header">
+          <h2>📚 页面总览</h2>
+        </div>
+        <div class="card-body">
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-number" id="totalPages">0</span>
+              <span class="stat-label">总页面数</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number" id="recentPages">0</span>
+              <span class="stat-label">最近更新</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 页面列表 -->
+      <section class="card pages-list-card">
+        <div class="card-header">
+          <h2>📄 页面列表</h2>
+          <div class="sort-controls">
+            <button class="sort-btn active" data-sort="date">按时间</button>
+            <button class="sort-btn" data-sort="title">按标题</button>
+            <button class="sort-btn" data-sort="encrypted">按加密状态</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="search-bar">
+            <input type="text" id="pageSearch" placeholder="🔍 搜索页面标题..." class="search-input">
+            <div class="filter-controls">
+              <label class="filter-label">
+                <input type="checkbox" id="showEncryptedOnly" class="filter-checkbox">
+                <span class="filter-text">仅显示加密页面</span>
+              </label>
+            </div>
+          </div>
+          <div class="pages-list" id="pagesListContainer">
+            <div class="loading-placeholder">🍃 正在加载页面列表...</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p><span id="currentYear"></span>  ·  ✎ 柳下回声</p>
+    </footer>
+  </div>
+
+  <!-- 引入主逻辑脚本 -->
+</body>
+</html>

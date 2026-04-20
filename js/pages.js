@@ -22,7 +22,7 @@ class PagesManager {
     this.initEventListeners();
     
     // 渲染页面列表
-    this.renderPagesList();
+    this.filterAndSortPages();
   }
 
   async loadPagesData() {
@@ -57,10 +57,10 @@ class PagesManager {
       });
     }
 
-    // 加密筛选功能
-    const encryptedCheckbox = document.getElementById('showEncryptedOnly');
-    if (encryptedCheckbox) {
-      encryptedCheckbox.addEventListener('change', () => {
+    // 公开页面筛选功能
+    const publicCheckbox = document.getElementById('showPublicOnly');
+    if (publicCheckbox) {
+      publicCheckbox.addEventListener('change', () => {
         this.filterAndSortPages();
       });
     }
@@ -98,10 +98,10 @@ class PagesManager {
       );
     }
     
-    // 加密状态过滤
-    const encryptedCheckbox = document.getElementById('showEncryptedOnly');
-    if (encryptedCheckbox && encryptedCheckbox.checked) {
-      filtered = filtered.filter(page => page.encrypted === true);
+    // 公开页面过滤
+    const publicCheckbox = document.getElementById('showPublicOnly');
+    if (publicCheckbox && publicCheckbox.checked) {
+      filtered = filtered.filter(page => page.encrypted !== true);
     }
     
     this.filteredPages = filtered;

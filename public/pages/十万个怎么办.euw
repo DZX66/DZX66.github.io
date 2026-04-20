@@ -31,7 +31,7 @@ os.chdir(os.path.dirname(__file__))
 
 ## 如何给aspro板供电
 
-BV1ADmbYEEGp<-this one
+{bilibili|bv="BV1ADmbYEEGp"} <-this one
 
 结果是三个电池的4.5Vusb电池盒用一会电压就跟不上了，所以需要5V的充电头。{heimu|text="coplit都知道。。。", title="你知道的太多了"}
 
@@ -118,7 +118,7 @@ self._paths = {"driver_path": "chromedriver.exe", "browser_path": ""}
 
 ## flash文件.swf文件的打开
 
-使用第三方播放器：BV1j8411D7Zp
+使用第三方播放器：{bilibili|bv="BV1j8411D7Zp"}
 
 [官网](https://fp.vnisoft.top/) [蓝奏云下载页面](https://3sqrt7.lanzouq.com/iUmYK0pn85cj)
 

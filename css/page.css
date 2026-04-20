@@ -424,3 +424,40 @@ hr {
   background-color: var(--accent-soft); /* 使用主题绿色，也可换成 #71bd71 */
   border-radius: 6px;          /* 圆角，形成圆角矩形条 */
 }
+
+/* iframe 懒加载占位卡片 */
+.iframe-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f4f7f2;
+    border: 2px dashed var(--border-light);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    min-height: 150px;
+    margin: 1.5rem 0;
+}
+
+.iframe-placeholder:hover {
+    background: #e9f0e5;
+    border-color: var(--accent-soft);
+}
+
+.placeholder-content {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 1rem;
+}
+
+.placeholder-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.placeholder-src {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    word-break: break-all;
+}

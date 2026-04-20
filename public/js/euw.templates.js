@@ -327,6 +327,11 @@ module.exports = {
       description: "生成下划线",
       render: () => '_'
     },
+    arrow_right: {
+      params: {},
+      description: "生成右箭头",
+      render: () => '>'
+    },
     sup: {
       params: {
         text: { type: 'string', required: true, description: '需要上标的文字' },

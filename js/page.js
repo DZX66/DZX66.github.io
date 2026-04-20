@@ -3,14 +3,14 @@ import { decrypt } from './components/euw-crypto.js';
 (function () {
     "use strict";
 
-// ---------- 路径规范化（去除 public/ 或 public\ 前缀，统一为正斜杠）----------
-function normalizePath(path) {
-  // 1. 将反斜杠全部转为正斜杠（URL 标准）
-  let normalized = path.replace(/\\/g, '/');
-  // 2. 去除开头的 public/（可选前导斜杠）
-  normalized = normalized.replace(/^\/?public\//, '');
-  return normalized;
-}
+    // ---------- 路径规范化（去除 public/ 或 public\ 前缀，统一为正斜杠）----------
+    function normalizePath(path) {
+        // 1. 将反斜杠全部转为正斜杠（URL 标准）
+        let normalized = path.replace(/\\/g, '/');
+        // 2. 去除开头的 public/（可选前导斜杠）
+        normalized = normalized.replace(/^\/?public\//, '');
+        return normalized;
+    }
 
     // ---------- Cookie 工具 ----------
     function setCookie(name, value, days = 7) {
@@ -203,20 +203,20 @@ function normalizePath(path) {
         return await res.json();
     }
 
-async function loadMeta(metaPath) {
-  // metaPath 来自 pages.json 中的值，同样需要规范化
-  const normalized = normalizePath(metaPath);
-  const res = await fetch('/' + normalized);
-  if (!res.ok) throw new Error(`元数据加载失败 (${res.status})`);
-  return await res.json();
-}
+    async function loadMeta(metaPath) {
+        // metaPath 来自 pages.json 中的值，同样需要规范化
+        const normalized = normalizePath(metaPath);
+        const res = await fetch('/' + normalized);
+        if (!res.ok) throw new Error(`元数据加载失败 (${res.status})`);
+        return await res.json();
+    }
 
-async function loadEuwSource(filePath) {
-  const normalized = normalizePath(filePath);
-  const res = await fetch('/' + normalized);
-  if (!res.ok) throw new Error(`EUW 文件加载失败 (${res.status})`);
-  return await res.text();
-}
+    async function loadEuwSource(filePath) {
+        const normalized = normalizePath(filePath);
+        const res = await fetch('/' + normalized);
+        if (!res.ok) throw new Error(`EUW 文件加载失败 (${res.status})`);
+        return await res.text();
+    }
 
     // ---------- 处理 <refer> 标签 ----------
     function processRefers(htmlString) {
@@ -332,13 +332,30 @@ async function loadEuwSource(filePath) {
                 let pmatch;
                 while ((pmatch = paramRegex.exec(paramString)) !== null) {
                     const key = pmatch[1];
-                    const value = pmatch[2] !== undefined ? pmatch[2] :
-                        pmatch[3] !== undefined ? pmatch[3] :
-                            pmatch[4];
-                    if (value === 'true') params[key] = true;
-                    else if (value === 'false') params[key] = false;
-                    else if (!isNaN(value) && value.trim() !== '') params[key] = Number(value);
-                    else params[key] = value;
+                    let value;
+                    let isQuoted = false;
+
+                    if (pmatch[2] !== undefined) {
+                        value = pmatch[2];
+                        isQuoted = true;
+                    } else if (pmatch[3] !== undefined) {
+                        value = pmatch[3];
+                        isQuoted = true;
+                    } else {
+                        value = pmatch[4];
+                        isQuoted = false;
+                    }
+
+                    if (!isQuoted) {
+                        // 只有无引号值才进行类型推断
+                        if (value === 'true') params[key] = true;
+                        else if (value === 'false') params[key] = false;
+                        else if (!isNaN(value) && value.trim() !== '') params[key] = Number(value);
+                        else params[key] = value;
+                    } else {
+                        // 带引号值强制为字符串
+                        params[key] = value;
+                    }
                 }
             }
 
@@ -546,9 +563,79 @@ async function loadEuwSource(filePath) {
             window.pause_music = () => { };
         }
 
+        // 处理 iframe 懒加载（数量超过阈值时）
+        const iframes = contentEl.querySelectorAll('.euw-content iframe');
+        const IFRAME_THRESHOLD = 5;
+        if (iframes.length > IFRAME_THRESHOLD) {
+            iframes.forEach(iframe => lazyReplaceIframe(iframe));
+        }
+
         generateTOC();
         updateSidebarLinks();
         applyPrism();
+    }
+
+    function lazyReplaceIframe(iframe) {
+        const src = iframe.getAttribute('src');
+        if (!src) return; // 无 src 的 iframe 不处理（或保留原样）
+
+        // 保存原始属性
+        const attributes = {};
+        for (const attr of iframe.attributes) {
+            attributes[attr.name] = attr.value;
+        }
+
+        // 创建占位元素
+        const placeholder = document.createElement('div');
+        placeholder.className = 'iframe-placeholder';
+        placeholder.setAttribute('data-iframe-src', src);
+        // 将属性存储为 data-* 以便恢复
+        Object.entries(attributes).forEach(([key, value]) => {
+            if (key !== 'src') {
+                placeholder.dataset[`iframe${key.charAt(0).toUpperCase() + key.slice(1)}`] = value;
+            }
+        });
+
+        // 提取域名用于显示
+        let domain = '';
+        try {
+            domain = new URL(src, window.location.origin).hostname;
+        } catch {
+            domain = src;
+        }
+
+        placeholder.innerHTML = `
+        <div class="placeholder-content">
+            <span class="placeholder-icon">📺</span>
+            <p>点击加载嵌入内容</p>
+            <p class="placeholder-src">${domain}</p>
+        </div>
+    `;
+
+        // 继承原 iframe 的宽高样式（如果有）
+        if (attributes.width) placeholder.style.width = attributes.width;
+        if (attributes.height) placeholder.style.height = attributes.height;
+        if (iframe.style.cssText) placeholder.style.cssText = iframe.style.cssText;
+
+        // 绑定点击事件
+        placeholder.addEventListener('click', function onClick() {
+            const newIframe = document.createElement('iframe');
+            // 恢复 src
+            newIframe.src = this.dataset.iframeSrc;
+            // 恢复其他属性
+            Object.keys(this.dataset).forEach(key => {
+                if (key.startsWith('iframe')) {
+                    const attrName = key.replace(/^iframe/, '').toLowerCase();
+                    newIframe.setAttribute(attrName, this.dataset[key]);
+                }
+            });
+            // 继承样式
+            newIframe.style.cssText = this.style.cssText;
+            // 替换占位符
+            this.replaceWith(newIframe);
+        }, { once: true });
+
+        iframe.replaceWith(placeholder);
     }
 
     // ---------- 显示错误 ----------
@@ -653,26 +740,46 @@ async function loadEuwSource(filePath) {
         }
 
         try {
-            await loadTemplates();
+            const startTime = performance.now();
 
+            await loadTemplates();
+            console.log(`模板加载完成: ${performance.now() - startTime}ms`);
+
+            const indexStart = performance.now();
             const index = await loadPageIndex();
+            console.log(`页面索引加载: ${performance.now() - indexStart}ms`);
+
             const metaPath = index[pageId];
             if (!metaPath) throw new Error(`未找到页面 "${pageId}" 的索引记录`);
 
+            const metaStart = performance.now();
             pageMeta = await loadMeta(metaPath);
+            console.log(`元数据加载: ${performance.now() - metaStart}ms`);
 
             let euwSource;
+            const sourceStart = performance.now();
             if (pageMeta.encrypted) {
                 euwSource = await handleEncrypted(pageMeta.file);
             } else {
                 euwSource = await loadEuwSource(pageMeta.file);
             }
+            console.log(`内容源加载: ${performance.now() - sourceStart}ms`);
 
+            const parseStart = performance.now();
             const euwHtml = parseEuw(euwSource);
-            renderPage(euwHtml);
+            console.log(`内容解析: ${performance.now() - parseStart}ms`);
 
+            const renderStart = performance.now();
+            renderPage(euwHtml);
+            console.log(`页面渲染: ${performance.now() - renderStart}ms`);
+
+            const eventsStart = performance.now();
             initTooltipEvents();
             initSidebarEvents();
+            console.log(`事件初始化: ${performance.now() - eventsStart}ms`);
+
+            const totalTime = performance.now() - startTime;
+            console.log(`页面加载总耗时: ${totalTime}ms`);
 
         } catch (error) {
             console.error('页面初始化失败:', error);

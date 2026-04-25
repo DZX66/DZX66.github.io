@@ -24,7 +24,7 @@ import { renderRecentUpdates } from './components/recentUpdates.js';
   try {
     const pages = await fetchPagesData();
     
-    console.log(pages);
+    if (import.meta.env.DEV) console.log(pages);
     // 更新页面总数显示
     if (pageCountIndicator) {
       pageCountIndicator.textContent = `${pages.length} 个页面`;

@@ -76,7 +76,7 @@ print(factorial(5))
 - 字符串参数：`{greeting|name="开发者", style="enthusiastic"}`
 - 数字参数：`{counter|start=1, max=100}`
 - 布尔参数：`{toggle|active=true, visible=false}`
-- 数组参数：`{badge_list|items=["Feature", "Bugfix", "Docs"]}`
+<!-- - 数组参数：`{badge_list|items=["Feature", "Bugfix", "Docs"]}` -->
 
 ---
 

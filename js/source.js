@@ -1,13 +1,6 @@
 import { decrypt } from './components/euw-crypto.js';
 
-// ---------- 路径规范化（去除 public/ 或 public\ 前缀，统一为正斜杠）----------
-function normalizePath(path) {
-  // 1. 将反斜杠全部转为正斜杠（URL 标准）
-  let normalized = path.replace(/\\/g, '/');
-  // 2. 去除开头的 public/（可选前导斜杠）
-  normalized = normalized.replace(/^\/?public\//, '');
-  return normalized;
-}
+import { normalizePath } from './utils/pathUtils.js';
 
 // ---------- Cookie 工具 ----------
 function setCookie(name, value, days = 7) {
@@ -227,7 +220,7 @@ async function init() {
       renderSourceCode(sourceText, meta, false);
     }
   } catch (error) {
-    console.error('初始化失败:', error);
+    if (import.meta.env.DEV) console.error('初始化失败:', error);
     showError('加载失败', error.message);
   }
 }

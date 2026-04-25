@@ -31,7 +31,7 @@ class PagesManager {
       this.filteredPages = [...this.pages];
       this.updateStats();
     } catch (error) {
-      console.error('加载页面数据失败:', error);
+      if (import.meta.env.DEV) console.error('加载页面数据失败:', error);
       this.showError('加载页面数据失败，请刷新页面重试');
     }
   }

@@ -50,23 +50,34 @@ a:hover {
   text-decoration: underline;
 }
 
-/* 全局禁止选中文本（仅允许正文和公告区域） */
-*,
-*::before,
-*::after {
-  user-select: none;
+/* 大部分文本默认允许选中（提升用户体验） */
+body, .app-wrapper, main, .card-body, .page-container, .pages-list, .article-body {
+  user-select: text;
 }
 
-/* 允许选中的区域 */
+/* 仅禁止对复制有干扰的交互元素（图标、按钮、品牌区域等） */
+.brand-icon,
+.btn,
+.sort-btn,
+.read-btn,
+.toc-fab,
+.sidebar-close-btn,
+.filter-checkbox,
+.back-link,
+.more-link,
+button,
+[role="button"],
+[aria-label],
+i.fa,
+i.fas,
+i.far {
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 保留特定区域（公告、更新列表）的文本可选性（已通过继承覆盖） */
 #noticeContainer,
-#noticeContainer *,
 #recentUpdatesContainer,
-#recentUpdatesContainer *,
-.pages-list,
-.pages-list *,
-.page-container,
-.page-container *,
-.article-body,
-.article-body * {
+.pages-list {
   user-select: text;
 }

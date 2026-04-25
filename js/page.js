@@ -1,16 +1,9 @@
 import { decrypt } from './components/euw-crypto.js';
+import { normalizePath } from './utils/pathUtils.js';
 
 (function () {
     "use strict";
 
-    // ---------- 路径规范化（去除 public/ 或 public\ 前缀，统一为正斜杠）----------
-    function normalizePath(path) {
-        // 1. 将反斜杠全部转为正斜杠（URL 标准）
-        let normalized = path.replace(/\\/g, '/');
-        // 2. 去除开头的 public/（可选前导斜杠）
-        normalized = normalized.replace(/^\/?public\//, '');
-        return normalized;
-    }
 
     // ---------- Cookie 工具 ----------
     function setCookie(name, value, days = 7) {
@@ -190,7 +183,7 @@ import { decrypt } from './components/euw-crypto.js';
             const func = new Function('module', 'exports', scriptText);
             func(module, exports);
             templates = module.exports.templates || {};
-            console.log('✅ 模板加载成功', Object.keys(templates));
+            if (import.meta.env.DEV) console.log('✅ 模板加载成功', Object.keys(templates));
         } catch (err) {
             console.error('❌ 模板加载失败:', err);
             throw new Error('无法加载模板定义文件');
@@ -797,18 +790,18 @@ import { decrypt } from './components/euw-crypto.js';
             const startTime = performance.now();
 
             await loadTemplates();
-            console.log(`模板加载完成: ${performance.now() - startTime}ms`);
+            if (import.meta.env.DEV) console.log(`模板加载完成: ${performance.now() - startTime}ms`);
 
             const indexStart = performance.now();
             const index = await loadPageIndex();
-            console.log(`页面索引加载: ${performance.now() - indexStart}ms`);
+            if (import.meta.env.DEV) console.log(`页面索引加载: ${performance.now() - indexStart}ms`);
 
             const metaPath = index[pageId];
             if (!metaPath) throw new Error(`未找到页面 "${pageId}" 的索引记录`);
 
             const metaStart = performance.now();
             pageMeta = await loadMeta(metaPath);
-            console.log(`元数据加载: ${performance.now() - metaStart}ms`);
+            if (import.meta.env.DEV) console.log(`元数据加载: ${performance.now() - metaStart}ms`);
 
             let euwSource;
             const sourceStart = performance.now();
@@ -817,23 +810,23 @@ import { decrypt } from './components/euw-crypto.js';
             } else {
                 euwSource = await loadEuwSource(pageMeta.file);
             }
-            console.log(`内容源加载: ${performance.now() - sourceStart}ms`);
+            if (import.meta.env.DEV) console.log(`内容源加载: ${performance.now() - sourceStart}ms`);
 
             const parseStart = performance.now();
             const euwHtml = parseEuw(euwSource);
-            console.log(`内容解析: ${performance.now() - parseStart}ms`);
+            if (import.meta.env.DEV) console.log(`内容解析: ${performance.now() - parseStart}ms`);
 
             const renderStart = performance.now();
             renderPage(euwHtml);
-            console.log(`页面渲染: ${performance.now() - renderStart}ms`);
+            if (import.meta.env.DEV) console.log(`页面渲染: ${performance.now() - renderStart}ms`);
 
             const eventsStart = performance.now();
             initTooltipEvents();
             initSidebarEvents();
-            console.log(`事件初始化: ${performance.now() - eventsStart}ms`);
+            if (import.meta.env.DEV) console.log(`事件初始化: ${performance.now() - eventsStart}ms`);
 
             const totalTime = performance.now() - startTime;
-            console.log(`页面加载总耗时: ${totalTime}ms`);
+            if (import.meta.env.DEV) console.log(`页面加载总耗时: ${totalTime}ms`);
 
         } catch (error) {
             console.error('页面初始化失败:', error);

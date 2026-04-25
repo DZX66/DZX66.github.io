@@ -31,4 +31,4 @@ npm run build
 
 ## 许可证
 
-[MIT](LICENSE)
+[BSD 2-Clause License](LICENSE)

@@ -130,7 +130,7 @@ class PagesManager {
     if (this.filteredPages.length === 0) {
       container.innerHTML = `
         <div class="empty-state">
-          <div class="empty-icon">📄</div>
+          <div class="empty-icon"><i class="fas fa-file-alt"></i></div>
           <p>${this.searchTerm ? '没有找到匹配的页面' : '暂无页面内容'}</p>
           ${this.searchTerm ? '<button class="clear-search" onclick="pagesManager.clearSearch()">清除搜索</button>' : ''}
         </div>
@@ -144,7 +144,7 @@ class PagesManager {
 
   renderPageItem(page) {
     const date = new Date(page.modified).toLocaleDateString('zh-CN');
-    const encryptedBadge = page.encrypted ? '<span class="encrypted-badge" title="此页面已加密">🔒 已加密</span>' : '';
+    const encryptedBadge = page.encrypted ? '<span class="encrypted-badge" title="此页面已加密"><i class="fas fa-lock"></i> 已加密</span>' : '';
     
     return `
       <div class="page-item" data-page-id="${page.id}">
@@ -179,7 +179,7 @@ class PagesManager {
     if (container) {
       container.innerHTML = `
         <div class="error-state">
-          <div class="error-icon">⚠️</div>
+          <div class="error-icon"><i class="fas fa-exclamation-triangle"></i></div>
           <p>${message}</p>
           <button class="retry-btn" onclick="pagesManager.loadPagesData()">重试</button>
         </div>

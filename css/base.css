@@ -37,3 +37,36 @@ body {
   width: 100%;
   margin: 0 auto;
 }
+
+/* 全局链接样式：使用 CSS 变量，绿色系 */
+a {
+  color: var(--accent-soft);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-deep);
+  text-decoration: underline;
+}
+
+/* 全局禁止选中文本（仅允许正文和公告区域） */
+*,
+*::before,
+*::after {
+  user-select: none;
+}
+
+/* 允许选中的区域 */
+#noticeContainer,
+#noticeContainer *,
+#recentUpdatesContainer,
+#recentUpdatesContainer *,
+.pages-list,
+.pages-list *,
+.page-container,
+.page-container *,
+.article-body,
+.article-body * {
+  user-select: text;
+}

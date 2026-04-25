@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>所有页面 · 柳下回声</title>
   <link rel="stylesheet" href="css/pages.css">
+  <!-- Font Awesome 6 (平面图标库 - 使用 CDN 确保可靠加载) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
   <div class="app-wrapper">
@@ -25,7 +27,7 @@
       <!-- 页面统计卡片 -->
       <section class="card stats-card">
         <div class="card-header">
-          <h2>📚 页面总览</h2>
+          <h2><i class="fas fa-book"></i> 页面总览</h2>
         </div>
         <div class="card-body">
           <div class="stats-grid">
@@ -44,7 +46,7 @@
       <!-- 页面列表 -->
       <section class="card pages-list-card">
         <div class="card-header">
-          <h2>📄 页面列表</h2>
+          <h2><i class="fas fa-file-alt"></i> 页面列表</h2>
           <div class="sort-controls">
             <button class="sort-btn active" data-sort="date">按时间</button>
             <button class="sort-btn" data-sort="title">按标题</button>
@@ -62,14 +64,14 @@
             </div>
           </div>
           <div class="pages-list" id="pagesListContainer">
-            <div class="loading-placeholder">🍃 正在加载页面列表...</div>
+            <div class="loading-placeholder"><i class="fas fa-leaf"></i> 正在加载页面列表...</div>
           </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <p><span id="currentYear"></span>  ·  ✎ 柳下回声</p>
+      <p><span id="currentYear"></span>  ·  <i class="fas fa-pen"></i> 柳下回声</p>
     </footer>
   </div>
 

@@ -120,7 +120,8 @@ self._paths = {"driver_path": "chromedriver.exe", "browser_path": ""}
 
 使用第三方播放器：{bilibili|bv="BV1j8411D7Zp"}
 
-[官网](https://fp.vnisoft.top/) [蓝奏云下载页面](https://3sqrt7.lanzouq.com/iUmYK0pn85cj)
+{external_link|url="https://fp.vnisoft.top/", display="官网"}
+{external_link|url="https://3sqrt7.lanzouq.com/iUmYK0pn85cj", display="蓝奏云下载页面"}
 
 这算是找到的最舒服的播放器了。顺便一提，up居然是08年生，太厉害了{heimu|text="翻了一下ta的交涉圈挺...nb，搞得有头有脸的，虽然从市场的眼光上来看还是有很多缺点，但有这股劲已经很了不起了~~而不是像某人一样沉迷galgame~~，哎，别人的初中", title="你知道的太多了"}
 

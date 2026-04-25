@@ -320,7 +320,7 @@ import { decrypt } from './components/euw-crypto.js';
         while ((match = templateRegex.exec(protectedText)) !== null) {
             const [fullMatch, templateName, paramString] = match;
             if (!templates[templateName]) {
-                console.warn(`⚠️ 未知模板: ${templateName}`);
+                console.warn(`<i class="fas fa-exclamation-triangle"></i> 未知模板: ${templateName}`);
                 parsed = parsed.replace(fullMatch, `<span style="color:red;">[未知模板: ${templateName}]</span>`);
                 continue;
             }
@@ -371,7 +371,7 @@ import { decrypt } from './components/euw-crypto.js';
                 const html = templateDef.render(params);
                 parsed = parsed.replace(fullMatch, html);
             } catch (err) {
-                console.error(`❌ 模板 ${templateName} 渲染出错:`, err);
+                console.error(`<i class="fas fa-times-circle"></i> 模板 ${templateName} 渲染出错:`, err);
                 parsed = parsed.replace(fullMatch, `<span style="color:red;">[模板渲染错误: ${templateName}]</span>`);
             }
         }
@@ -511,6 +511,59 @@ import { decrypt } from './components/euw-crypto.js';
         Prism.highlightAll();
     }
 
+    // ---------- TOC 滚动高亮 ----------
+    let tocScrollInitialized = false;
+
+    function updateActiveTocItem() {
+        const contentArea = document.querySelector('.euw-content');
+        if (!contentArea) return;
+        const headings = contentArea.querySelectorAll('h2, h3, h4, h5, h6');
+        if (headings.length === 0) return;
+
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        let activeHeading = null;
+        for (let i = 0; i < headings.length; i++) {
+            const heading = headings[i];
+            const offsetTop = heading.offsetTop;
+            if (offsetTop <= scrollTop + 100) {
+                activeHeading = heading;
+            } else {
+                break;
+            }
+        }
+        if (!activeHeading && headings.length > 0) {
+            activeHeading = headings[0];
+        }
+        if (!activeHeading) return;
+
+        const activeId = activeHeading.id;
+        const allTocLinks = document.querySelectorAll('.toc-list a');
+        let activeLink = null;
+        allTocLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${activeId}`) {
+                activeLink = link;
+            }
+        });
+        if (activeLink) activeLink.classList.add('active');
+    }
+
+    function handleScrollAndResize() {
+        if (window.requestAnimationFrame) {
+            requestAnimationFrame(updateActiveTocItem);
+        } else {
+            updateActiveTocItem();
+        }
+    }
+
+    function initTocScroll() {
+        if (tocScrollInitialized) return;
+        tocScrollInitialized = true;
+        window.addEventListener('scroll', handleScrollAndResize);
+        window.addEventListener('resize', handleScrollAndResize);
+        handleScrollAndResize();
+    }
+
     // ---------- 渲染页面 ----------
     function renderPage(euwHtml) {
         if (!pageMeta) return;
@@ -528,10 +581,10 @@ import { decrypt } from './components/euw-crypto.js';
         const metaBar = `
             <div class="page-meta">
                 <div class="date-info">
-                    <span>📅 创建: ${createdDate}</span>
-                    <span>🔄 更新: ${modifiedDate}</span>
+                    <span><i class="fas fa-calendar-alt"></i> 创建: ${createdDate}</span>
+                    <span><i class="fas fa-sync-alt"></i> 更新: ${modifiedDate}</span>
                 </div>
-                ${tagsHtml ? `<div class="tags-info">🏷️ ${tagsHtml}</div>` : ''}
+                ${tagsHtml ? `<div class="tags-info"><i class="fas fa-tags"></i> ${tagsHtml}</div>` : ''}
             </div>
         `;
 
@@ -573,6 +626,7 @@ import { decrypt } from './components/euw-crypto.js';
         generateTOC();
         updateSidebarLinks();
         applyPrism();
+        initTocScroll();
     }
 
     function lazyReplaceIframe(iframe) {
@@ -606,7 +660,7 @@ import { decrypt } from './components/euw-crypto.js';
 
         placeholder.innerHTML = `
         <div class="placeholder-content">
-            <span class="placeholder-icon">📺</span>
+            <span class="placeholder-icon"><i class="fas fa-tv"></i></span>
             <p>点击加载嵌入内容</p>
             <p class="placeholder-src">${domain}</p>
         </div>
@@ -644,7 +698,7 @@ import { decrypt } from './components/euw-crypto.js';
         contentEl.innerHTML = `
             <h1 style="color:var(--accent-deep);">${title}</h1>
             <div class="error-message">
-                <strong>⚠️ 出错了</strong><br>
+                <strong><i class="fas fa-exclamation-triangle"></i> 出错了</strong><br>
                 ${message}
             </div>
             <p style="margin-top:1.5rem;"><a href="/" class="back-link">← 返回主页</a></p>
@@ -688,7 +742,7 @@ import { decrypt } from './components/euw-crypto.js';
 
             // 3. 显示密码输入界面
             contentEl.innerHTML = `
-            <h1>🔒 此页面已加密</h1>
+            <h1><i class="fas fa-lock"></i> 此页面已加密</h1>
             <div class="password-panel">
                 <p><strong>请输入访问密码</strong></p>
                 <p style="font-size:0.9rem; margin-bottom:1rem;">密码提示：${hint}</p>

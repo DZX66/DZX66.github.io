@@ -46,9 +46,9 @@ if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 function showError(title, message) {
   document.title = `${title} · 源代码`;
   mainEl.innerHTML = `
-    <h1 style="color:var(--accent-deep);">📁 ${title}</h1>
+    <h1 style="color:var(--accent-deep);"><i class="fas fa-folder"></i> ${title}</h1>
     <div class="error-message">
-      <strong>⚠️ 无法加载源代码</strong><br>
+      <strong><i class="fas fa-exclamation-triangle"></i> 无法加载源代码</strong><br>
       ${message}
     </div>
     <a href="/" class="back-link">← 返回主页</a>
@@ -63,19 +63,19 @@ function renderSourceCode(sourceText, meta, isDecrypted = false) {
   const modified = meta.modified ? new Date(meta.modified).toLocaleString('zh-CN') : created;
   const filePath = meta.file || '—';
   const encryptedBadge = meta.encrypted
-    ? (isDecrypted ? '🔓 已解密' : '🔒 已加密')
-    : '🔓 公开';
+    ? (isDecrypted ? '<i class="fas fa-unlock-alt"></i> 已解密' : '<i class="fas fa-lock"></i> 已加密')
+    : '<i class="fas fa-unlock-alt"></i> 公开';
 
   const metaHtml = `
     <div class="source-header" style="margin-bottom:1.5rem; border-bottom:1px dashed var(--border-light); padding-bottom:1rem;">
       <h1 style="font-size:2rem; margin-bottom:0.2rem; color:var(--accent-deep); display:flex; align-items:center; gap:10px;">
-        <span>📜源代码查看： ${title}</span>
+        <span><i class="fas fa-scroll"></i> 源代码查看： ${title}</span>
         <span style="font-size:0.9rem; background:var(--accent-soft); color:white; padding:2px 12px; border-radius:30px;">${encryptedBadge}</span>
       </h1>
       <div class="source-meta" style="color:var(--text-secondary); font-size:0.9rem; display:flex; flex-wrap:wrap; gap:1.5rem; margin-top:0.5rem;">
-        <span>📅 创建: ${created}</span>
-        <span>🔄 更新: ${modified}</span>
-        <span>📁 路径: ${filePath}</span>
+        <span><i class="fas fa-calendar-alt"></i> 创建: ${created}</span>
+        <span><i class="fas fa-sync-alt"></i> 更新: ${modified}</span>
+        <span><i class="fas fa-folder-open"></i> 路径: ${filePath}</span>
       </div>
     </div>
   `;
@@ -135,9 +135,9 @@ function showPasswordPrompt(meta, encryptedJson) {
   renderPasswordUI();
 
   function renderPasswordUI() {
-    document.title = `🔒 加密源文件 · ${meta.title}`;
+    document.title = `<i class="fas fa-lock"></i> 加密源文件 · ${meta.title}`;
     mainEl.innerHTML = `
-      <h1>🔒 此源文件已加密</h1>
+      <h1><i class="fas fa-lock"></i> 此源文件已加密</h1>
       <div class="password-panel" style="background:#fef7e0; border-left:6px solid #e6a700; padding:1.5rem; border-radius:12px; margin:2rem 0;">
         <p><strong>需要密码才能查看源代码</strong></p>
         <p style="font-size:0.9rem; margin-bottom:1rem;">密码提示：${hint}</p>
@@ -222,7 +222,7 @@ async function init() {
       const encryptedJson = await res.text();
       showPasswordPrompt(meta, encryptedJson, filePath); // 传递规范化后的路径用于后续显示
     } else {
-      mainEl.innerHTML = '<div class="loading-placeholder">🍃 正在读取源文件...</div>';
+      mainEl.innerHTML = '<div class="loading-placeholder"><i class="fas fa-leaf"></i> 正在读取源文件...</div>';
       const sourceText = await fetchRawEuw(filePath);
       renderSourceCode(sourceText, meta, false);
     }

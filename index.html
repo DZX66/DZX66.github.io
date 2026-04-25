@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>柳下回声 · 轻简博客</title>
   <link rel="stylesheet" href="css/index.css">
+  <!-- Font Awesome 6 (平面图标库 - 使用 CDN 确保可靠加载) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- 使用简洁的系统字体，无需外部依赖 -->
 </head>
 <body>
@@ -26,7 +28,7 @@
       <!-- 左侧：公告栏 + 配图（上下或并排？这里采用上下结构，更清晰） -->
       <section class="card notice-card" id="noticeCard">
         <div class="card-header">
-          <h2>📢 公告</h2>
+          <h2><i class="fas fa-bullhorn"></i> 公告</h2>
         </div>
         <div class="card-body" id="noticeContainer">
           <!-- 动态公告将由JS注入 -->
@@ -37,7 +39,7 @@
 
       <section class="card image-card">
         <div class="card-header">
-          <h2>🌿 檐下听风</h2>
+          <h2><i class="fas fa-leaf"></i> 檐下听风</h2>
         </div>
         <div class="card-body illustration">
           <!-- 简约配图：内嵌SVG，呼应“柳下回声”，纯静态但风格一致 -->
@@ -59,12 +61,12 @@
            我们让最近更新占一整行，下面所有页面占一整行，视觉清爽 -->
       <section class="card recent-card full-width">
         <div class="card-header">
-          <h2>🕊️ 最近更新</h2>
+          <h2><i class="fas fa-dove"></i> 最近更新</h2>
           <a href="/pages" class="more-link" title="查看所有页面">全部 &rarr;</a>
         </div>
         <div class="card-body" id="recentUpdatesContainer">
           <!-- 动态渲染5条最近更新 -->
-          <div class="loading-placeholder">🍃 正在聆听回声…</div>
+          <div class="loading-placeholder"><i class="fas fa-leaf"></i> 正在聆听回声…</div>
         </div>
       </section>
 
@@ -72,7 +74,7 @@
     </main>
 
     <footer class="site-footer">
-      <p><span id="currentYear"></span>  ·  ✎ 柳下回声</p>
+      <p><span id="currentYear"></span>  ·  <i class="fas fa-pen"></i> 柳下回声</p>
     </footer>
   </div>
 

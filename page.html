@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>页面加载中 · 柳下回声</title>
   <link rel="stylesheet" href="/css/page.css">
+  <!-- Font Awesome 6 (平面图标库 - 使用 CDN 确保可靠加载) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- Markdown 解析库 -->
   <script src="/js/external/marked.min.js"></script>
   <script src="/js/external/prism.js"></script>
@@ -26,7 +28,7 @@
     <!-- 主内容区 + 侧边栏布局 -->
     <div class="page-layout">
       <main id="pageContent" class="page-container">
-        <div class="loading-placeholder">🍵 正在加载，稍候片刻...</div>
+        <div class="loading-placeholder"><i class="fas fa-mug-hot"></i> 正在加载，稍候片刻...</div>
       </main>
 
       <!-- 侧边栏（桌面固定 / 移动抽屉） -->
@@ -34,16 +36,16 @@
         <button class="sidebar-close-btn" id="closeSidebarBtn" aria-label="关闭侧边栏">×</button>
         
         <div class="sidebar-section">
-          <h3>🔗 快捷链接</h3>
+          <h3><i class="fas fa-link"></i> 快捷链接</h3>
           <ul class="sidebar-links">
-            <li><a href="#" id="githubSourceLink" target="_blank" rel="noopener">📄 源文件 (GitHub)</a></li>
-            <li><a href="#" id="sourceCodeLink" target="_blank" rel="noopener">📝 源代码</a></li>
-            <li><a href="#" id="historyLink" target="_blank" rel="noopener">🕒 编辑历史</a></li>
+            <li><a href="#" id="githubSourceLink" target="_blank" rel="noopener"><i class="fas fa-file-alt"></i> 源文件 (GitHub)</a></li>
+            <li><a href="#" id="sourceCodeLink" target="_blank" rel="noopener"><i class="fas fa-code"></i> 源代码</a></li>
+            <li><a href="#" id="historyLink" target="_blank" rel="noopener"><i class="fas fa-history"></i> 编辑历史</a></li>
           </ul>
         </div>
 
         <div class="sidebar-section toc-section">
-          <h2>📑 目录</h2>
+          <h2><i class="fas fa-list"></i> 目录</h2>
           <nav id="tableOfContents" class="toc-container">
             <div class="toc-empty">解析标题后显示</div>
           </nav>
@@ -58,7 +60,7 @@
   </div>
 
   <!-- 悬浮按钮（仅移动端可见） -->
-  <button class="toc-fab" id="tocFab" aria-label="打开目录">📋</button>
+  <button class="toc-fab" id="tocFab" aria-label="打开目录"><i class="fas fa-list"></i></button>
   <!-- 移动端遮罩层 -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 

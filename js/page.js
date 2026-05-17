@@ -300,6 +300,115 @@ import { normalizePath } from './utils/pathUtils.js';
     }
 
     // ---------- EUW 解析器----------
+    // ---------- 增强参数解析函数（支持数组）----------
+    function parseTemplateArgs(argsRaw) {
+        const result = {};
+        if (!argsRaw || argsRaw.trim() === '') return result;
+        let i = 0;
+        const len = argsRaw.length;
+        const skipWhitespace = () => { while (i < len && /\s/.test(argsRaw[i])) i++; };
+        const peek = () => i < len ? argsRaw[i] : '';
+        const parseValue = () => {
+            skipWhitespace();
+            if (i >= len) return undefined;
+            const ch = argsRaw[i];
+            if (ch === '"' || ch === "'") {
+                const quote = ch;
+                i++;
+                let str = '';
+                while (i < len && argsRaw[i] !== quote) {
+                    if (argsRaw[i] === '\\' && i + 1 < len) {
+                        str += argsRaw[i + 1];
+                        i += 2;
+                    } else {
+                        str += argsRaw[i];
+                        i++;
+                    }
+                }
+                if (i < len && argsRaw[i] === quote) i++;
+                return str;
+            } else if (ch === '[') {
+                return parseArray();
+            } else if (ch === 't' && argsRaw.startsWith('true', i)) {
+                i += 4;
+                return true;
+            } else if (ch === 'f' && argsRaw.startsWith('false', i)) {
+                i += 5;
+                return false;
+            } else if ((ch >= '0' && ch <= '9') || ch === '-' || ch === '+') {
+                let numStr = '';
+                let hasDot = false;
+                while (i < len && /[0-9.+-]/.test(argsRaw[i])) {
+                    if (argsRaw[i] === '.') {
+                        if (hasDot) break;
+                        hasDot = true;
+                    }
+                    numStr += argsRaw[i];
+                    i++;
+                }
+                const num = Number(numStr);
+                return isNaN(num) ? numStr : num;
+            } else {
+                let ident = '';
+                while (i < len && !/[,\s]/.test(argsRaw[i]) && argsRaw[i] !== '}') {
+                    ident += argsRaw[i];
+                    i++;
+                }
+                return ident;
+            }
+        };
+        const parseArray = () => {
+            i++;
+            const arr = [];
+            skipWhitespace();
+            if (peek() === ']') {
+                i++;
+                return arr;
+            }
+            while (i < len) {
+                const val = parseValue();
+                if (val !== undefined) arr.push(val);
+                skipWhitespace();
+                if (peek() === ']') {
+                    i++;
+                    break;
+                }
+                if (peek() === ',') {
+                    i++;
+                    skipWhitespace();
+                    continue;
+                } else {
+                    break;
+                }
+            }
+            return arr;
+        };
+        while (i < len) {
+            skipWhitespace();
+            if (i >= len) break;
+            const nameMatch = argsRaw.slice(i).match(/^[a-zA-Z_][\w-]*/);
+            if (!nameMatch) {
+                i++;
+                continue;
+            }
+            const name = nameMatch[0];
+            i += name.length;
+            skipWhitespace();
+            if (i >= len || argsRaw[i] !== '=') {
+                continue;
+            }
+            i++;
+            skipWhitespace();
+            const value = parseValue();
+            if (value !== undefined) result[name] = value;
+            skipWhitespace();
+            if (peek() === ',') {
+                i++;
+                continue;
+            }
+        }
+        return result;
+    }
     function parseEuw(euwText) {
         // 第一步：保护代码块，避免内部被模板引擎解析
         const { protectedText, blocks } = protectCodeBlocks(euwText);
@@ -319,38 +428,7 @@ import { normalizePath } from './utils/pathUtils.js';
             }
 
             const templateDef = templates[templateName];
-            const params = {};
-            if (paramString) {
-                const paramRegex = /([a-zA-Z_][a-zA-Z0-9_-]*)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^,}\s]+))/g;
-                let pmatch;
-                while ((pmatch = paramRegex.exec(paramString)) !== null) {
-                    const key = pmatch[1];
-                    let value;
-                    let isQuoted = false;
-
-                    if (pmatch[2] !== undefined) {
-                        value = pmatch[2];
-                        isQuoted = true;
-                    } else if (pmatch[3] !== undefined) {
-                        value = pmatch[3];
-                        isQuoted = true;
-                    } else {
-                        value = pmatch[4];
-                        isQuoted = false;
-                    }
-
-                    if (!isQuoted) {
-                        // 只有无引号值才进行类型推断
-                        if (value === 'true') params[key] = true;
-                        else if (value === 'false') params[key] = false;
-                        else if (!isNaN(value) && value.trim() !== '') params[key] = Number(value);
-                        else params[key] = value;
-                    } else {
-                        // 带引号值强制为字符串
-                        params[key] = value;
-                    }
-                }
-            }
+            const params = paramString ? parseTemplateArgs(paramString) : {};
 
             if (templateDef.params) {
                 Object.entries(templateDef.params).forEach(([key, spec]) => {

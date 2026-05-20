@@ -17,5 +17,6 @@
   "气胸": "public/pages_meta/气胸.json",
   "牢骚1": "public/pages_meta/牢骚1.json",
   "牢骚2": "public/pages_meta/牢骚2.json",
-  "幻想": "public/pages_meta/幻想.json"
+  "幻想": "public/pages_meta/幻想.json",
+  "编辑教程": "public/pages_meta/编辑教程.json"
 }

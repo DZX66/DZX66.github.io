@@ -1,6 +1,7 @@
-1. 瑟瑟
-2. 任意创造、修改、移除生命体{heimu|text="为了更好瑟瑟"}
-3. 永远健康不死{heimu|text="不觉得观察这个世界很有意思吗"}
-4. 不用睡觉、吃饭、洗澡
-5. tp
-6. 只能我看得见的全息窗口，可用意识交互，背后有全知的数据库和牛逼AI，可模拟现实计算机
+{
+  "encrypted": true,
+  "algorithm": "aes-256-gcm",
+  "salt": "loUFmzEtBHJHgAGgO/xWuw==",
+  "iv": "GV1mzbD95yEz2vxe",
+  "data": "k7GnYE2HQKGt2r+l8PdeJAvnvWI3fJji8EkRSrk7Xc4S6N+4Eq8VRRT/CTlXBwMqLP45VU1ksctqGGuLPNZxFb7Sqpqb0i54nE/hXLMsjQjx16V+XKs0PH0bid+xfrZoLC9xGMUi67FFFEQoaWwrShfynU78Za6INQ+eylAhBiXLyxdqRxOYB3XGQm9ICyDoye2H46Lxv5J4k9HwNiho73GmY3C+dOyDscqF9uJFNTMcc8LxRhKRaBkrOSnQgN2ZtglUXmFLTWwp5nFsiZnAKMHOrgzMajA8EefgYZoMxqrIimlT1uUx0M8eNGcN/jwG/AEPko749vHQ2m1nQyC8R0Iog0XmnuZZemlIl6TlAl9t5AGlVZaqDooMBo9b/SgJuQtcgWP3a4KplHvzw20eWTDI4Mo8wq31Txmq0uyb6IzMnldQtrgXOCxnCONd01Oj+PEo0eTkpfarYnequUhq7Hk="
+}

@@ -3,8 +3,8 @@
   "title": "幻想",
   "file": "public/pages/幻想.euw",
   "created": "2026-05-17T12:56:36.931Z",
-  "modified": "2026-05-17T13:38:06.529Z",
+  "modified": "2026-06-15T11:47:03.688Z",
   "tags": [],
-  "encrypted": false,
-  "passwordHint": ""
+  "encrypted": true,
+  "passwordHint": "一级密码"
 }
